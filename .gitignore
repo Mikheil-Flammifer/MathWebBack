@@ -1,3 +1,6 @@
+# Environment variables - NEVER commit this
+.env
+
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
@@ -11,6 +14,13 @@ target/
 *.iws
 *.iml
 *.ipr
+
+# Uploads folder
+uploads/
+
+# Logs
+*.log
+logs/
 
 ### Eclipse ###
 .apt_generated
