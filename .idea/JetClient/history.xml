@@ -1,0 +1,2041 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="History">
+    <option name="requestHistoryStates">
+      <list>
+        <requestHistoryState>
+          <option name="dateTime" value="1790418142576" />
+          <option name="id" value="190d71c6-b354-4785-8343-48ecb11265fa" />
+          <option name="request">
+            <requestState>
+              <option name="body">
+                <bodyState>
+                  <option name="raw" value="{&#10;  &quot;firstName&quot;: &quot;Mike&quot;,&#10;  &quot;lastName&quot;: &quot;Simonishvili&quot;,&#10;  &quot;email&quot;: &quot;msimo18@freeuni.edu.ge&quot;,&#10;  &quot;password&quot;: &quot;Admin1234!&quot;&#10;}" />
+                  <option name="type" value="JSON" />
+                </bodyState>
+              </option>
+              <option name="id" value="e24cc9af-431a-4da6-b75a-1c485d71f563" />
+              <option name="method" value="GET" />
+              <option name="name" value="register" />
+              <option name="url" value=" http://localhost:8080/api/auth/register" />
+            </requestState>
+          </option>
+          <option name="response">
+            <responseState>
+              <option name="bodyBytesBase64" value="eyJzdWNjZXNzIjpmYWxzZSwibWVzc2FnZSI6IkFuIHVuZXhwZWN0ZWQgZXJyb3Igb2NjdXJyZWQuIFBsZWFzZSB0cnkgYWdhaW4gbGF0ZXIuIn0=" />
+              <option name="bodyString" value="{&#10;  &quot;success&quot;: false,&#10;  &quot;message&quot;: &quot;An unexpected error occurred. Please try again later.&quot;&#10;}" />
+              <option name="code" value="500" />
+              <option name="connectionEstablishingTime" value="47" />
+              <option name="contentType" value="application/json" />
+              <option name="headers">
+                <list>
+                  <headerState>
+                    <option name="key" value="X-Content-Type-Options" />
+                    <option name="value" value="nosniff" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-XSS-Protection" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Cache-Control" />
+                    <option name="value" value="no-cache, no-store, max-age=0, must-revalidate" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Pragma" />
+                    <option name="value" value="no-cache" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Expires" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-Frame-Options" />
+                    <option name="value" value="DENY" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Content-Type" />
+                    <option name="value" value="application/json" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Transfer-Encoding" />
+                    <option name="value" value="chunked" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Date" />
+                    <option name="value" value="Sat, 26 Sep 2026 10:22:22 GMT" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Connection" />
+                    <option name="value" value="close" />
+                  </headerState>
+                </list>
+              </option>
+              <option name="id" value="190d71c6-b354-4785-8343-48ecb11265fa" />
+              <option name="message" value="Internal Server Error" />
+              <option name="prettyResponseType" value="JSON" />
+              <option name="rawBodyString" value="{&quot;success&quot;:false,&quot;message&quot;:&quot;An unexpected error occurred. Please try again later.&quot;}" />
+              <option name="size" value="83" />
+              <option name="time" value="178" />
+            </responseState>
+          </option>
+          <option name="workspaceId" value="drafts" />
+        </requestHistoryState>
+        <requestHistoryState>
+          <option name="dateTime" value="1790418168555" />
+          <option name="id" value="0a77e155-1941-4260-971f-8f164644d0dd" />
+          <option name="request">
+            <requestState>
+              <option name="body">
+                <bodyState>
+                  <option name="raw" value="{&#10;  &quot;firstName&quot;: &quot;Mike&quot;,&#10;  &quot;lastName&quot;: &quot;Simonishvili&quot;,&#10;  &quot;email&quot;: &quot;msimo18@freeuni.edu.ge&quot;,&#10;  &quot;password&quot;: &quot;Admin1234!&quot;&#10;}" />
+                  <option name="type" value="JSON" />
+                </bodyState>
+              </option>
+              <option name="id" value="e24cc9af-431a-4da6-b75a-1c485d71f563" />
+              <option name="method" value="GET" />
+              <option name="name" value="register" />
+              <option name="url" value=" http://localhost:8080/api/auth/register" />
+            </requestState>
+          </option>
+          <option name="response">
+            <responseState>
+              <option name="bodyBytesBase64" value="eyJzdWNjZXNzIjpmYWxzZSwibWVzc2FnZSI6IkFuIHVuZXhwZWN0ZWQgZXJyb3Igb2NjdXJyZWQuIFBsZWFzZSB0cnkgYWdhaW4gbGF0ZXIuIn0=" />
+              <option name="bodyString" value="{&#10;  &quot;success&quot;: false,&#10;  &quot;message&quot;: &quot;An unexpected error occurred. Please try again later.&quot;&#10;}" />
+              <option name="code" value="500" />
+              <option name="contentType" value="application/json" />
+              <option name="headers">
+                <list>
+                  <headerState>
+                    <option name="key" value="X-Content-Type-Options" />
+                    <option name="value" value="nosniff" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-XSS-Protection" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Cache-Control" />
+                    <option name="value" value="no-cache, no-store, max-age=0, must-revalidate" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Pragma" />
+                    <option name="value" value="no-cache" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Expires" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-Frame-Options" />
+                    <option name="value" value="DENY" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Content-Type" />
+                    <option name="value" value="application/json" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Transfer-Encoding" />
+                    <option name="value" value="chunked" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Date" />
+                    <option name="value" value="Sat, 26 Sep 2026 10:22:48 GMT" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Connection" />
+                    <option name="value" value="close" />
+                  </headerState>
+                </list>
+              </option>
+              <option name="id" value="0a77e155-1941-4260-971f-8f164644d0dd" />
+              <option name="message" value="Internal Server Error" />
+              <option name="prettyResponseType" value="JSON" />
+              <option name="rawBodyString" value="{&quot;success&quot;:false,&quot;message&quot;:&quot;An unexpected error occurred. Please try again later.&quot;}" />
+              <option name="size" value="83" />
+            </responseState>
+          </option>
+          <option name="workspaceId" value="drafts" />
+        </requestHistoryState>
+        <requestHistoryState>
+          <option name="dateTime" value="1790418223122" />
+          <option name="id" value="c1dcf550-4ed9-430f-922e-bb8910caa413" />
+          <option name="request">
+            <requestState>
+              <option name="body">
+                <bodyState>
+                  <option name="raw" value="{&#10;  &quot;firstName&quot;: &quot;Mike&quot;,&#10;  &quot;lastName&quot;: &quot;Simonishvili&quot;,&#10;  &quot;email&quot;: &quot;msimo18@freeuni.edu.ge&quot;,&#10;  &quot;password&quot;: &quot;Admin1234!&quot;&#10;}" />
+                  <option name="type" value="JSON" />
+                </bodyState>
+              </option>
+              <option name="id" value="e24cc9af-431a-4da6-b75a-1c485d71f563" />
+              <option name="method" value="POST" />
+              <option name="name" value="register" />
+              <option name="url" value=" http://localhost:8080/api/auth/register" />
+            </requestState>
+          </option>
+          <option name="response">
+            <responseState>
+              <option name="bodyBytesBase64" value="eyJzdWNjZXNzIjp0cnVlLCJtZXNzYWdlIjoiUmVnaXN0cmF0aW9uIHN1Y2Nlc3NmdWwuIFBsZWFzZSBjaGVjayB5b3VyIGVtYWlsIGZvciBPVFAgdmVyaWZpY2F0aW9uLiIsImRhdGEiOnsiaWQiOjEsImZpcnN0TmFtZSI6Ik1pa2UiLCJsYXN0TmFtZSI6IlNpbW9uaXNodmlsaSIsImVtYWlsIjoibXNpbW8xOEBmcmVldW5pLmVkdS5nZSIsInJvbGUiOiJTVFVERU5UIiwiZW1haWxWZXJpZmllZCI6ZmFsc2UsImFjdGl2ZSI6dHJ1ZSwiYXZhdGFyVXJsIjpudWxsLCJoYXNBY3RpdmVTdWJzY3JpcHRpb24iOmZhbHNlLCJjcmVhdGVkQXQiOiIyMDI2LTA5LTI2VDE0OjIzOjQzLjAyMzAyNDEifX0=" />
+              <option name="bodyString" value="{&#10;  &quot;success&quot;: true,&#10;  &quot;message&quot;: &quot;Registration successful. Please check your email for OTP verification.&quot;,&#10;  &quot;data&quot;: {&#10;    &quot;id&quot;: 1,&#10;    &quot;firstName&quot;: &quot;Mike&quot;,&#10;    &quot;lastName&quot;: &quot;Simonishvili&quot;,&#10;    &quot;email&quot;: &quot;msimo18@freeuni.edu.ge&quot;,&#10;    &quot;role&quot;: &quot;STUDENT&quot;,&#10;    &quot;emailVerified&quot;: false,&#10;    &quot;active&quot;: true,&#10;    &quot;avatarUrl&quot;: null,&#10;    &quot;hasActiveSubscription&quot;: false,&#10;    &quot;createdAt&quot;: &quot;2026-09-26T14:23:43.0230241&quot;&#10;  }&#10;}" />
+              <option name="code" value="201" />
+              <option name="contentType" value="application/json" />
+              <option name="headers">
+                <list>
+                  <headerState>
+                    <option name="key" value="X-Content-Type-Options" />
+                    <option name="value" value="nosniff" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-XSS-Protection" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Cache-Control" />
+                    <option name="value" value="no-cache, no-store, max-age=0, must-revalidate" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Pragma" />
+                    <option name="value" value="no-cache" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Expires" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-Frame-Options" />
+                    <option name="value" value="DENY" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Content-Type" />
+                    <option name="value" value="application/json" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Transfer-Encoding" />
+                    <option name="value" value="chunked" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Date" />
+                    <option name="value" value="Sat, 26 Sep 2026 10:23:43 GMT" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Keep-Alive" />
+                    <option name="value" value="timeout=60" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Connection" />
+                    <option name="value" value="keep-alive" />
+                  </headerState>
+                </list>
+              </option>
+              <option name="id" value="c1dcf550-4ed9-430f-922e-bb8910caa413" />
+              <option name="message" value="Created" />
+              <option name="prettyResponseType" value="JSON" />
+              <option name="rawBodyString" value="{&quot;success&quot;:true,&quot;message&quot;:&quot;Registration successful. Please check your email for OTP verification.&quot;,&quot;data&quot;:{&quot;id&quot;:1,&quot;firstName&quot;:&quot;Mike&quot;,&quot;lastName&quot;:&quot;Simonishvili&quot;,&quot;email&quot;:&quot;msimo18@freeuni.edu.ge&quot;,&quot;role&quot;:&quot;STUDENT&quot;,&quot;emailVerified&quot;:false,&quot;active&quot;:true,&quot;avatarUrl&quot;:null,&quot;hasActiveSubscription&quot;:false,&quot;createdAt&quot;:&quot;2026-09-26T14:23:43.0230241&quot;}}" />
+              <option name="size" value="335" />
+              <option name="time" value="401" />
+            </responseState>
+          </option>
+          <option name="workspaceId" value="drafts" />
+        </requestHistoryState>
+        <requestHistoryState>
+          <option name="dateTime" value="1790418352048" />
+          <option name="id" value="83e03c09-06d7-4689-9c2d-6a82be045667" />
+          <option name="request">
+            <requestState>
+              <option name="body">
+                <bodyState>
+                  <option name="raw" value="{&#10;  &quot;email&quot;: &quot;mikesimonishvili23@gmail.com&quot;,&#10;  &quot;code&quot;: &quot;866090&quot;,&#10;  &quot;purpose&quot;: &quot;EMAIL_VERIFICATION&quot;&#10;}" />
+                  <option name="type" value="JSON" />
+                </bodyState>
+              </option>
+              <option name="id" value="b3eb5fd1-7841-4470-9e0c-6ce0f6faa00c" />
+              <option name="method" value="GET" />
+              <option name="name" value="verify-otp" />
+              <option name="url" value=" http://localhost:8080/api/auth/verify-otp" />
+            </requestState>
+          </option>
+          <option name="response">
+            <responseState>
+              <option name="bodyBytesBase64" value="eyJzdWNjZXNzIjpmYWxzZSwibWVzc2FnZSI6IkFuIHVuZXhwZWN0ZWQgZXJyb3Igb2NjdXJyZWQuIFBsZWFzZSB0cnkgYWdhaW4gbGF0ZXIuIn0=" />
+              <option name="bodyString" value="{&#10;  &quot;success&quot;: false,&#10;  &quot;message&quot;: &quot;An unexpected error occurred. Please try again later.&quot;&#10;}" />
+              <option name="code" value="500" />
+              <option name="contentType" value="application/json" />
+              <option name="headers">
+                <list>
+                  <headerState>
+                    <option name="key" value="X-Content-Type-Options" />
+                    <option name="value" value="nosniff" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-XSS-Protection" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Cache-Control" />
+                    <option name="value" value="no-cache, no-store, max-age=0, must-revalidate" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Pragma" />
+                    <option name="value" value="no-cache" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Expires" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-Frame-Options" />
+                    <option name="value" value="DENY" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Content-Type" />
+                    <option name="value" value="application/json" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Transfer-Encoding" />
+                    <option name="value" value="chunked" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Date" />
+                    <option name="value" value="Sat, 26 Sep 2026 10:25:52 GMT" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Connection" />
+                    <option name="value" value="close" />
+                  </headerState>
+                </list>
+              </option>
+              <option name="id" value="83e03c09-06d7-4689-9c2d-6a82be045667" />
+              <option name="message" value="Internal Server Error" />
+              <option name="prettyResponseType" value="JSON" />
+              <option name="rawBodyString" value="{&quot;success&quot;:false,&quot;message&quot;:&quot;An unexpected error occurred. Please try again later.&quot;}" />
+              <option name="size" value="83" />
+            </responseState>
+          </option>
+          <option name="workspaceId" value="drafts" />
+        </requestHistoryState>
+        <requestHistoryState>
+          <option name="dateTime" value="1790418357763" />
+          <option name="id" value="9e973407-2b6d-4354-8a26-49d86ec8d6c4" />
+          <option name="request">
+            <requestState>
+              <option name="body">
+                <bodyState>
+                  <option name="raw" value="{&#10;  &quot;email&quot;: &quot;mikesimonishvili23@gmail.com&quot;,&#10;  &quot;code&quot;: &quot;866090&quot;,&#10;  &quot;purpose&quot;: &quot;EMAIL_VERIFICATION&quot;&#10;}" />
+                  <option name="type" value="JSON" />
+                </bodyState>
+              </option>
+              <option name="id" value="b3eb5fd1-7841-4470-9e0c-6ce0f6faa00c" />
+              <option name="method" value="POST" />
+              <option name="name" value="verify-otp" />
+              <option name="url" value=" http://localhost:8080/api/auth/verify-otp" />
+            </requestState>
+          </option>
+          <option name="response">
+            <responseState>
+              <option name="bodyBytesBase64" value="eyJzdWNjZXNzIjpmYWxzZSwibWVzc2FnZSI6IlVzZXIgbm90IGZvdW5kIn0=" />
+              <option name="bodyString" value="{&#10;  &quot;success&quot;: false,&#10;  &quot;message&quot;: &quot;User not found&quot;&#10;}" />
+              <option name="code" value="404" />
+              <option name="contentType" value="application/json" />
+              <option name="headers">
+                <list>
+                  <headerState>
+                    <option name="key" value="X-Content-Type-Options" />
+                    <option name="value" value="nosniff" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-XSS-Protection" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Cache-Control" />
+                    <option name="value" value="no-cache, no-store, max-age=0, must-revalidate" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Pragma" />
+                    <option name="value" value="no-cache" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Expires" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-Frame-Options" />
+                    <option name="value" value="DENY" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Content-Type" />
+                    <option name="value" value="application/json" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Transfer-Encoding" />
+                    <option name="value" value="chunked" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Date" />
+                    <option name="value" value="Sat, 26 Sep 2026 10:25:57 GMT" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Keep-Alive" />
+                    <option name="value" value="timeout=60" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Connection" />
+                    <option name="value" value="keep-alive" />
+                  </headerState>
+                </list>
+              </option>
+              <option name="id" value="9e973407-2b6d-4354-8a26-49d86ec8d6c4" />
+              <option name="message" value="Not Found" />
+              <option name="prettyResponseType" value="JSON" />
+              <option name="rawBodyString" value="{&quot;success&quot;:false,&quot;message&quot;:&quot;User not found&quot;}" />
+              <option name="size" value="44" />
+              <option name="time" value="45" />
+            </responseState>
+          </option>
+          <option name="workspaceId" value="drafts" />
+        </requestHistoryState>
+        <requestHistoryState>
+          <option name="dateTime" value="1790418368839" />
+          <option name="id" value="38ecb572-b66c-4f4b-b53a-caa67d12fc38" />
+          <option name="request">
+            <requestState>
+              <option name="body">
+                <bodyState>
+                  <option name="raw" value="{&#10;  &quot;email&quot;: &quot;mikesimonishvili23@gmail.com&quot;,&#10;  &quot;code&quot;: &quot;866090&quot;,&#10;}" />
+                  <option name="type" value="JSON" />
+                </bodyState>
+              </option>
+              <option name="id" value="b3eb5fd1-7841-4470-9e0c-6ce0f6faa00c" />
+              <option name="method" value="POST" />
+              <option name="name" value="verify-otp" />
+              <option name="url" value=" http://localhost:8080/api/auth/verify-otp" />
+            </requestState>
+          </option>
+          <option name="response">
+            <responseState>
+              <option name="bodyBytesBase64" value="eyJzdWNjZXNzIjpmYWxzZSwibWVzc2FnZSI6IlZhbGlkYXRpb24gZmFpbGVkIiwiZGF0YSI6eyJwdXJwb3NlIjoiUHVycG9zZSBpcyByZXF1aXJlZCJ9fQ==" />
+              <option name="bodyString" value="{&#10;  &quot;success&quot;: false,&#10;  &quot;message&quot;: &quot;Validation failed&quot;,&#10;  &quot;data&quot;: {&#10;    &quot;purpose&quot;: &quot;Purpose is required&quot;&#10;  }&#10;}" />
+              <option name="code" value="400" />
+              <option name="contentType" value="application/json" />
+              <option name="headers">
+                <list>
+                  <headerState>
+                    <option name="key" value="X-Content-Type-Options" />
+                    <option name="value" value="nosniff" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-XSS-Protection" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Cache-Control" />
+                    <option name="value" value="no-cache, no-store, max-age=0, must-revalidate" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Pragma" />
+                    <option name="value" value="no-cache" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Expires" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-Frame-Options" />
+                    <option name="value" value="DENY" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Content-Type" />
+                    <option name="value" value="application/json" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Transfer-Encoding" />
+                    <option name="value" value="chunked" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Date" />
+                    <option name="value" value="Sat, 26 Sep 2026 10:26:08 GMT" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Connection" />
+                    <option name="value" value="close" />
+                  </headerState>
+                </list>
+              </option>
+              <option name="id" value="38ecb572-b66c-4f4b-b53a-caa67d12fc38" />
+              <option name="message" value="Bad Request" />
+              <option name="prettyResponseType" value="JSON" />
+              <option name="rawBodyString" value="{&quot;success&quot;:false,&quot;message&quot;:&quot;Validation failed&quot;,&quot;data&quot;:{&quot;purpose&quot;:&quot;Purpose is required&quot;}}" />
+              <option name="size" value="88" />
+              <option name="time" value="15" />
+            </responseState>
+          </option>
+          <option name="workspaceId" value="drafts" />
+        </requestHistoryState>
+        <requestHistoryState>
+          <option name="dateTime" value="1790418373981" />
+          <option name="id" value="fe64902d-f961-411f-97a8-baae58fd28fe" />
+          <option name="request">
+            <requestState>
+              <option name="body">
+                <bodyState>
+                  <option name="raw" value="{&#10;  &quot;email&quot;: &quot;mikesimonishvili23@gmail.com&quot;,&#10;  &quot;code&quot;: &quot;866090&quot;,&#10;  &quot;purpose&quot;: &quot;EMAIL_VERIFICATION&quot;&#10;}" />
+                  <option name="type" value="JSON" />
+                </bodyState>
+              </option>
+              <option name="id" value="b3eb5fd1-7841-4470-9e0c-6ce0f6faa00c" />
+              <option name="method" value="POST" />
+              <option name="name" value="verify-otp" />
+              <option name="url" value=" http://localhost:8080/api/auth/verify-otp" />
+            </requestState>
+          </option>
+          <option name="response">
+            <responseState>
+              <option name="bodyBytesBase64" value="eyJzdWNjZXNzIjpmYWxzZSwibWVzc2FnZSI6IlVzZXIgbm90IGZvdW5kIn0=" />
+              <option name="bodyString" value="{&#10;  &quot;success&quot;: false,&#10;  &quot;message&quot;: &quot;User not found&quot;&#10;}" />
+              <option name="code" value="404" />
+              <option name="contentType" value="application/json" />
+              <option name="headers">
+                <list>
+                  <headerState>
+                    <option name="key" value="X-Content-Type-Options" />
+                    <option name="value" value="nosniff" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-XSS-Protection" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Cache-Control" />
+                    <option name="value" value="no-cache, no-store, max-age=0, must-revalidate" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Pragma" />
+                    <option name="value" value="no-cache" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Expires" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-Frame-Options" />
+                    <option name="value" value="DENY" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Content-Type" />
+                    <option name="value" value="application/json" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Transfer-Encoding" />
+                    <option name="value" value="chunked" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Date" />
+                    <option name="value" value="Sat, 26 Sep 2026 10:26:13 GMT" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Keep-Alive" />
+                    <option name="value" value="timeout=60" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Connection" />
+                    <option name="value" value="keep-alive" />
+                  </headerState>
+                </list>
+              </option>
+              <option name="id" value="fe64902d-f961-411f-97a8-baae58fd28fe" />
+              <option name="message" value="Not Found" />
+              <option name="prettyResponseType" value="JSON" />
+              <option name="rawBodyString" value="{&quot;success&quot;:false,&quot;message&quot;:&quot;User not found&quot;}" />
+              <option name="size" value="44" />
+              <option name="time" value="12" />
+            </responseState>
+          </option>
+          <option name="workspaceId" value="drafts" />
+        </requestHistoryState>
+        <requestHistoryState>
+          <option name="dateTime" value="1790418392170" />
+          <option name="id" value="3e57f465-5f11-43cf-a447-c3f576075ece" />
+          <option name="request">
+            <requestState>
+              <option name="body">
+                <bodyState>
+                  <option name="raw" value="{&#10;  &quot;email&quot;: &quot;msimo18@freeuni.edu.ge&quot;,&#10;  &quot;code&quot;: &quot;866090&quot;,&#10;  &quot;purpose&quot;: &quot;EMAIL_VERIFICATION&quot;&#10;}" />
+                  <option name="type" value="JSON" />
+                </bodyState>
+              </option>
+              <option name="id" value="b3eb5fd1-7841-4470-9e0c-6ce0f6faa00c" />
+              <option name="method" value="POST" />
+              <option name="name" value="verify-otp" />
+              <option name="url" value=" http://localhost:8080/api/auth/verify-otp" />
+            </requestState>
+          </option>
+          <option name="response">
+            <responseState>
+              <option name="bodyBytesBase64" value="eyJzdWNjZXNzIjp0cnVlLCJtZXNzYWdlIjoiRW1haWwgdmVyaWZpZWQgc3VjY2Vzc2Z1bGx5In0=" />
+              <option name="bodyString" value="{&#10;  &quot;success&quot;: true,&#10;  &quot;message&quot;: &quot;Email verified successfully&quot;&#10;}" />
+              <option name="code" value="200" />
+              <option name="contentType" value="application/json" />
+              <option name="headers">
+                <list>
+                  <headerState>
+                    <option name="key" value="X-Content-Type-Options" />
+                    <option name="value" value="nosniff" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-XSS-Protection" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Cache-Control" />
+                    <option name="value" value="no-cache, no-store, max-age=0, must-revalidate" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Pragma" />
+                    <option name="value" value="no-cache" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Expires" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-Frame-Options" />
+                    <option name="value" value="DENY" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Content-Type" />
+                    <option name="value" value="application/json" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Transfer-Encoding" />
+                    <option name="value" value="chunked" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Date" />
+                    <option name="value" value="Sat, 26 Sep 2026 10:26:32 GMT" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Keep-Alive" />
+                    <option name="value" value="timeout=60" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Connection" />
+                    <option name="value" value="keep-alive" />
+                  </headerState>
+                </list>
+              </option>
+              <option name="id" value="3e57f465-5f11-43cf-a447-c3f576075ece" />
+              <option name="message" value="OK" />
+              <option name="prettyResponseType" value="JSON" />
+              <option name="rawBodyString" value="{&quot;success&quot;:true,&quot;message&quot;:&quot;Email verified successfully&quot;}" />
+              <option name="size" value="56" />
+              <option name="time" value="72" />
+            </responseState>
+          </option>
+          <option name="workspaceId" value="drafts" />
+        </requestHistoryState>
+        <requestHistoryState>
+          <option name="dateTime" value="1790418490938" />
+          <option name="id" value="602a8f14-cfe0-4f20-bf35-d66c186ffbb5" />
+          <option name="request">
+            <requestState>
+              <option name="body">
+                <bodyState>
+                  <option name="raw" value="{&#10;  &quot;email&quot;: &quot;msimo18@freeuni.edu.ge&quot;,&#10;  &quot;password&quot;: &quot;Admin1234!&quot;&#10;}" />
+                  <option name="type" value="JSON" />
+                </bodyState>
+              </option>
+              <option name="id" value="245c8a98-bfa3-48ef-a74d-e63ad412a321" />
+              <option name="method" value="POST" />
+              <option name="name" value="login" />
+              <option name="url" value=" http://localhost:8080/api/auth/login" />
+            </requestState>
+          </option>
+          <option name="response">
+            <responseState>
+              <option name="bodyBytesBase64" value="eyJzdWNjZXNzIjp0cnVlLCJtZXNzYWdlIjoiTG9naW4gc3VjY2Vzc2Z1bCIsImRhdGEiOnsiYWNjZXNzVG9rZW4iOiJleUpoYkdjaU9pSklVekkxTmlKOS5leUp6ZFdJaU9pSXhJaXdpWlcxaGFXd2lPaUp0YzJsdGJ6RTRRR1p5WldWMWJta3VaV1IxTG1kbElpd2lhV0YwSWpveE56a3dOREU0TkRrd0xDSmxlSEFpT2pFM09UQTFNRFE0T1RCOS5tTFdqMXNIUWJfUE11eGU2LW40MTBacmloampYaEd2RGJmbUFmU3RQQTZ3IiwicmVmcmVzaFRva2VuIjoiZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKemRXSWlPaUl4SWl3aVpXMWhhV3dpT2lKdGMybHRiekU0UUdaeVpXVjFibWt1WldSMUxtZGxJaXdpYVdGMElqb3hOemt3TkRFNE5Ea3dMQ0psZUhBaU9qRTNPVEV3TWpNeU9UQjkuVVBLeWk1SWpVcjFOWjMyTll1dERZdmo3X2hBN1NoNUUwX0U5b3hRbXNsRSIsInRva2VuVHlwZSI6IkJlYXJlciIsInVzZXIiOnsiaWQiOjEsImZpcnN0TmFtZSI6Ik1pa2UiLCJsYXN0TmFtZSI6IlNpbW9uaXNodmlsaSIsImVtYWlsIjoibXNpbW8xOEBmcmVldW5pLmVkdS5nZSIsInJvbGUiOiJTVFVERU5UIiwiZW1haWxWZXJpZmllZCI6dHJ1ZSwiYWN0aXZlIjp0cnVlLCJhdmF0YXJVcmwiOm51bGwsImhhc0FjdGl2ZVN1YnNjcmlwdGlvbiI6ZmFsc2UsImNyZWF0ZWRBdCI6IjIwMjYtMDktMjZUMTQ6MjM6NDMuMDIzMDI0In19fQ==" />
+              <option name="bodyString" value="{&#10;  &quot;success&quot;: true,&#10;  &quot;message&quot;: &quot;Login successful&quot;,&#10;  &quot;data&quot;: {&#10;    &quot;accessToken&quot;: &quot;eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJtc2ltbzE4QGZyZWV1bmkuZWR1LmdlIiwiaWF0IjoxNzkwNDE4NDkwLCJleHAiOjE3OTA1MDQ4OTB9.mLWj1sHQb_PMuxe6-n410ZrihjjXhGvDbfmAfStPA6w&quot;,&#10;    &quot;refreshToken&quot;: &quot;eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJtc2ltbzE4QGZyZWV1bmkuZWR1LmdlIiwiaWF0IjoxNzkwNDE4NDkwLCJleHAiOjE3OTEwMjMyOTB9.UPKyi5IjUr1NZ32NYutDYvj7_hA7Sh5E0_E9oxQmslE&quot;,&#10;    &quot;tokenType&quot;: &quot;Bearer&quot;,&#10;    &quot;user&quot;: {&#10;      &quot;id&quot;: 1,&#10;      &quot;firstName&quot;: &quot;Mike&quot;,&#10;      &quot;lastName&quot;: &quot;Simonishvili&quot;,&#10;      &quot;email&quot;: &quot;msimo18@freeuni.edu.ge&quot;,&#10;      &quot;role&quot;: &quot;STUDENT&quot;,&#10;      &quot;emailVerified&quot;: true,&#10;      &quot;active&quot;: true,&#10;      &quot;avatarUrl&quot;: null,&#10;      &quot;hasActiveSubscription&quot;: false,&#10;      &quot;createdAt&quot;: &quot;2026-09-26T14:23:43.023024&quot;&#10;    }&#10;  }&#10;}" />
+              <option name="code" value="200" />
+              <option name="contentType" value="application/json" />
+              <option name="headers">
+                <list>
+                  <headerState>
+                    <option name="key" value="X-Content-Type-Options" />
+                    <option name="value" value="nosniff" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-XSS-Protection" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Cache-Control" />
+                    <option name="value" value="no-cache, no-store, max-age=0, must-revalidate" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Pragma" />
+                    <option name="value" value="no-cache" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Expires" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-Frame-Options" />
+                    <option name="value" value="DENY" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Content-Type" />
+                    <option name="value" value="application/json" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Transfer-Encoding" />
+                    <option name="value" value="chunked" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Date" />
+                    <option name="value" value="Sat, 26 Sep 2026 10:28:10 GMT" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Keep-Alive" />
+                    <option name="value" value="timeout=60" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Connection" />
+                    <option name="value" value="keep-alive" />
+                  </headerState>
+                </list>
+              </option>
+              <option name="id" value="602a8f14-cfe0-4f20-bf35-d66c186ffbb5" />
+              <option name="message" value="OK" />
+              <option name="prettyResponseType" value="JSON" />
+              <option name="rawBodyString" value="{&quot;success&quot;:true,&quot;message&quot;:&quot;Login successful&quot;,&quot;data&quot;:{&quot;accessToken&quot;:&quot;eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJtc2ltbzE4QGZyZWV1bmkuZWR1LmdlIiwiaWF0IjoxNzkwNDE4NDkwLCJleHAiOjE3OTA1MDQ4OTB9.mLWj1sHQb_PMuxe6-n410ZrihjjXhGvDbfmAfStPA6w&quot;,&quot;refreshToken&quot;:&quot;eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJtc2ltbzE4QGZyZWV1bmkuZWR1LmdlIiwiaWF0IjoxNzkwNDE4NDkwLCJleHAiOjE3OTEwMjMyOTB9.UPKyi5IjUr1NZ32NYutDYvj7_hA7Sh5E0_E9oxQmslE&quot;,&quot;tokenType&quot;:&quot;Bearer&quot;,&quot;user&quot;:{&quot;id&quot;:1,&quot;firstName&quot;:&quot;Mike&quot;,&quot;lastName&quot;:&quot;Simonishvili&quot;,&quot;email&quot;:&quot;msimo18@freeuni.edu.ge&quot;,&quot;role&quot;:&quot;STUDENT&quot;,&quot;emailVerified&quot;:true,&quot;active&quot;:true,&quot;avatarUrl&quot;:null,&quot;hasActiveSubscription&quot;:false,&quot;createdAt&quot;:&quot;2026-09-26T14:23:43.023024&quot;}}}" />
+              <option name="size" value="682" />
+              <option name="time" value="296" />
+            </responseState>
+          </option>
+          <option name="workspaceId" value="drafts" />
+        </requestHistoryState>
+        <requestHistoryState>
+          <option name="dateTime" value="1790418626167" />
+          <option name="id" value="561915e3-ec17-4d7a-87c1-fbe1e20c77f8" />
+          <option name="request">
+            <requestState>
+              <option name="body">
+                <bodyState>
+                  <option name="raw" value="{&#10;  &quot;email&quot;: &quot;msimo18@freeuni.edu.ge&quot;,&#10;  &quot;password&quot;: &quot;Admin1234!&quot;&#10;}" />
+                  <option name="type" value="JSON" />
+                </bodyState>
+              </option>
+              <option name="id" value="245c8a98-bfa3-48ef-a74d-e63ad412a321" />
+              <option name="method" value="POST" />
+              <option name="name" value="login" />
+              <option name="url" value=" http://localhost:8080/api/auth/login" />
+            </requestState>
+          </option>
+          <option name="response">
+            <responseState>
+              <option name="bodyBytesBase64" value="eyJzdWNjZXNzIjpmYWxzZSwibWVzc2FnZSI6IkFuIHVuZXhwZWN0ZWQgZXJyb3Igb2NjdXJyZWQuIFBsZWFzZSB0cnkgYWdhaW4gbGF0ZXIuIn0=" />
+              <option name="bodyString" value="{&#10;  &quot;success&quot;: false,&#10;  &quot;message&quot;: &quot;An unexpected error occurred. Please try again later.&quot;&#10;}" />
+              <option name="code" value="500" />
+              <option name="contentType" value="application/json" />
+              <option name="headers">
+                <list>
+                  <headerState>
+                    <option name="key" value="X-Content-Type-Options" />
+                    <option name="value" value="nosniff" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-XSS-Protection" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Cache-Control" />
+                    <option name="value" value="no-cache, no-store, max-age=0, must-revalidate" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Pragma" />
+                    <option name="value" value="no-cache" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Expires" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-Frame-Options" />
+                    <option name="value" value="DENY" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Content-Type" />
+                    <option name="value" value="application/json" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Transfer-Encoding" />
+                    <option name="value" value="chunked" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Date" />
+                    <option name="value" value="Sat, 26 Sep 2026 10:30:26 GMT" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Connection" />
+                    <option name="value" value="close" />
+                  </headerState>
+                </list>
+              </option>
+              <option name="id" value="561915e3-ec17-4d7a-87c1-fbe1e20c77f8" />
+              <option name="message" value="Internal Server Error" />
+              <option name="prettyResponseType" value="JSON" />
+              <option name="rawBodyString" value="{&quot;success&quot;:false,&quot;message&quot;:&quot;An unexpected error occurred. Please try again later.&quot;}" />
+              <option name="size" value="83" />
+              <option name="time" value="169" />
+            </responseState>
+          </option>
+          <option name="workspaceId" value="drafts" />
+        </requestHistoryState>
+        <requestHistoryState>
+          <option name="dateTime" value="1790418795287" />
+          <option name="id" value="8f3cf997-1efa-471f-bb85-6b411fabf1dd" />
+          <option name="request">
+            <requestState>
+              <option name="body">
+                <bodyState>
+                  <option name="raw" value="{&#10;  &quot;email&quot;: &quot;msimo18@freeuni.edu.ge&quot;,&#10;  &quot;password&quot;: &quot;Admin1234!&quot;&#10;}" />
+                  <option name="type" value="JSON" />
+                </bodyState>
+              </option>
+              <option name="id" value="245c8a98-bfa3-48ef-a74d-e63ad412a321" />
+              <option name="method" value="POST" />
+              <option name="name" value="login" />
+              <option name="url" value=" http://localhost:8080/api/auth/login" />
+            </requestState>
+          </option>
+          <option name="response">
+            <responseState>
+              <option name="bodyBytesBase64" value="eyJzdWNjZXNzIjpmYWxzZSwibWVzc2FnZSI6IkFuIHVuZXhwZWN0ZWQgZXJyb3Igb2NjdXJyZWQuIFBsZWFzZSB0cnkgYWdhaW4gbGF0ZXIuIn0=" />
+              <option name="bodyString" value="{&#10;  &quot;success&quot;: false,&#10;  &quot;message&quot;: &quot;An unexpected error occurred. Please try again later.&quot;&#10;}" />
+              <option name="code" value="500" />
+              <option name="contentType" value="application/json" />
+              <option name="headers">
+                <list>
+                  <headerState>
+                    <option name="key" value="X-Content-Type-Options" />
+                    <option name="value" value="nosniff" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-XSS-Protection" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Cache-Control" />
+                    <option name="value" value="no-cache, no-store, max-age=0, must-revalidate" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Pragma" />
+                    <option name="value" value="no-cache" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Expires" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-Frame-Options" />
+                    <option name="value" value="DENY" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Content-Type" />
+                    <option name="value" value="application/json" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Transfer-Encoding" />
+                    <option name="value" value="chunked" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Date" />
+                    <option name="value" value="Sat, 26 Sep 2026 10:33:15 GMT" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Connection" />
+                    <option name="value" value="close" />
+                  </headerState>
+                </list>
+              </option>
+              <option name="id" value="8f3cf997-1efa-471f-bb85-6b411fabf1dd" />
+              <option name="message" value="Internal Server Error" />
+              <option name="prettyResponseType" value="JSON" />
+              <option name="rawBodyString" value="{&quot;success&quot;:false,&quot;message&quot;:&quot;An unexpected error occurred. Please try again later.&quot;}" />
+              <option name="size" value="83" />
+              <option name="time" value="116" />
+            </responseState>
+          </option>
+          <option name="workspaceId" value="drafts" />
+        </requestHistoryState>
+        <requestHistoryState>
+          <option name="dateTime" value="1790418968888" />
+          <option name="id" value="3a2ea33d-8aae-42bc-b5be-fabcd272d63b" />
+          <option name="request">
+            <requestState>
+              <option name="body">
+                <bodyState>
+                  <option name="raw" value="{&#10;  &quot;refreshToken&quot;: &quot;a1a2ll333lqlam2men2neken323dkmndkk3nw&quot;&#10;}" />
+                  <option name="type" value="JSON" />
+                </bodyState>
+              </option>
+              <option name="id" value="9ed03600-ca17-4bcb-bd79-6abae688748c" />
+              <option name="method" value="POST" />
+              <option name="name" value="refresh tocken" />
+              <option name="url" value="POST http://localhost:8080/api/auth/refresh" />
+            </requestState>
+          </option>
+          <option name="response">
+            <responseState>
+              <option name="bodyBytesBase64" value="eyJzdWNjZXNzIjpmYWxzZSwibWVzc2FnZSI6IkludmFsaWQgcmVmcmVzaCB0b2tlbiJ9" />
+              <option name="bodyString" value="{&#10;  &quot;success&quot;: false,&#10;  &quot;message&quot;: &quot;Invalid refresh token&quot;&#10;}" />
+              <option name="code" value="400" />
+              <option name="contentType" value="application/json" />
+              <option name="headers">
+                <list>
+                  <headerState>
+                    <option name="key" value="X-Content-Type-Options" />
+                    <option name="value" value="nosniff" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-XSS-Protection" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Cache-Control" />
+                    <option name="value" value="no-cache, no-store, max-age=0, must-revalidate" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Pragma" />
+                    <option name="value" value="no-cache" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Expires" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-Frame-Options" />
+                    <option name="value" value="DENY" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Content-Type" />
+                    <option name="value" value="application/json" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Transfer-Encoding" />
+                    <option name="value" value="chunked" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Date" />
+                    <option name="value" value="Sat, 26 Sep 2026 10:36:08 GMT" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Connection" />
+                    <option name="value" value="close" />
+                  </headerState>
+                </list>
+              </option>
+              <option name="id" value="3a2ea33d-8aae-42bc-b5be-fabcd272d63b" />
+              <option name="message" value="Bad Request" />
+              <option name="prettyResponseType" value="JSON" />
+              <option name="rawBodyString" value="{&quot;success&quot;:false,&quot;message&quot;:&quot;Invalid refresh token&quot;}" />
+              <option name="size" value="51" />
+              <option name="time" value="15" />
+            </responseState>
+          </option>
+          <option name="workspaceId" value="drafts" />
+        </requestHistoryState>
+        <requestHistoryState>
+          <option name="dateTime" value="1790419172362" />
+          <option name="id" value="63b70149-1ad2-4eba-8c5c-374220bc4428" />
+          <option name="request">
+            <requestState>
+              <option name="auth">
+                <authState>
+                  <option name="type" value="BEARER" />
+                </authState>
+              </option>
+              <option name="body">
+                <bodyState>
+                  <option name="raw" value="{" />
+                  <option name="type" value="JSON" />
+                </bodyState>
+              </option>
+              <option name="id" value="9d3c6a3f-57a7-44e9-bade-81cb2b6190da" />
+              <option name="method" value="POST" />
+              <option name="name" value="logout" />
+              <option name="url" value=" http://localhost:8080/api/auth/logout" />
+            </requestState>
+          </option>
+          <option name="response">
+            <responseState>
+              <option name="bodyBytesBase64" value="eyJzdWNjZXNzIjp0cnVlLCJtZXNzYWdlIjoiTG9nZ2VkIG91dCBzdWNjZXNzZnVsbHkifQ==" />
+              <option name="bodyString" value="{&#10;  &quot;success&quot;: true,&#10;  &quot;message&quot;: &quot;Logged out successfully&quot;&#10;}" />
+              <option name="code" value="200" />
+              <option name="contentType" value="application/json" />
+              <option name="headers">
+                <list>
+                  <headerState>
+                    <option name="key" value="X-Content-Type-Options" />
+                    <option name="value" value="nosniff" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-XSS-Protection" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Cache-Control" />
+                    <option name="value" value="no-cache, no-store, max-age=0, must-revalidate" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Pragma" />
+                    <option name="value" value="no-cache" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Expires" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-Frame-Options" />
+                    <option name="value" value="DENY" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Content-Type" />
+                    <option name="value" value="application/json" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Transfer-Encoding" />
+                    <option name="value" value="chunked" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Date" />
+                    <option name="value" value="Sat, 26 Sep 2026 10:39:32 GMT" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Keep-Alive" />
+                    <option name="value" value="timeout=60" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Connection" />
+                    <option name="value" value="keep-alive" />
+                  </headerState>
+                </list>
+              </option>
+              <option name="id" value="63b70149-1ad2-4eba-8c5c-374220bc4428" />
+              <option name="message" value="OK" />
+              <option name="prettyResponseType" value="JSON" />
+              <option name="rawBodyString" value="{&quot;success&quot;:true,&quot;message&quot;:&quot;Logged out successfully&quot;}" />
+              <option name="size" value="52" />
+              <option name="time" value="16" />
+            </responseState>
+          </option>
+          <option name="workspaceId" value="drafts" />
+        </requestHistoryState>
+        <requestHistoryState>
+          <option name="dateTime" value="1790419219584" />
+          <option name="id" value="28024c57-5f29-48c6-ae46-ab6f34802c58" />
+          <option name="request">
+            <requestState>
+              <option name="body">
+                <bodyState>
+                  <option name="raw" value="{&#10;  &quot;email&quot;: &quot;msimo18@freeuni.edu.ge&quot;,&#10;  &quot;password&quot;: &quot;Admin1234!&quot;&#10;}" />
+                  <option name="type" value="JSON" />
+                </bodyState>
+              </option>
+              <option name="id" value="245c8a98-bfa3-48ef-a74d-e63ad412a321" />
+              <option name="method" value="POST" />
+              <option name="name" value="login" />
+              <option name="url" value=" http://localhost:8080/api/auth/login" />
+            </requestState>
+          </option>
+          <option name="response">
+            <responseState>
+              <option name="bodyBytesBase64" value="eyJzdWNjZXNzIjpmYWxzZSwibWVzc2FnZSI6IkFuIHVuZXhwZWN0ZWQgZXJyb3Igb2NjdXJyZWQuIFBsZWFzZSB0cnkgYWdhaW4gbGF0ZXIuIn0=" />
+              <option name="bodyString" value="{&#10;  &quot;success&quot;: false,&#10;  &quot;message&quot;: &quot;An unexpected error occurred. Please try again later.&quot;&#10;}" />
+              <option name="code" value="500" />
+              <option name="contentType" value="application/json" />
+              <option name="headers">
+                <list>
+                  <headerState>
+                    <option name="key" value="X-Content-Type-Options" />
+                    <option name="value" value="nosniff" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-XSS-Protection" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Cache-Control" />
+                    <option name="value" value="no-cache, no-store, max-age=0, must-revalidate" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Pragma" />
+                    <option name="value" value="no-cache" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Expires" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-Frame-Options" />
+                    <option name="value" value="DENY" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Content-Type" />
+                    <option name="value" value="application/json" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Transfer-Encoding" />
+                    <option name="value" value="chunked" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Date" />
+                    <option name="value" value="Sat, 26 Sep 2026 10:40:19 GMT" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Connection" />
+                    <option name="value" value="close" />
+                  </headerState>
+                </list>
+              </option>
+              <option name="id" value="28024c57-5f29-48c6-ae46-ab6f34802c58" />
+              <option name="message" value="Internal Server Error" />
+              <option name="prettyResponseType" value="JSON" />
+              <option name="rawBodyString" value="{&quot;success&quot;:false,&quot;message&quot;:&quot;An unexpected error occurred. Please try again later.&quot;}" />
+              <option name="size" value="83" />
+              <option name="time" value="139" />
+            </responseState>
+          </option>
+          <option name="workspaceId" value="drafts" />
+        </requestHistoryState>
+        <requestHistoryState>
+          <option name="dateTime" value="1790419224502" />
+          <option name="id" value="c724e6b9-4a08-4983-8fd2-bbdd7a043215" />
+          <option name="request">
+            <requestState>
+              <option name="auth">
+                <authState>
+                  <option name="type" value="BEARER" />
+                </authState>
+              </option>
+              <option name="body">
+                <bodyState>
+                  <option name="raw" value="{&#10;  &#10;}" />
+                  <option name="type" value="JSON" />
+                </bodyState>
+              </option>
+              <option name="id" value="9d3c6a3f-57a7-44e9-bade-81cb2b6190da" />
+              <option name="method" value="POST" />
+              <option name="name" value="logout" />
+              <option name="url" value=" http://localhost:8080/api/auth/logout" />
+            </requestState>
+          </option>
+          <option name="response">
+            <responseState>
+              <option name="bodyBytesBase64" value="eyJzdWNjZXNzIjp0cnVlLCJtZXNzYWdlIjoiTG9nZ2VkIG91dCBzdWNjZXNzZnVsbHkifQ==" />
+              <option name="bodyString" value="{&#10;  &quot;success&quot;: true,&#10;  &quot;message&quot;: &quot;Logged out successfully&quot;&#10;}" />
+              <option name="code" value="200" />
+              <option name="connectionEstablishingTime" value="3" />
+              <option name="contentType" value="application/json" />
+              <option name="headers">
+                <list>
+                  <headerState>
+                    <option name="key" value="X-Content-Type-Options" />
+                    <option name="value" value="nosniff" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-XSS-Protection" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Cache-Control" />
+                    <option name="value" value="no-cache, no-store, max-age=0, must-revalidate" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Pragma" />
+                    <option name="value" value="no-cache" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Expires" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-Frame-Options" />
+                    <option name="value" value="DENY" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Content-Type" />
+                    <option name="value" value="application/json" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Transfer-Encoding" />
+                    <option name="value" value="chunked" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Date" />
+                    <option name="value" value="Sat, 26 Sep 2026 10:40:24 GMT" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Keep-Alive" />
+                    <option name="value" value="timeout=60" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Connection" />
+                    <option name="value" value="keep-alive" />
+                  </headerState>
+                </list>
+              </option>
+              <option name="id" value="c724e6b9-4a08-4983-8fd2-bbdd7a043215" />
+              <option name="message" value="OK" />
+              <option name="prettyResponseType" value="JSON" />
+              <option name="rawBodyString" value="{&quot;success&quot;:true,&quot;message&quot;:&quot;Logged out successfully&quot;}" />
+              <option name="size" value="52" />
+              <option name="time" value="3" />
+            </responseState>
+          </option>
+          <option name="workspaceId" value="drafts" />
+        </requestHistoryState>
+        <requestHistoryState>
+          <option name="dateTime" value="1790419267440" />
+          <option name="id" value="c50b453e-3ff8-4687-b4ae-cc6c55017796" />
+          <option name="request">
+            <requestState>
+              <option name="auth">
+                <authState>
+                  <option name="bearer">
+                    <pF>
+                      <option name="token" value="eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJtc2ltbzE4QGZyZWV1bmkuZWR1LmdlIiwiaWF0IjoxNzkwNDE4NDkwLCJleHAiOjE3OTA1MDQ4OTB9.mLWj1sHQb_PMuxe6-n410ZrihjjXhGvDbfmAfStPA6w" />
+                    </pF>
+                  </option>
+                  <option name="type" value="BEARER" />
+                </authState>
+              </option>
+              <option name="body">
+                <bodyState>
+                  <option name="raw" value="{&#10;  &#10;}" />
+                  <option name="type" value="JSON" />
+                </bodyState>
+              </option>
+              <option name="id" value="9d3c6a3f-57a7-44e9-bade-81cb2b6190da" />
+              <option name="method" value="POST" />
+              <option name="name" value="logout" />
+              <option name="url" value=" http://localhost:8080/api/auth/logout" />
+            </requestState>
+          </option>
+          <option name="response">
+            <responseState>
+              <option name="bodyBytesBase64" value="eyJzdWNjZXNzIjp0cnVlLCJtZXNzYWdlIjoiTG9nZ2VkIG91dCBzdWNjZXNzZnVsbHkifQ==" />
+              <option name="bodyString" value="{&#10;  &quot;success&quot;: true,&#10;  &quot;message&quot;: &quot;Logged out successfully&quot;&#10;}" />
+              <option name="code" value="200" />
+              <option name="contentType" value="application/json" />
+              <option name="headers">
+                <list>
+                  <headerState>
+                    <option name="key" value="X-Content-Type-Options" />
+                    <option name="value" value="nosniff" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-XSS-Protection" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Cache-Control" />
+                    <option name="value" value="no-cache, no-store, max-age=0, must-revalidate" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Pragma" />
+                    <option name="value" value="no-cache" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Expires" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-Frame-Options" />
+                    <option name="value" value="DENY" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Content-Type" />
+                    <option name="value" value="application/json" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Transfer-Encoding" />
+                    <option name="value" value="chunked" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Date" />
+                    <option name="value" value="Sat, 26 Sep 2026 10:41:07 GMT" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Keep-Alive" />
+                    <option name="value" value="timeout=60" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Connection" />
+                    <option name="value" value="keep-alive" />
+                  </headerState>
+                </list>
+              </option>
+              <option name="id" value="c50b453e-3ff8-4687-b4ae-cc6c55017796" />
+              <option name="message" value="OK" />
+              <option name="prettyResponseType" value="JSON" />
+              <option name="rawBodyString" value="{&quot;success&quot;:true,&quot;message&quot;:&quot;Logged out successfully&quot;}" />
+              <option name="size" value="52" />
+              <option name="time" value="92" />
+            </responseState>
+          </option>
+          <option name="workspaceId" value="drafts" />
+        </requestHistoryState>
+        <requestHistoryState>
+          <option name="dateTime" value="1790419309284" />
+          <option name="id" value="a38658ac-d92b-45bd-8e82-93727c214e6c" />
+          <option name="request">
+            <requestState>
+              <option name="body">
+                <bodyState>
+                  <option name="raw" value="{&#10;  &quot;email&quot;: &quot;msimo18@freeuni.edu.ge&quot;,&#10;  &quot;password&quot;: &quot;Admin1234!&quot;&#10;}" />
+                  <option name="type" value="JSON" />
+                </bodyState>
+              </option>
+              <option name="id" value="245c8a98-bfa3-48ef-a74d-e63ad412a321" />
+              <option name="method" value="POST" />
+              <option name="name" value="login" />
+              <option name="url" value=" http://localhost:8080/api/auth/login" />
+            </requestState>
+          </option>
+          <option name="response">
+            <responseState>
+              <option name="bodyBytesBase64" value="eyJzdWNjZXNzIjpmYWxzZSwibWVzc2FnZSI6IkFuIHVuZXhwZWN0ZWQgZXJyb3Igb2NjdXJyZWQuIFBsZWFzZSB0cnkgYWdhaW4gbGF0ZXIuIn0=" />
+              <option name="bodyString" value="{&#10;  &quot;success&quot;: false,&#10;  &quot;message&quot;: &quot;An unexpected error occurred. Please try again later.&quot;&#10;}" />
+              <option name="code" value="500" />
+              <option name="contentType" value="application/json" />
+              <option name="headers">
+                <list>
+                  <headerState>
+                    <option name="key" value="X-Content-Type-Options" />
+                    <option name="value" value="nosniff" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-XSS-Protection" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Cache-Control" />
+                    <option name="value" value="no-cache, no-store, max-age=0, must-revalidate" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Pragma" />
+                    <option name="value" value="no-cache" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Expires" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-Frame-Options" />
+                    <option name="value" value="DENY" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Content-Type" />
+                    <option name="value" value="application/json" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Transfer-Encoding" />
+                    <option name="value" value="chunked" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Date" />
+                    <option name="value" value="Sat, 26 Sep 2026 10:41:49 GMT" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Connection" />
+                    <option name="value" value="close" />
+                  </headerState>
+                </list>
+              </option>
+              <option name="id" value="a38658ac-d92b-45bd-8e82-93727c214e6c" />
+              <option name="message" value="Internal Server Error" />
+              <option name="prettyResponseType" value="JSON" />
+              <option name="rawBodyString" value="{&quot;success&quot;:false,&quot;message&quot;:&quot;An unexpected error occurred. Please try again later.&quot;}" />
+              <option name="size" value="83" />
+              <option name="time" value="90" />
+            </responseState>
+          </option>
+          <option name="workspaceId" value="drafts" />
+        </requestHistoryState>
+        <requestHistoryState>
+          <option name="dateTime" value="1790419465371" />
+          <option name="id" value="cdc28273-074c-4103-a2e9-21bad7b5bbb6" />
+          <option name="request">
+            <requestState>
+              <option name="auth">
+                <authState>
+                  <option name="bearer">
+                    <pF>
+                      <option name="token" value="eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJtc2ltbzE4QGZyZWV1bmkuZWR1LmdlIiwiaWF0IjoxNzkwNDE4NDkwLCJleHAiOjE3OTA1MDQ4OTB9.mLWj1sHQb_PMuxe6-n410ZrihjjXhGvDbfmAfStPA6w" />
+                    </pF>
+                  </option>
+                  <option name="type" value="BEARER" />
+                </authState>
+              </option>
+              <option name="body">
+                <bodyState>
+                  <option name="type" value="JSON" />
+                </bodyState>
+              </option>
+              <option name="id" value="9d3c6a3f-57a7-44e9-bade-81cb2b6190da" />
+              <option name="method" value="POST" />
+              <option name="name" value="logout" />
+              <option name="url" value=" http://localhost:8080/api/auth/logout" />
+            </requestState>
+          </option>
+          <option name="response">
+            <responseState>
+              <option name="bodyBytesBase64" value="eyJzdWNjZXNzIjp0cnVlLCJtZXNzYWdlIjoiTG9nZ2VkIG91dCBzdWNjZXNzZnVsbHkifQ==" />
+              <option name="bodyString" value="{&#10;  &quot;success&quot;: true,&#10;  &quot;message&quot;: &quot;Logged out successfully&quot;&#10;}" />
+              <option name="code" value="200" />
+              <option name="contentType" value="application/json" />
+              <option name="headers">
+                <list>
+                  <headerState>
+                    <option name="key" value="X-Content-Type-Options" />
+                    <option name="value" value="nosniff" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-XSS-Protection" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Cache-Control" />
+                    <option name="value" value="no-cache, no-store, max-age=0, must-revalidate" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Pragma" />
+                    <option name="value" value="no-cache" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Expires" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-Frame-Options" />
+                    <option name="value" value="DENY" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Content-Type" />
+                    <option name="value" value="application/json" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Transfer-Encoding" />
+                    <option name="value" value="chunked" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Date" />
+                    <option name="value" value="Sat, 26 Sep 2026 10:44:25 GMT" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Keep-Alive" />
+                    <option name="value" value="timeout=60" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Connection" />
+                    <option name="value" value="keep-alive" />
+                  </headerState>
+                </list>
+              </option>
+              <option name="id" value="cdc28273-074c-4103-a2e9-21bad7b5bbb6" />
+              <option name="message" value="OK" />
+              <option name="prettyResponseType" value="JSON" />
+              <option name="rawBodyString" value="{&quot;success&quot;:true,&quot;message&quot;:&quot;Logged out successfully&quot;}" />
+              <option name="size" value="52" />
+              <option name="time" value="20" />
+            </responseState>
+          </option>
+          <option name="workspaceId" value="drafts" />
+        </requestHistoryState>
+        <requestHistoryState>
+          <option name="dateTime" value="1790419542331" />
+          <option name="id" value="9ceaf68c-bd99-40ef-9058-18748dffcc51" />
+          <option name="request">
+            <requestState>
+              <option name="body">
+                <bodyState>
+                  <option name="raw" value="{&#10;  &quot;email&quot;: &quot;msimo18@freeuni.edu.ge&quot;,&#10;  &quot;password&quot;: &quot;Admin1234!&quot;&#10;}" />
+                  <option name="type" value="JSON" />
+                </bodyState>
+              </option>
+              <option name="id" value="245c8a98-bfa3-48ef-a74d-e63ad412a321" />
+              <option name="method" value="POST" />
+              <option name="name" value="login" />
+              <option name="url" value=" http://localhost:8080/api/auth/login" />
+            </requestState>
+          </option>
+          <option name="response">
+            <responseState>
+              <option name="bodyBytesBase64" value="eyJzdWNjZXNzIjpmYWxzZSwibWVzc2FnZSI6IkFuIHVuZXhwZWN0ZWQgZXJyb3Igb2NjdXJyZWQuIFBsZWFzZSB0cnkgYWdhaW4gbGF0ZXIuIn0=" />
+              <option name="bodyString" value="{&#10;  &quot;success&quot;: false,&#10;  &quot;message&quot;: &quot;An unexpected error occurred. Please try again later.&quot;&#10;}" />
+              <option name="code" value="500" />
+              <option name="contentType" value="application/json" />
+              <option name="headers">
+                <list>
+                  <headerState>
+                    <option name="key" value="X-Content-Type-Options" />
+                    <option name="value" value="nosniff" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-XSS-Protection" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Cache-Control" />
+                    <option name="value" value="no-cache, no-store, max-age=0, must-revalidate" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Pragma" />
+                    <option name="value" value="no-cache" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Expires" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-Frame-Options" />
+                    <option name="value" value="DENY" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Content-Type" />
+                    <option name="value" value="application/json" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Transfer-Encoding" />
+                    <option name="value" value="chunked" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Date" />
+                    <option name="value" value="Sat, 26 Sep 2026 10:45:42 GMT" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Connection" />
+                    <option name="value" value="close" />
+                  </headerState>
+                </list>
+              </option>
+              <option name="id" value="9ceaf68c-bd99-40ef-9058-18748dffcc51" />
+              <option name="message" value="Internal Server Error" />
+              <option name="prettyResponseType" value="JSON" />
+              <option name="rawBodyString" value="{&quot;success&quot;:false,&quot;message&quot;:&quot;An unexpected error occurred. Please try again later.&quot;}" />
+              <option name="size" value="83" />
+              <option name="time" value="586" />
+            </responseState>
+          </option>
+          <option name="workspaceId" value="drafts" />
+        </requestHistoryState>
+        <requestHistoryState>
+          <option name="dateTime" value="1790419876521" />
+          <option name="id" value="4cf4a72a-dc57-4375-b2ef-8fa203ab496b" />
+          <option name="request">
+            <requestState>
+              <option name="body">
+                <bodyState>
+                  <option name="raw" value="{&#10;  &quot;email&quot;: &quot;msimo18@freeuni.edu.ge&quot;,&#10;  &quot;password&quot;: &quot;Admin1234!&quot;&#10;}" />
+                  <option name="type" value="JSON" />
+                </bodyState>
+              </option>
+              <option name="id" value="245c8a98-bfa3-48ef-a74d-e63ad412a321" />
+              <option name="method" value="POST" />
+              <option name="name" value="login" />
+              <option name="url" value=" http://localhost:8080/api/auth/login" />
+            </requestState>
+          </option>
+          <option name="response">
+            <responseState>
+              <option name="bodyBytesBase64" value="eyJzdWNjZXNzIjp0cnVlLCJtZXNzYWdlIjoiTG9naW4gc3VjY2Vzc2Z1bCIsImRhdGEiOnsiYWNjZXNzVG9rZW4iOiJleUpoYkdjaU9pSklVekkxTmlKOS5leUp6ZFdJaU9pSXhJaXdpWlcxaGFXd2lPaUp0YzJsdGJ6RTRRR1p5WldWMWJta3VaV1IxTG1kbElpd2lhV0YwSWpveE56a3dOREU1T0RjMkxDSmxlSEFpT2pFM09UQTFNRFl5TnpaOS5jRW5WX3dLYVNsWXpqaE9nakJXZ2RYUVAzaW9wckgyaGF0OUZlMTJ5Q3IwIiwicmVmcmVzaFRva2VuIjoiZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKemRXSWlPaUl4SWl3aVpXMWhhV3dpT2lKdGMybHRiekU0UUdaeVpXVjFibWt1WldSMUxtZGxJaXdpYVdGMElqb3hOemt3TkRFNU9EYzJMQ0psZUhBaU9qRTNPVEV3TWpRMk56WjkuaHkyTE1sVUc2ekFNakQ3N1dWRmI4TTJqdnhScl9YZEMzUWMtTlMxZVBHTSIsInRva2VuVHlwZSI6IkJlYXJlciIsInVzZXIiOnsiaWQiOjEsImZpcnN0TmFtZSI6Ik1pa2UiLCJsYXN0TmFtZSI6IlNpbW9uaXNodmlsaSIsImVtYWlsIjoibXNpbW8xOEBmcmVldW5pLmVkdS5nZSIsInJvbGUiOiJTVFVERU5UIiwiZW1haWxWZXJpZmllZCI6dHJ1ZSwiYWN0aXZlIjp0cnVlLCJhdmF0YXJVcmwiOm51bGwsImhhc0FjdGl2ZVN1YnNjcmlwdGlvbiI6ZmFsc2UsImNyZWF0ZWRBdCI6IjIwMjYtMDktMjZUMTQ6MjM6NDMuMDIzMDI0In19fQ==" />
+              <option name="bodyString" value="{&#10;  &quot;success&quot;: true,&#10;  &quot;message&quot;: &quot;Login successful&quot;,&#10;  &quot;data&quot;: {&#10;    &quot;accessToken&quot;: &quot;eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJtc2ltbzE4QGZyZWV1bmkuZWR1LmdlIiwiaWF0IjoxNzkwNDE5ODc2LCJleHAiOjE3OTA1MDYyNzZ9.cEnV_wKaSlYzjhOgjBWgdXQP3ioprH2hat9Fe12yCr0&quot;,&#10;    &quot;refreshToken&quot;: &quot;eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJtc2ltbzE4QGZyZWV1bmkuZWR1LmdlIiwiaWF0IjoxNzkwNDE5ODc2LCJleHAiOjE3OTEwMjQ2NzZ9.hy2LMlUG6zAMjD77WVFb8M2jvxRr_XdC3Qc-NS1ePGM&quot;,&#10;    &quot;tokenType&quot;: &quot;Bearer&quot;,&#10;    &quot;user&quot;: {&#10;      &quot;id&quot;: 1,&#10;      &quot;firstName&quot;: &quot;Mike&quot;,&#10;      &quot;lastName&quot;: &quot;Simonishvili&quot;,&#10;      &quot;email&quot;: &quot;msimo18@freeuni.edu.ge&quot;,&#10;      &quot;role&quot;: &quot;STUDENT&quot;,&#10;      &quot;emailVerified&quot;: true,&#10;      &quot;active&quot;: true,&#10;      &quot;avatarUrl&quot;: null,&#10;      &quot;hasActiveSubscription&quot;: false,&#10;      &quot;createdAt&quot;: &quot;2026-09-26T14:23:43.023024&quot;&#10;    }&#10;  }&#10;}" />
+              <option name="code" value="200" />
+              <option name="contentType" value="application/json" />
+              <option name="headers">
+                <list>
+                  <headerState>
+                    <option name="key" value="X-Content-Type-Options" />
+                    <option name="value" value="nosniff" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-XSS-Protection" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Cache-Control" />
+                    <option name="value" value="no-cache, no-store, max-age=0, must-revalidate" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Pragma" />
+                    <option name="value" value="no-cache" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Expires" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-Frame-Options" />
+                    <option name="value" value="DENY" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Content-Type" />
+                    <option name="value" value="application/json" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Transfer-Encoding" />
+                    <option name="value" value="chunked" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Date" />
+                    <option name="value" value="Sat, 26 Sep 2026 10:51:16 GMT" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Keep-Alive" />
+                    <option name="value" value="timeout=60" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Connection" />
+                    <option name="value" value="keep-alive" />
+                  </headerState>
+                </list>
+              </option>
+              <option name="id" value="4cf4a72a-dc57-4375-b2ef-8fa203ab496b" />
+              <option name="message" value="OK" />
+              <option name="prettyResponseType" value="JSON" />
+              <option name="rawBodyString" value="{&quot;success&quot;:true,&quot;message&quot;:&quot;Login successful&quot;,&quot;data&quot;:{&quot;accessToken&quot;:&quot;eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJtc2ltbzE4QGZyZWV1bmkuZWR1LmdlIiwiaWF0IjoxNzkwNDE5ODc2LCJleHAiOjE3OTA1MDYyNzZ9.cEnV_wKaSlYzjhOgjBWgdXQP3ioprH2hat9Fe12yCr0&quot;,&quot;refreshToken&quot;:&quot;eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJtc2ltbzE4QGZyZWV1bmkuZWR1LmdlIiwiaWF0IjoxNzkwNDE5ODc2LCJleHAiOjE3OTEwMjQ2NzZ9.hy2LMlUG6zAMjD77WVFb8M2jvxRr_XdC3Qc-NS1ePGM&quot;,&quot;tokenType&quot;:&quot;Bearer&quot;,&quot;user&quot;:{&quot;id&quot;:1,&quot;firstName&quot;:&quot;Mike&quot;,&quot;lastName&quot;:&quot;Simonishvili&quot;,&quot;email&quot;:&quot;msimo18@freeuni.edu.ge&quot;,&quot;role&quot;:&quot;STUDENT&quot;,&quot;emailVerified&quot;:true,&quot;active&quot;:true,&quot;avatarUrl&quot;:null,&quot;hasActiveSubscription&quot;:false,&quot;createdAt&quot;:&quot;2026-09-26T14:23:43.023024&quot;}}}" />
+              <option name="size" value="682" />
+              <option name="time" value="581" />
+            </responseState>
+          </option>
+          <option name="workspaceId" value="drafts" />
+        </requestHistoryState>
+        <requestHistoryState>
+          <option name="dateTime" value="1790419881803" />
+          <option name="id" value="228cf45a-bf1c-420e-baff-50bc42ca38cc" />
+          <option name="request">
+            <requestState>
+              <option name="auth">
+                <authState>
+                  <option name="bearer">
+                    <pF>
+                      <option name="token" value="eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJtc2ltbzE4QGZyZWV1bmkuZWR1LmdlIiwiaWF0IjoxNzkwNDE4NDkwLCJleHAiOjE3OTA1MDQ4OTB9.mLWj1sHQb_PMuxe6-n410ZrihjjXhGvDbfmAfStPA6w" />
+                    </pF>
+                  </option>
+                  <option name="type" value="BEARER" />
+                </authState>
+              </option>
+              <option name="body">
+                <bodyState>
+                  <option name="type" value="JSON" />
+                </bodyState>
+              </option>
+              <option name="id" value="9d3c6a3f-57a7-44e9-bade-81cb2b6190da" />
+              <option name="method" value="POST" />
+              <option name="name" value="logout" />
+              <option name="url" value=" http://localhost:8080/api/auth/logout" />
+            </requestState>
+          </option>
+          <option name="response">
+            <responseState>
+              <option name="bodyBytesBase64" value="eyJzdWNjZXNzIjp0cnVlLCJtZXNzYWdlIjoiTG9nZ2VkIG91dCBzdWNjZXNzZnVsbHkifQ==" />
+              <option name="bodyString" value="{&#10;  &quot;success&quot;: true,&#10;  &quot;message&quot;: &quot;Logged out successfully&quot;&#10;}" />
+              <option name="code" value="200" />
+              <option name="contentType" value="application/json" />
+              <option name="headers">
+                <list>
+                  <headerState>
+                    <option name="key" value="X-Content-Type-Options" />
+                    <option name="value" value="nosniff" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-XSS-Protection" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Cache-Control" />
+                    <option name="value" value="no-cache, no-store, max-age=0, must-revalidate" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Pragma" />
+                    <option name="value" value="no-cache" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Expires" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-Frame-Options" />
+                    <option name="value" value="DENY" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Content-Type" />
+                    <option name="value" value="application/json" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Transfer-Encoding" />
+                    <option name="value" value="chunked" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Date" />
+                    <option name="value" value="Sat, 26 Sep 2026 10:51:21 GMT" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Keep-Alive" />
+                    <option name="value" value="timeout=60" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Connection" />
+                    <option name="value" value="keep-alive" />
+                  </headerState>
+                </list>
+              </option>
+              <option name="id" value="228cf45a-bf1c-420e-baff-50bc42ca38cc" />
+              <option name="message" value="OK" />
+              <option name="prettyResponseType" value="JSON" />
+              <option name="rawBodyString" value="{&quot;success&quot;:true,&quot;message&quot;:&quot;Logged out successfully&quot;}" />
+              <option name="size" value="52" />
+              <option name="time" value="98" />
+            </responseState>
+          </option>
+          <option name="workspaceId" value="drafts" />
+        </requestHistoryState>
+        <requestHistoryState>
+          <option name="dateTime" value="1790419889320" />
+          <option name="id" value="0209a8a0-4821-41c0-ace7-5c27656cbf9e" />
+          <option name="request">
+            <requestState>
+              <option name="body">
+                <bodyState>
+                  <option name="raw" value="{&#10;  &quot;email&quot;: &quot;msimo18@freeuni.edu.ge&quot;,&#10;  &quot;password&quot;: &quot;Admin1234!&quot;&#10;}" />
+                  <option name="type" value="JSON" />
+                </bodyState>
+              </option>
+              <option name="id" value="245c8a98-bfa3-48ef-a74d-e63ad412a321" />
+              <option name="method" value="POST" />
+              <option name="name" value="login" />
+              <option name="url" value=" http://localhost:8080/api/auth/login" />
+            </requestState>
+          </option>
+          <option name="response">
+            <responseState>
+              <option name="bodyBytesBase64" value="eyJzdWNjZXNzIjp0cnVlLCJtZXNzYWdlIjoiTG9naW4gc3VjY2Vzc2Z1bCIsImRhdGEiOnsiYWNjZXNzVG9rZW4iOiJleUpoYkdjaU9pSklVekkxTmlKOS5leUp6ZFdJaU9pSXhJaXdpWlcxaGFXd2lPaUp0YzJsdGJ6RTRRR1p5WldWMWJta3VaV1IxTG1kbElpd2lhV0YwSWpveE56a3dOREU1T0RnNUxDSmxlSEFpT2pFM09UQTFNRFl5T0RsOS44X2ZleGVULUFIR0VIejktWFF2VEtmV0M3aUxzNmhwTmN4ekNtREpPeldrIiwicmVmcmVzaFRva2VuIjoiZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKemRXSWlPaUl4SWl3aVpXMWhhV3dpT2lKdGMybHRiekU0UUdaeVpXVjFibWt1WldSMUxtZGxJaXdpYVdGMElqb3hOemt3TkRFNU9EZzVMQ0psZUhBaU9qRTNPVEV3TWpRMk9EbDkua29HVVY4dkJqc3BEb3cteW1uN2JqVkhQU3F0VFkzVTJ3bHozRmlpQk12MCIsInRva2VuVHlwZSI6IkJlYXJlciIsInVzZXIiOnsiaWQiOjEsImZpcnN0TmFtZSI6Ik1pa2UiLCJsYXN0TmFtZSI6IlNpbW9uaXNodmlsaSIsImVtYWlsIjoibXNpbW8xOEBmcmVldW5pLmVkdS5nZSIsInJvbGUiOiJTVFVERU5UIiwiZW1haWxWZXJpZmllZCI6dHJ1ZSwiYWN0aXZlIjp0cnVlLCJhdmF0YXJVcmwiOm51bGwsImhhc0FjdGl2ZVN1YnNjcmlwdGlvbiI6ZmFsc2UsImNyZWF0ZWRBdCI6IjIwMjYtMDktMjZUMTQ6MjM6NDMuMDIzMDI0In19fQ==" />
+              <option name="bodyString" value="{&#10;  &quot;success&quot;: true,&#10;  &quot;message&quot;: &quot;Login successful&quot;,&#10;  &quot;data&quot;: {&#10;    &quot;accessToken&quot;: &quot;eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJtc2ltbzE4QGZyZWV1bmkuZWR1LmdlIiwiaWF0IjoxNzkwNDE5ODg5LCJleHAiOjE3OTA1MDYyODl9.8_fexeT-AHGEHz9-XQvTKfWC7iLs6hpNcxzCmDJOzWk&quot;,&#10;    &quot;refreshToken&quot;: &quot;eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJtc2ltbzE4QGZyZWV1bmkuZWR1LmdlIiwiaWF0IjoxNzkwNDE5ODg5LCJleHAiOjE3OTEwMjQ2ODl9.koGUV8vBjspDow-ymn7bjVHPSqtTY3U2wlz3FiiBMv0&quot;,&#10;    &quot;tokenType&quot;: &quot;Bearer&quot;,&#10;    &quot;user&quot;: {&#10;      &quot;id&quot;: 1,&#10;      &quot;firstName&quot;: &quot;Mike&quot;,&#10;      &quot;lastName&quot;: &quot;Simonishvili&quot;,&#10;      &quot;email&quot;: &quot;msimo18@freeuni.edu.ge&quot;,&#10;      &quot;role&quot;: &quot;STUDENT&quot;,&#10;      &quot;emailVerified&quot;: true,&#10;      &quot;active&quot;: true,&#10;      &quot;avatarUrl&quot;: null,&#10;      &quot;hasActiveSubscription&quot;: false,&#10;      &quot;createdAt&quot;: &quot;2026-09-26T14:23:43.023024&quot;&#10;    }&#10;  }&#10;}" />
+              <option name="code" value="200" />
+              <option name="contentType" value="application/json" />
+              <option name="headers">
+                <list>
+                  <headerState>
+                    <option name="key" value="X-Content-Type-Options" />
+                    <option name="value" value="nosniff" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-XSS-Protection" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Cache-Control" />
+                    <option name="value" value="no-cache, no-store, max-age=0, must-revalidate" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Pragma" />
+                    <option name="value" value="no-cache" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Expires" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-Frame-Options" />
+                    <option name="value" value="DENY" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Content-Type" />
+                    <option name="value" value="application/json" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Transfer-Encoding" />
+                    <option name="value" value="chunked" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Date" />
+                    <option name="value" value="Sat, 26 Sep 2026 10:51:29 GMT" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Keep-Alive" />
+                    <option name="value" value="timeout=60" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Connection" />
+                    <option name="value" value="keep-alive" />
+                  </headerState>
+                </list>
+              </option>
+              <option name="id" value="0209a8a0-4821-41c0-ace7-5c27656cbf9e" />
+              <option name="message" value="OK" />
+              <option name="prettyResponseType" value="JSON" />
+              <option name="rawBodyString" value="{&quot;success&quot;:true,&quot;message&quot;:&quot;Login successful&quot;,&quot;data&quot;:{&quot;accessToken&quot;:&quot;eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJtc2ltbzE4QGZyZWV1bmkuZWR1LmdlIiwiaWF0IjoxNzkwNDE5ODg5LCJleHAiOjE3OTA1MDYyODl9.8_fexeT-AHGEHz9-XQvTKfWC7iLs6hpNcxzCmDJOzWk&quot;,&quot;refreshToken&quot;:&quot;eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJtc2ltbzE4QGZyZWV1bmkuZWR1LmdlIiwiaWF0IjoxNzkwNDE5ODg5LCJleHAiOjE3OTEwMjQ2ODl9.koGUV8vBjspDow-ymn7bjVHPSqtTY3U2wlz3FiiBMv0&quot;,&quot;tokenType&quot;:&quot;Bearer&quot;,&quot;user&quot;:{&quot;id&quot;:1,&quot;firstName&quot;:&quot;Mike&quot;,&quot;lastName&quot;:&quot;Simonishvili&quot;,&quot;email&quot;:&quot;msimo18@freeuni.edu.ge&quot;,&quot;role&quot;:&quot;STUDENT&quot;,&quot;emailVerified&quot;:true,&quot;active&quot;:true,&quot;avatarUrl&quot;:null,&quot;hasActiveSubscription&quot;:false,&quot;createdAt&quot;:&quot;2026-09-26T14:23:43.023024&quot;}}}" />
+              <option name="size" value="682" />
+              <option name="time" value="102" />
+            </responseState>
+          </option>
+          <option name="workspaceId" value="drafts" />
+        </requestHistoryState>
+        <requestHistoryState>
+          <option name="dateTime" value="1790419891241" />
+          <option name="id" value="4a00abd8-b7ef-49f0-bc1a-22ba76c52941" />
+          <option name="request">
+            <requestState>
+              <option name="body">
+                <bodyState>
+                  <option name="raw" value="{&#10;  &quot;email&quot;: &quot;msimo18@freeuni.edu.ge&quot;,&#10;  &quot;password&quot;: &quot;Admin1234!&quot;&#10;}" />
+                  <option name="type" value="JSON" />
+                </bodyState>
+              </option>
+              <option name="id" value="245c8a98-bfa3-48ef-a74d-e63ad412a321" />
+              <option name="method" value="POST" />
+              <option name="name" value="login" />
+              <option name="url" value=" http://localhost:8080/api/auth/login" />
+            </requestState>
+          </option>
+          <option name="response">
+            <responseState>
+              <option name="bodyBytesBase64" value="eyJzdWNjZXNzIjp0cnVlLCJtZXNzYWdlIjoiTG9naW4gc3VjY2Vzc2Z1bCIsImRhdGEiOnsiYWNjZXNzVG9rZW4iOiJleUpoYkdjaU9pSklVekkxTmlKOS5leUp6ZFdJaU9pSXhJaXdpWlcxaGFXd2lPaUp0YzJsdGJ6RTRRR1p5WldWMWJta3VaV1IxTG1kbElpd2lhV0YwSWpveE56a3dOREU1T0RreExDSmxlSEFpT2pFM09UQTFNRFl5T1RGOS5NMktodWllNjZ2Zzd0THd3ZmZXczd5bTctcFlLRmRhY01nMTNNc1BCLXhvIiwicmVmcmVzaFRva2VuIjoiZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKemRXSWlPaUl4SWl3aVpXMWhhV3dpT2lKdGMybHRiekU0UUdaeVpXVjFibWt1WldSMUxtZGxJaXdpYVdGMElqb3hOemt3TkRFNU9Ea3hMQ0psZUhBaU9qRTNPVEV3TWpRMk9URjkub1lzb28zcXpPUTBUTnZvMnBvQTkwb1pwQ1M0cWsyeXY5SHRqcXpiTFhHNCIsInRva2VuVHlwZSI6IkJlYXJlciIsInVzZXIiOnsiaWQiOjEsImZpcnN0TmFtZSI6Ik1pa2UiLCJsYXN0TmFtZSI6IlNpbW9uaXNodmlsaSIsImVtYWlsIjoibXNpbW8xOEBmcmVldW5pLmVkdS5nZSIsInJvbGUiOiJTVFVERU5UIiwiZW1haWxWZXJpZmllZCI6dHJ1ZSwiYWN0aXZlIjp0cnVlLCJhdmF0YXJVcmwiOm51bGwsImhhc0FjdGl2ZVN1YnNjcmlwdGlvbiI6ZmFsc2UsImNyZWF0ZWRBdCI6IjIwMjYtMDktMjZUMTQ6MjM6NDMuMDIzMDI0In19fQ==" />
+              <option name="bodyString" value="{&#10;  &quot;success&quot;: true,&#10;  &quot;message&quot;: &quot;Login successful&quot;,&#10;  &quot;data&quot;: {&#10;    &quot;accessToken&quot;: &quot;eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJtc2ltbzE4QGZyZWV1bmkuZWR1LmdlIiwiaWF0IjoxNzkwNDE5ODkxLCJleHAiOjE3OTA1MDYyOTF9.M2Khuie66vg7tLwwffWs7ym7-pYKFdacMg13MsPB-xo&quot;,&#10;    &quot;refreshToken&quot;: &quot;eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJtc2ltbzE4QGZyZWV1bmkuZWR1LmdlIiwiaWF0IjoxNzkwNDE5ODkxLCJleHAiOjE3OTEwMjQ2OTF9.oYsoo3qzOQ0TNvo2poA90oZpCS4qk2yv9HtjqzbLXG4&quot;,&#10;    &quot;tokenType&quot;: &quot;Bearer&quot;,&#10;    &quot;user&quot;: {&#10;      &quot;id&quot;: 1,&#10;      &quot;firstName&quot;: &quot;Mike&quot;,&#10;      &quot;lastName&quot;: &quot;Simonishvili&quot;,&#10;      &quot;email&quot;: &quot;msimo18@freeuni.edu.ge&quot;,&#10;      &quot;role&quot;: &quot;STUDENT&quot;,&#10;      &quot;emailVerified&quot;: true,&#10;      &quot;active&quot;: true,&#10;      &quot;avatarUrl&quot;: null,&#10;      &quot;hasActiveSubscription&quot;: false,&#10;      &quot;createdAt&quot;: &quot;2026-09-26T14:23:43.023024&quot;&#10;    }&#10;  }&#10;}" />
+              <option name="code" value="200" />
+              <option name="contentType" value="application/json" />
+              <option name="headers">
+                <list>
+                  <headerState>
+                    <option name="key" value="X-Content-Type-Options" />
+                    <option name="value" value="nosniff" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-XSS-Protection" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Cache-Control" />
+                    <option name="value" value="no-cache, no-store, max-age=0, must-revalidate" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Pragma" />
+                    <option name="value" value="no-cache" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Expires" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-Frame-Options" />
+                    <option name="value" value="DENY" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Content-Type" />
+                    <option name="value" value="application/json" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Transfer-Encoding" />
+                    <option name="value" value="chunked" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Date" />
+                    <option name="value" value="Sat, 26 Sep 2026 10:51:31 GMT" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Keep-Alive" />
+                    <option name="value" value="timeout=60" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Connection" />
+                    <option name="value" value="keep-alive" />
+                  </headerState>
+                </list>
+              </option>
+              <option name="id" value="4a00abd8-b7ef-49f0-bc1a-22ba76c52941" />
+              <option name="message" value="OK" />
+              <option name="prettyResponseType" value="JSON" />
+              <option name="rawBodyString" value="{&quot;success&quot;:true,&quot;message&quot;:&quot;Login successful&quot;,&quot;data&quot;:{&quot;accessToken&quot;:&quot;eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJtc2ltbzE4QGZyZWV1bmkuZWR1LmdlIiwiaWF0IjoxNzkwNDE5ODkxLCJleHAiOjE3OTA1MDYyOTF9.M2Khuie66vg7tLwwffWs7ym7-pYKFdacMg13MsPB-xo&quot;,&quot;refreshToken&quot;:&quot;eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJtc2ltbzE4QGZyZWV1bmkuZWR1LmdlIiwiaWF0IjoxNzkwNDE5ODkxLCJleHAiOjE3OTEwMjQ2OTF9.oYsoo3qzOQ0TNvo2poA90oZpCS4qk2yv9HtjqzbLXG4&quot;,&quot;tokenType&quot;:&quot;Bearer&quot;,&quot;user&quot;:{&quot;id&quot;:1,&quot;firstName&quot;:&quot;Mike&quot;,&quot;lastName&quot;:&quot;Simonishvili&quot;,&quot;email&quot;:&quot;msimo18@freeuni.edu.ge&quot;,&quot;role&quot;:&quot;STUDENT&quot;,&quot;emailVerified&quot;:true,&quot;active&quot;:true,&quot;avatarUrl&quot;:null,&quot;hasActiveSubscription&quot;:false,&quot;createdAt&quot;:&quot;2026-09-26T14:23:43.023024&quot;}}}" />
+              <option name="size" value="682" />
+              <option name="time" value="106" />
+            </responseState>
+          </option>
+          <option name="workspaceId" value="drafts" />
+        </requestHistoryState>
+        <requestHistoryState>
+          <option name="dateTime" value="1790419912831" />
+          <option name="id" value="66e3f7b6-3ff6-4971-a802-8ae40b89c399" />
+          <option name="request">
+            <requestState>
+              <option name="body">
+                <bodyState>
+                  <option name="raw" value="{&#10;  &quot;email&quot;: &quot;msimo18@freeuni.edu.ge&quot;,&#10;  &quot;password&quot;: &quot;Admin234!&quot;&#10;}" />
+                  <option name="type" value="JSON" />
+                </bodyState>
+              </option>
+              <option name="id" value="245c8a98-bfa3-48ef-a74d-e63ad412a321" />
+              <option name="method" value="POST" />
+              <option name="name" value="login" />
+              <option name="url" value=" http://localhost:8080/api/auth/login" />
+            </requestState>
+          </option>
+          <option name="response">
+            <responseState>
+              <option name="bodyBytesBase64" value="eyJzdWNjZXNzIjpmYWxzZSwibWVzc2FnZSI6IkludmFsaWQgZW1haWwgb3IgcGFzc3dvcmQifQ==" />
+              <option name="bodyString" value="{&#10;  &quot;success&quot;: false,&#10;  &quot;message&quot;: &quot;Invalid email or password&quot;&#10;}" />
+              <option name="code" value="401" />
+              <option name="contentType" value="application/json" />
+              <option name="headers">
+                <list>
+                  <headerState>
+                    <option name="key" value="X-Content-Type-Options" />
+                    <option name="value" value="nosniff" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-XSS-Protection" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Cache-Control" />
+                    <option name="value" value="no-cache, no-store, max-age=0, must-revalidate" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Pragma" />
+                    <option name="value" value="no-cache" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Expires" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-Frame-Options" />
+                    <option name="value" value="DENY" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Content-Type" />
+                    <option name="value" value="application/json" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Transfer-Encoding" />
+                    <option name="value" value="chunked" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Date" />
+                    <option name="value" value="Sat, 26 Sep 2026 10:51:52 GMT" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Keep-Alive" />
+                    <option name="value" value="timeout=60" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Connection" />
+                    <option name="value" value="keep-alive" />
+                  </headerState>
+                </list>
+              </option>
+              <option name="id" value="66e3f7b6-3ff6-4971-a802-8ae40b89c399" />
+              <option name="message" value="Unauthorized" />
+              <option name="prettyResponseType" value="JSON" />
+              <option name="rawBodyString" value="{&quot;success&quot;:false,&quot;message&quot;:&quot;Invalid email or password&quot;}" />
+              <option name="size" value="55" />
+              <option name="time" value="96" />
+            </responseState>
+          </option>
+          <option name="workspaceId" value="drafts" />
+        </requestHistoryState>
+        <requestHistoryState>
+          <option name="dateTime" value="1790419933925" />
+          <option name="id" value="efddf891-1e58-49eb-be9e-daae7e9838dd" />
+          <option name="request">
+            <requestState>
+              <option name="auth">
+                <authState>
+                  <option name="bearer">
+                    <pF>
+                      <option name="token" value="eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJtc2ltbzE4QGZyZWV1bmkuZWR1LmdlIiwiaWF0IjoxNzkwNDE4NDkwLCJleHAiOjE3OTA1MDQ4OTB9.mLWj1sHQb_PMuxe6-n410ZrihjjXhGvDbfmAfStPA6w" />
+                    </pF>
+                  </option>
+                  <option name="type" value="BEARER" />
+                </authState>
+              </option>
+              <option name="body">
+                <bodyState>
+                  <option name="type" value="JSON" />
+                </bodyState>
+              </option>
+              <option name="id" value="9d3c6a3f-57a7-44e9-bade-81cb2b6190da" />
+              <option name="method" value="POST" />
+              <option name="name" value="logout" />
+              <option name="url" value=" http://localhost:8080/api/auth/logout" />
+            </requestState>
+          </option>
+          <option name="response">
+            <responseState>
+              <option name="bodyBytesBase64" value="eyJzdWNjZXNzIjp0cnVlLCJtZXNzYWdlIjoiTG9nZ2VkIG91dCBzdWNjZXNzZnVsbHkifQ==" />
+              <option name="bodyString" value="{&#10;  &quot;success&quot;: true,&#10;  &quot;message&quot;: &quot;Logged out successfully&quot;&#10;}" />
+              <option name="code" value="200" />
+              <option name="contentType" value="application/json" />
+              <option name="headers">
+                <list>
+                  <headerState>
+                    <option name="key" value="X-Content-Type-Options" />
+                    <option name="value" value="nosniff" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-XSS-Protection" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Cache-Control" />
+                    <option name="value" value="no-cache, no-store, max-age=0, must-revalidate" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Pragma" />
+                    <option name="value" value="no-cache" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Expires" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-Frame-Options" />
+                    <option name="value" value="DENY" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Content-Type" />
+                    <option name="value" value="application/json" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Transfer-Encoding" />
+                    <option name="value" value="chunked" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Date" />
+                    <option name="value" value="Sat, 26 Sep 2026 10:52:13 GMT" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Keep-Alive" />
+                    <option name="value" value="timeout=60" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Connection" />
+                    <option name="value" value="keep-alive" />
+                  </headerState>
+                </list>
+              </option>
+              <option name="id" value="efddf891-1e58-49eb-be9e-daae7e9838dd" />
+              <option name="message" value="OK" />
+              <option name="prettyResponseType" value="JSON" />
+              <option name="rawBodyString" value="{&quot;success&quot;:true,&quot;message&quot;:&quot;Logged out successfully&quot;}" />
+              <option name="size" value="52" />
+              <option name="time" value="21" />
+            </responseState>
+          </option>
+          <option name="workspaceId" value="drafts" />
+        </requestHistoryState>
+      </list>
+    </option>
+  </component>
+</project>

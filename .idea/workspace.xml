@@ -5,7 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e03fdf07-73d9-48cf-9faf-4ef665572f76" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/mathweb/service/impl/SubscriptionServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/JetClient/history.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/JetClient/settings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/JetClient/state.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/JetClient/state.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mathweb/service/impl/AuthServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mathweb/service/impl/AuthServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,6 +28,21 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="mock:///JetClient Request Console" root0="SKIP_INSPECTION" />
+    <setting file="mock:///JetClient Request Console" root0="SKIP_INSPECTION" />
+    <setting file="mock:///JetClient Request Console" root0="SKIP_INSPECTION" />
+    <setting file="mock:///JetClient Request Console" root0="SKIP_INSPECTION" />
+    <setting file="mock:///JetClient Request Console" root0="SKIP_INSPECTION" />
+    <setting file="mock:///JetClient Request Console" root0="SKIP_INSPECTION" />
+    <setting file="mock:///JetClient Request Console" root0="SKIP_INSPECTION" />
+    <setting file="mock:///JetClient Request Console" root0="SKIP_INSPECTION" />
+    <setting file="mock:///JetClient Request Console" root0="SKIP_INSPECTION" />
+    <setting file="file://$USER_HOME$/AppData/Local/JetBrains/IdeaIC2024.1/tmp/jetclient/scripts/e81b7bcc/login_post-response_245c8a98.js" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/AppData/Local/JetBrains/IdeaIC2024.1/tmp/jetclient/scripts/e81b7bcc/login_pre-request_245c8a98.js" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/AppData/Local/JetBrains/IdeaIC2024.1/tmp/jetclient/scripts/e81b7bcc/verify-otp_post-response_b3eb5fd1.js" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/AppData/Local/JetBrains/IdeaIC2024.1/tmp/jetclient/scripts/e81b7bcc/verify-otp_pre-request_b3eb5fd1.js" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 5

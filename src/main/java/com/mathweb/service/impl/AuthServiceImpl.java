@@ -252,11 +252,23 @@ public class AuthServiceImpl implements AuthService {
     @Override
     @Transactional
     public void logout(String token) {
-        if (token != null && jwtTokenProvider.validateToken(token)) {
-            Long userId = jwtTokenProvider.getUserIdFromToken(token);
-            User user = userRepository.findById(userId)
-                    .orElseThrow(() -> new ResourceNotFoundException("User not found"));
-            refreshTokenRepository.revokeAllByUser(user);
+        if (token == null || token.isBlank()) {
+            // No token provided — nothing to do, still return success
+            return;
+        }
+
+        try {
+            if (jwtTokenProvider.validateToken(token)) {
+                Long userId = jwtTokenProvider.getUserIdFromToken(token);
+                User user = userRepository.findById(userId).orElse(null);
+                if (user != null) {
+                    refreshTokenRepository.revokeAllByUser(user);
+                    log.info("User {} logged out successfully", user.getEmail());
+                }
+            }
+        } catch (Exception e) {
+            // Token may be expired but we still logout successfully
+            log.warn("Logout called with invalid token, ignoring: {}", e.getMessage());
         }
     }
 
@@ -285,7 +297,12 @@ public class AuthServiceImpl implements AuthService {
 
         // Remove existing refresh token if any
         refreshTokenRepository.findByUser(user)
-                .ifPresent(refreshTokenRepository::delete);
+                .ifPresent(existing -> {
+                    existing.setRevoked(true);
+                    refreshTokenRepository.save(existing);
+                    refreshTokenRepository.delete(existing);
+                    refreshTokenRepository.flush();
+                });
 
         RefreshToken refreshToken = RefreshToken.builder()
                 .user(user)
