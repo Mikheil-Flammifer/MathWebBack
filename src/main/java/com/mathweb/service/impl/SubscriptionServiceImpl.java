@@ -8,6 +8,7 @@ import com.mathweb.enums.SubscriptionStatus;
 import com.mathweb.exception.BadRequestException;
 import com.mathweb.exception.ResourceNotFoundException;
 import com.mathweb.exception.SubscriptionException;
+import com.mathweb.mapper.SubscriptionMapper;
 import com.mathweb.repository.SubscriptionRepository;
 import com.mathweb.repository.UserRepository;
 import com.mathweb.service.EmailService;
@@ -34,6 +35,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     private final UserRepository userRepository;
     private final EmailService emailService;
     private final PayPalHttpClient payPalHttpClient;
+    private final SubscriptionMapper subscriptionMapper;
 
     @Value("${paypal.subscription.amount}")
     private String amount;
@@ -47,11 +49,13 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     public SubscriptionServiceImpl(SubscriptionRepository subscriptionRepository,
                                    UserRepository userRepository,
                                    EmailService emailService,
-                                   PayPalHttpClient payPalHttpClient) {
+                                   PayPalHttpClient payPalHttpClient,
+                                   SubscriptionMapper subscriptionMapper) {
         this.subscriptionRepository = subscriptionRepository;
         this.userRepository = userRepository;
         this.emailService = emailService;
         this.payPalHttpClient = payPalHttpClient;
+        this.subscriptionMapper = subscriptionMapper;
     }
 
     @Override
@@ -202,15 +206,6 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     // ===== PRIVATE HELPERS =====
 
     private SubscriptionResponse mapToResponse(Subscription subscription) {
-        return SubscriptionResponse.builder()
-                .id(subscription.getId())
-                .status(subscription.getStatus())
-                .amountCents(subscription.getAmountCents())
-                .currency(subscription.getCurrency())
-                .currentPeriodStart(subscription.getCurrentPeriodStart())
-                .currentPeriodEnd(subscription.getCurrentPeriodEnd())
-                .cancelledAt(subscription.getCancelledAt())
-                .isActive(subscription.isCurrentlyActive())
-                .build();
+        return subscriptionMapper.toResponse(subscription);
     }
 }

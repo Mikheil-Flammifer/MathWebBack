@@ -12,6 +12,8 @@ import com.mathweb.enums.DifficultyLevel;
 import com.mathweb.enums.VideoStatus;
 import com.mathweb.exception.ForbiddenException;
 import com.mathweb.exception.ResourceNotFoundException;
+import com.mathweb.mapper.CommentMapper;
+import com.mathweb.mapper.VideoMapper;
 import com.mathweb.repository.CommentRepository;
 import com.mathweb.repository.QuestRepository;
 import com.mathweb.repository.UserRepository;
@@ -37,6 +39,7 @@ public class VideoServiceImpl implements VideoService {
     private final QuestRepository questRepository;
     private final CommentRepository commentRepository;
     private final FileStorageService fileStorageService;
+    private VideoMapper videoMapper;
 
     public VideoServiceImpl(VideoRepository videoRepository,
                             UserRepository userRepository,
@@ -186,32 +189,10 @@ public class VideoServiceImpl implements VideoService {
 
     private VideoResponse mapToVideoResponse(Video video) {
         long commentCount = commentRepository.countActiveByVideoId(video.getId());
-
-        UserResponse uploaderResponse = UserResponse.builder()
-                .id(video.getUploadedBy().getId())
-                .firstName(video.getUploadedBy().getFirstName())
-                .lastName(video.getUploadedBy().getLastName())
-                .email(video.getUploadedBy().getEmail())
-                .role(video.getUploadedBy().getRole())
-                .build();
-
-        return VideoResponse.builder()
-                .id(video.getId())
-                .title(video.getTitle())
-                .description(video.getDescription())
-                .filePath(fileStorageService.getFileUrl(video.getFilePath()))
-                .thumbnailPath(fileStorageService.getFileUrl(video.getThumbnailPath()))
-                .durationSeconds(video.getDurationSeconds())
-                .fileSizeBytes(video.getFileSizeBytes())
-                .status(video.getStatus())
-                .difficultyLevel(video.getDifficultyLevel())
-                .viewCount(video.getViewCount())
-                .questId(video.getQuest() != null ? video.getQuest().getId() : null)
-                .questTitle(video.getQuest() != null ? video.getQuest().getTitle() : null)
-                .uploadedBy(uploaderResponse)
-                .commentCount(commentCount)
-                .createdAt(video.getCreatedAt())
-                .updatedAt(video.getUpdatedAt())
-                .build();
+        VideoResponse response = videoMapper.toResponse(video);
+        response.setFilePath(fileStorageService.getFileUrl(video.getFilePath()));
+        response.setThumbnailPath(fileStorageService.getFileUrl(video.getThumbnailPath()));
+        response.setCommentCount(commentCount);
+        return response;
     }
 }

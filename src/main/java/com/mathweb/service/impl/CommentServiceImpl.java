@@ -11,6 +11,7 @@ import com.mathweb.entity.Video;
 import com.mathweb.exception.BadRequestException;
 import com.mathweb.exception.ForbiddenException;
 import com.mathweb.exception.ResourceNotFoundException;
+import com.mathweb.mapper.CommentMapper;
 import com.mathweb.repository.CommentRepository;
 import com.mathweb.repository.UserRepository;
 import com.mathweb.repository.VideoRepository;
@@ -34,16 +35,19 @@ public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
     private final VideoRepository videoRepository;
+    private final CommentMapper commentMapper;
 
     @Value("${app.max-comment-depth}")
     private int maxCommentDepth;
 
     public CommentServiceImpl(CommentRepository commentRepository,
                               UserRepository userRepository,
-                              VideoRepository videoRepository) {
+                              VideoRepository videoRepository,
+                              CommentMapper commentMapper) {
         this.commentRepository = commentRepository;
         this.userRepository = userRepository;
         this.videoRepository = videoRepository;
+        this.commentMapper = commentMapper;
     }
 
     @Override
@@ -167,26 +171,10 @@ public class CommentServiceImpl implements CommentService {
         List<Comment> replies = commentRepository
                 .findByParentIdOrderByCreatedAtAsc(comment.getId());
 
-        UserResponse userResponse = UserResponse.builder()
-                .id(comment.getUser().getId())
-                .firstName(comment.getUser().getFirstName())
-                .lastName(comment.getUser().getLastName())
-                .avatarUrl(comment.getUser().getAvatarUrl())
-                .build();
-
-        return CommentResponse.builder()
-                .id(comment.getId())
-                .content(comment.getDisplayContent())
-                .depth(comment.getDepth())
-                .edited(comment.getEdited())
-                .deleted(comment.getDeleted())
-                .upvotes(comment.getUpvotes())
-                .user(userResponse)
-                .videoId(comment.getVideo().getId())
-                .parentId(comment.getParent() != null ? comment.getParent().getId() : null)
-                .replies(replies.stream().map(this::mapToCommentResponse).toList())
-                .createdAt(comment.getCreatedAt())
-                .updatedAt(comment.getUpdatedAt())
-                .build();
+        CommentResponse response = commentMapper.toResponse(comment);
+        response.setReplies(replies.stream()
+                .map(this::mapToCommentResponse)
+                .toList());
+        return response;
     }
 }

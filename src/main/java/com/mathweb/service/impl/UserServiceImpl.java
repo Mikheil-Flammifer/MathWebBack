@@ -5,6 +5,7 @@ import com.mathweb.dto.response.UserResponse;
 import com.mathweb.entity.User;
 import com.mathweb.enums.Role;
 import com.mathweb.exception.ResourceNotFoundException;
+import com.mathweb.mapper.UserMapper;
 import com.mathweb.repository.UserRepository;
 import com.mathweb.service.UserService;
 import org.slf4j.Logger;
@@ -21,9 +22,12 @@ public class UserServiceImpl implements UserService {
     private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
 
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository,
+                           UserMapper userMapper) {
         this.userRepository = userRepository;
+        this.userMapper = userMapper;
     }
 
     @Override
@@ -91,17 +95,6 @@ public class UserServiceImpl implements UserService {
     }
 
     private UserResponse mapToUserResponse(User user) {
-        return UserResponse.builder()
-                .id(user.getId())
-                .firstName(user.getFirstName())
-                .lastName(user.getLastName())
-                .email(user.getEmail())
-                .role(user.getRole())
-                .emailVerified(user.getEmailVerified())
-                .active(user.getActive())
-                .avatarUrl(user.getAvatarUrl())
-                .hasActiveSubscription(user.hasActiveSubscription())
-                .createdAt(user.getCreatedAt())
-                .build();
+        return userMapper.toResponse(user);
     }
 }
