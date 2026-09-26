@@ -17,6 +17,7 @@ import com.mathweb.security.JwtTokenProvider;
 import com.mathweb.security.UserPrincipal;
 import com.mathweb.service.AuthService;
 import com.mathweb.service.EmailService;
+import com.mathweb.util.OtpUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -85,7 +86,7 @@ public class AuthServiceImpl implements AuthService {
         userRepository.save(user);
 
         // Generate and send OTP
-        String otp = generateOtp();
+        String otp = OtpUtil.generateOtp();
         saveOtp(user, otp, "EMAIL_VERIFICATION");
         emailService.sendOtpEmail(user.getEmail(), user.getFirstName(), otp, "EMAIL_VERIFICATION");
 
@@ -136,7 +137,7 @@ public class AuthServiceImpl implements AuthService {
         otpCodeRepository.invalidateAllByUserAndPurpose(user, request.getPurpose());
 
         // Generate and send new OTP
-        String otp = generateOtp();
+        String otp = OtpUtil.generateOtp();
         saveOtp(user, otp, request.getPurpose());
         emailService.sendOtpEmail(user.getEmail(), user.getFirstName(), otp, request.getPurpose());
 
@@ -216,7 +217,7 @@ public class AuthServiceImpl implements AuthService {
 
         otpCodeRepository.invalidateAllByUserAndPurpose(user, "PASSWORD_RESET");
 
-        String otp = generateOtp();
+        String otp = OtpUtil.generateOtp();
         saveOtp(user, otp, "PASSWORD_RESET");
         emailService.sendOtpEmail(user.getEmail(), user.getFirstName(), otp, "PASSWORD_RESET");
 
@@ -273,12 +274,6 @@ public class AuthServiceImpl implements AuthService {
     }
 
     // ===== PRIVATE HELPERS =====
-
-    private String generateOtp() {
-        SecureRandom random = new SecureRandom();
-        int otp = 100000 + random.nextInt(900000);
-        return String.valueOf(otp);
-    }
 
     private void saveOtp(User user, String code, String purpose) {
         OtpCode otpCode = OtpCode.builder()

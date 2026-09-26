@@ -2,6 +2,7 @@ package com.mathweb.service.impl;
 
 import com.mathweb.exception.FileStorageException;
 import com.mathweb.service.FileStorageService;
+import com.mathweb.util.FileUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -68,26 +69,35 @@ public class FileStorageServiceImpl implements FileStorageService {
             throw new FileStorageException("File is empty or null");
         }
 
+        // Validate based on type
+        if ("videos".equals(type)) {
+            FileUtil.validateVideo(file);
+        } else {
+            FileUtil.validateImage(file);
+        }
+
         try {
-            // Create directory if it doesn't exist
             Path uploadDir = Paths.get(storagePath);
             Files.createDirectories(uploadDir);
 
-            // Generate unique filename
-            String originalFilename = file.getOriginalFilename();
-            String extension = getExtension(originalFilename);
-            String uniqueFilename = UUID.randomUUID() + "." + extension;
+            // Use FileUtil for unique filename
+            String uniqueFilename = FileUtil.generateUniqueFilename(
+                    file.getOriginalFilename());
 
-            // Store file
             Path targetPath = uploadDir.resolve(uniqueFilename);
-            Files.copy(file.getInputStream(), targetPath, StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(file.getInputStream(), targetPath,
+                    StandardCopyOption.REPLACE_EXISTING);
 
             String storedPath = storagePath + "/" + uniqueFilename;
-            log.info("Stored {} file: {}", type, storedPath);
+            log.info("Stored {} file: {} ({})",
+                    type, storedPath,
+                    FileUtil.formatFileSize(file.getSize()));
 
             return storedPath;
+
         } catch (IOException e) {
-            throw new FileStorageException("Failed to store file: " + e.getMessage());
+            throw new FileStorageException(
+                    "Failed to store file: " + e.getMessage());
         }
     }
 

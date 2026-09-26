@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -21,4 +23,7 @@ public interface RefreshTokenRepository extends JpaRepository<RefreshToken, Long
     void revokeAllByUser(User user);
 
     boolean existsByToken(String token);
+
+    @Query("SELECT r FROM RefreshToken r WHERE r.expiresAt < :now OR r.revoked = true")
+    List<RefreshToken> findExpiredOrRevoked(LocalDateTime now);
 }
