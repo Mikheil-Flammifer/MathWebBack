@@ -74,6 +74,12 @@
               <option name="name" value="refresh tocken" />
               <option name="url" value="POST http://localhost:8080/api/auth/refresh" />
             </requestState>
+            <requestState>
+              <option name="id" value="06267f2d-3fc5-4f3b-b521-94640eefaf47" />
+              <option name="method" value="GET" />
+              <option name="name" value="Draft" />
+              <option name="url" value="http://localhost:8080/uploads/videos/test.txt" />
+            </requestState>
           </list>
         </option>
       </draftsState>

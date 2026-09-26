@@ -16,11 +16,11 @@ public class FileServingConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        // Resolve absolute path
-        Path uploadPath = Paths.get(uploadBasePath).toAbsolutePath();
+        Path uploadPath = Paths.get(uploadBasePath).toAbsolutePath().normalize();
+        String uploadLocation = "file:///" + uploadPath.toString().replace("\\", "/") + "/";
 
-        // Serve videos: GET /uploads/videos/filename.mp4
         registry.addResourceHandler("/uploads/**")
-                .addResourceLocations("file:" + uploadPath + "/");
+                .addResourceLocations(uploadLocation)
+                .setCachePeriod(3600);
     }
 }

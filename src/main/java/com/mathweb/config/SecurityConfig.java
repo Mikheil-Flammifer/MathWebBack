@@ -50,6 +50,8 @@ public class SecurityConfig {
                                 "/api/videos/public/**",
                                 "/api/stripe/webhook",
                                 "/uploads/**",
+                                "/uploads/videos/**",
+                                "/uploads/images/**",
                                 "/admin/login",
                                 "/admin/verify-otp",
                                 "/admin/resend-otp"
