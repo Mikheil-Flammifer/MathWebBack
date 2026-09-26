@@ -136,6 +136,13 @@
             <version>2.15.1</version>
         </dependency>
 
+        <!-- ===== PAYPAL ===== -->
+        <dependency>
+            <groupId>com.paypal.sdk</groupId>
+            <artifactId>checkout-sdk</artifactId>
+            <version>1.0.5</version>
+        </dependency>
+
         <!-- ===== TESTING ===== -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

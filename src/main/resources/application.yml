@@ -53,13 +53,15 @@ otp:
   expiration-minutes: 10
   length: 6
 
-stripe:
-  secret-key: ${STRIPE_SECRET_KEY}
-  webhook-secret: ${STRIPE_WEBHOOK_SECRET}
+paypal:
+  client-id: ${PAYPAL_CLIENT_ID}
+  client-secret: ${PAYPAL_CLIENT_SECRET}
+  mode: ${PAYPAL_MODE}
   subscription:
-    price-id: ${STRIPE_PRICE_ID}
-    amount: 249
-    currency: usd
+    amount: "2.49"
+    currency: USD
+    plan-name: MathWeb Monthly
+    plan-description: Full access to all MathWeb content
 
 file:
   upload:

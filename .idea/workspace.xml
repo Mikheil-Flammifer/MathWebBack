@@ -5,11 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e03fdf07-73d9-48cf-9faf-4ef665572f76" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/JetClient/history.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/JetClient/settings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/JetClient/state.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/JetClient/state.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/mathweb/config/PayPalConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mathweb/service/impl/AuthServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mathweb/service/impl/AuthServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mathweb/dto/request/CreateSubscriptionRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mathweb/dto/request/CreateSubscriptionRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mathweb/service/SubscriptionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mathweb/service/SubscriptionService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mathweb/service/impl/SubscriptionServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mathweb/service/impl/SubscriptionServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -31,14 +32,6 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="mock:///JetClient Request Console" root0="SKIP_INSPECTION" />
-    <setting file="mock:///JetClient Request Console" root0="SKIP_INSPECTION" />
-    <setting file="mock:///JetClient Request Console" root0="SKIP_INSPECTION" />
-    <setting file="mock:///JetClient Request Console" root0="SKIP_INSPECTION" />
-    <setting file="mock:///JetClient Request Console" root0="SKIP_INSPECTION" />
-    <setting file="mock:///JetClient Request Console" root0="SKIP_INSPECTION" />
-    <setting file="mock:///JetClient Request Console" root0="SKIP_INSPECTION" />
-    <setting file="mock:///JetClient Request Console" root0="SKIP_INSPECTION" />
-    <setting file="mock:///JetClient Request Console" root0="SKIP_INSPECTION" />
     <setting file="file://$USER_HOME$/AppData/Local/JetBrains/IdeaIC2024.1/tmp/jetclient/scripts/e81b7bcc/login_post-response_245c8a98.js" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Local/JetBrains/IdeaIC2024.1/tmp/jetclient/scripts/e81b7bcc/login_pre-request_245c8a98.js" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Local/JetBrains/IdeaIC2024.1/tmp/jetclient/scripts/e81b7bcc/verify-otp_post-response_b3eb5fd1.js" root0="FORCE_HIGHLIGHTING" />
@@ -53,17 +46,17 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.Main.executor": "Run",
-    "Application.MathWebApplication.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "settings.editor.selected.configurable": "preferences.pluginManager"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;Application.MathWebApplication.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="Application.MathWebApplication">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.mathweb.Main" />
