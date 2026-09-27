@@ -1,5 +1,7 @@
 package com.mathweb.config;
 
+import com.mathweb.security.AccessDeniedHandlerImpl;
+import com.mathweb.security.AuthEntryPoint;
 import com.mathweb.security.JwtAuthenticationFilter;
 import com.mathweb.security.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
@@ -27,11 +29,17 @@ public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final UserDetailsServiceImpl userDetailsService;
+    private final AuthEntryPoint authEntryPoint;
+    private final AccessDeniedHandlerImpl accessDeniedHandler;
 
     public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter,
-                          UserDetailsServiceImpl userDetailsService) {
+                          UserDetailsServiceImpl userDetailsService,
+                          AuthEntryPoint authEntryPoint,
+                          AccessDeniedHandlerImpl accessDeniedHandler) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.userDetailsService = userDetailsService;
+        this.authEntryPoint = authEntryPoint;
+        this.accessDeniedHandler = accessDeniedHandler;
     }
 
     @Bean
@@ -42,6 +50,10 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint(authEntryPoint)
+                        .accessDeniedHandler(accessDeniedHandler)
+                )
                 .authorizeHttpRequests(auth -> auth
 
                         // ===== PUBLIC =====
