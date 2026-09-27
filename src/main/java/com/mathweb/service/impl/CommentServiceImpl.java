@@ -11,6 +11,7 @@ import com.mathweb.entity.Video;
 import com.mathweb.exception.BadRequestException;
 import com.mathweb.exception.ForbiddenException;
 import com.mathweb.exception.ResourceNotFoundException;
+import com.mathweb.util.SanitizationUtil;
 import com.mathweb.mapper.CommentMapper;
 import com.mathweb.repository.CommentRepository;
 import com.mathweb.repository.UserRepository;
@@ -77,6 +78,7 @@ public class CommentServiceImpl implements CommentService {
 
             comment.setParent(parent);
             comment.setDepth(parent.getDepth() + 1);
+            comment.setContent(SanitizationUtil.sanitizeComment(request.getContent()));
         }
 
         commentRepository.save(comment);
@@ -101,7 +103,7 @@ public class CommentServiceImpl implements CommentService {
             throw new BadRequestException("Cannot edit a deleted comment");
         }
 
-        comment.setContent(request.getContent());
+        comment.setContent(SanitizationUtil.sanitizeComment(request.getContent()));
         comment.setEdited(true);
         commentRepository.save(comment);
 

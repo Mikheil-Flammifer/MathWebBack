@@ -9,6 +9,7 @@ import com.mathweb.entity.*;
 import com.mathweb.enums.QuestStatus;
 import com.mathweb.exception.BadRequestException;
 import com.mathweb.exception.ResourceNotFoundException;
+import com.mathweb.util.SanitizationUtil;
 import com.mathweb.repository.*;
 import com.mathweb.service.ProblemService;
 import org.slf4j.Logger;
@@ -52,7 +53,7 @@ public class ProblemServiceImpl implements ProblemService {
                 .orElseThrow(() -> new ResourceNotFoundException("Quest", request.getQuestId()));
 
         Problem problem = Problem.builder()
-                .questionText(request.getQuestionText())
+                .questionText(SanitizationUtil.sanitizeText(request.getQuestionText()))
                 .problemType(request.getProblemType())
                 .difficultyLevel(request.getDifficultyLevel())
                 .correctAnswer(request.getCorrectAnswer())

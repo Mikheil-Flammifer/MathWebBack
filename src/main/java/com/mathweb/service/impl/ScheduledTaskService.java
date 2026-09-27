@@ -23,14 +23,18 @@ public class ScheduledTaskService {
     private final RefreshTokenRepository refreshTokenRepository;
     private final SubscriptionRepository subscriptionRepository;
     private final TokenBlacklistService tokenBlacklistService;
+    private final RateLimitService rateLimitService;
 
     public ScheduledTaskService(OtpCodeRepository otpCodeRepository,
                                 RefreshTokenRepository refreshTokenRepository,
-                                SubscriptionRepository subscriptionRepository, TokenBlacklistService tokenBlacklistService) {
+                                SubscriptionRepository subscriptionRepository,
+                                TokenBlacklistService tokenBlacklistService,
+                                RateLimitService rateLimitService) {
         this.otpCodeRepository = otpCodeRepository;
         this.refreshTokenRepository = refreshTokenRepository;
         this.subscriptionRepository = subscriptionRepository;
         this.tokenBlacklistService = tokenBlacklistService;
+        this.rateLimitService = rateLimitService;
     }
 
     // ===== RUNS EVERY HOUR =====
@@ -94,6 +98,11 @@ public class ScheduledTaskService {
 
         subscriptionRepository.deleteAll(incomplete);
         log.info("Deleted {} incomplete subscriptions", incomplete.size());
+    }
+
+    @Scheduled(fixedRate = 900000) // every 15 minutes
+    public void cleanupRateLimitEntries() {
+        rateLimitService.cleanupExpiredEntries();
     }
 
     @Scheduled(fixedRate = 3600000)

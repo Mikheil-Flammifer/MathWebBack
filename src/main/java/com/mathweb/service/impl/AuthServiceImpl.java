@@ -43,6 +43,8 @@ public class AuthServiceImpl implements AuthService {
     private final AuthenticationManager authenticationManager;
     private final EmailService emailService;
     private final TokenBlacklistService tokenBlacklistService;
+    private final RateLimitService rateLimitService;
+
 
     @Value("${otp.expiration-minutes}")
     private int otpExpirationMinutes;
@@ -56,7 +58,9 @@ public class AuthServiceImpl implements AuthService {
                            PasswordEncoder passwordEncoder,
                            JwtTokenProvider jwtTokenProvider,
                            AuthenticationManager authenticationManager,
-                           EmailService emailService, TokenBlacklistService tokenBlacklistService) {
+                           EmailService emailService,
+                           TokenBlacklistService tokenBlacklistService,
+                           RateLimitService rateLimitService) {
         this.userRepository = userRepository;
         this.otpCodeRepository = otpCodeRepository;
         this.refreshTokenRepository = refreshTokenRepository;
@@ -65,11 +69,14 @@ public class AuthServiceImpl implements AuthService {
         this.authenticationManager = authenticationManager;
         this.emailService = emailService;
         this.tokenBlacklistService = tokenBlacklistService;
+        this.rateLimitService = rateLimitService;
     }
 
     @Override
     @Transactional
     public UserResponse register(RegisterRequest request) {
+        rateLimitService.checkOtpRate(request.getEmail());
+
         if (userRepository.existsByEmail(request.getEmail())) {
             throw new BadRequestException("Email is already registered");
         }
@@ -131,6 +138,8 @@ public class AuthServiceImpl implements AuthService {
     @Override
     @Transactional
     public void resendOtp(ResendOtpRequest request) {
+        rateLimitService.checkOtpRate(request.getEmail());
+
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
@@ -148,6 +157,8 @@ public class AuthServiceImpl implements AuthService {
     @Override
     @Transactional
     public AuthResponse login(LoginRequest request) {
+        rateLimitService.checkLoginRate(request.getEmail().toLowerCase());
+
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail().toLowerCase(),
@@ -156,6 +167,7 @@ public class AuthServiceImpl implements AuthService {
         );
 
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+        rateLimitService.resetLoginRate(request.getEmail().toLowerCase());
 
         if (!userPrincipal.isEmailVerified()) {
             throw new BadRequestException("Please verify your email before logging in");
