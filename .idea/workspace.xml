@@ -5,15 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e03fdf07-73d9-48cf-9faf-4ef665572f76" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/mathweb/dto/request/ChangePasswordRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/mathweb/dto/request/UpdateProfileRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/mathweb/dto/response/UserStatsResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/mathweb/service/impl/VideoMetadataService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/application-test.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mathweb/controller/ProblemController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mathweb/controller/ProblemController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mathweb/controller/VideoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mathweb/controller/VideoController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mathweb/service/ProblemService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mathweb/service/ProblemService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mathweb/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mathweb/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mathweb/repository/OtpCodeRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mathweb/repository/OtpCodeRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mathweb/repository/RefreshTokenRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mathweb/repository/RefreshTokenRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/mathweb/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mathweb/service/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mathweb/service/VideoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mathweb/service/VideoService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mathweb/service/impl/ProblemServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mathweb/service/impl/ProblemServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/mathweb/service/impl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mathweb/service/impl/UserServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/mathweb/service/impl/VideoServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mathweb/service/impl/VideoServiceImpl.java" afterDir="false" />
     </list>

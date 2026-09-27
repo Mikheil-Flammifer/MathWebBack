@@ -13,6 +13,7 @@ import com.mathweb.enums.VideoStatus;
 import com.mathweb.exception.ForbiddenException;
 import com.mathweb.exception.ResourceNotFoundException;
 import com.mathweb.mapper.CommentMapper;
+import com.mathweb.mapper.UserMapper;
 import com.mathweb.mapper.VideoMapper;
 import com.mathweb.repository.CommentRepository;
 import com.mathweb.repository.QuestRepository;
@@ -40,18 +41,26 @@ public class VideoServiceImpl implements VideoService {
     private final QuestRepository questRepository;
     private final CommentRepository commentRepository;
     private final FileStorageService fileStorageService;
+    private UserMapper userMapper;
     private VideoMapper videoMapper;
+    private final VideoMetadataService videoMetadataService;
 
     public VideoServiceImpl(VideoRepository videoRepository,
                             UserRepository userRepository,
                             QuestRepository questRepository,
                             CommentRepository commentRepository,
-                            FileStorageService fileStorageService) {
+                            FileStorageService fileStorageService,
+                            VideoMapper videoMapper,
+                            UserMapper userMapper,
+                            VideoMetadataService videoMetadataService) {
         this.videoRepository = videoRepository;
         this.userRepository = userRepository;
         this.questRepository = questRepository;
         this.commentRepository = commentRepository;
         this.fileStorageService = fileStorageService;
+        this.videoMapper = videoMapper;
+        this.userMapper = userMapper;
+        this.videoMetadataService = videoMetadataService;
     }
 
     @Override
@@ -82,6 +91,9 @@ public class VideoServiceImpl implements VideoService {
             video.setQuest(quest);
         }
 
+        // Extract duration asynchronously
+        Long duration = videoMetadataService.extractDuration(filePath);
+        video.setDurationSeconds(duration);
         videoRepository.save(video);
         log.info("Video uploaded: {} by user {}", video.getTitle(), uploaderId);
 
@@ -150,6 +162,7 @@ public class VideoServiceImpl implements VideoService {
         }
 
         videoRepository.save(video);
+
         return mapToVideoResponse(video);
     }
 

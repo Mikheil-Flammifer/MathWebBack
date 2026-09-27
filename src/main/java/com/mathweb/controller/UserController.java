@@ -2,9 +2,8 @@ package com.mathweb.controller;
 
 import com.mathweb.dto.request.ChangePasswordRequest;
 import com.mathweb.dto.request.UpdateProfileRequest;
-import com.mathweb.dto.response.ApiResponse;
-import com.mathweb.dto.response.PageResponse;
-import com.mathweb.dto.response.UserResponse;
+import com.mathweb.dto.response.*;
+import com.mathweb.repository.UserQuestProgressRepository;
 import com.mathweb.security.UserPrincipal;
 import com.mathweb.service.UserService;
 import jakarta.validation.Valid;
@@ -15,14 +14,19 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
 
     private final UserService userService;
+    private final UserQuestProgressRepository questProgressRepository;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService,
+                          UserQuestProgressRepository questProgressRepository) {
         this.userService = userService;
+        this.questProgressRepository = questProgressRepository;
     }
 
     // ===== ANY AUTHENTICATED USER =====
@@ -32,6 +36,36 @@ public class UserController {
             @AuthenticationPrincipal UserPrincipal principal) {
         UserResponse user = userService.getCurrentUser(principal.getId());
         return ResponseEntity.ok(ApiResponse.success("User retrieved", user));
+    }
+
+    @GetMapping("/me/stats")
+    public ResponseEntity<ApiResponse<UserStatsResponse>> getMyStats(
+            @AuthenticationPrincipal UserPrincipal principal) {
+        UserStatsResponse stats = userService.getUserStats(principal.getId());
+        return ResponseEntity.ok(ApiResponse.success("Stats retrieved", stats));
+    }
+
+    @GetMapping("/me/progress")
+    public ResponseEntity<ApiResponse<List<QuestProgressResponse>>> getMyProgress(
+            @AuthenticationPrincipal UserPrincipal principal) {
+        List<QuestProgressResponse> progress =
+                questProgressRepository
+                        .findByUserId(principal.getId())
+                        .stream()
+                        .map(p -> QuestProgressResponse.builder()
+                                .questId(p.getQuest().getId())
+                                .questTitle(p.getQuest().getTitle())
+                                .status(p.getStatus())
+                                .problemsSolved(p.getProblemsSolved())
+                                .totalProblems(p.getTotalProblems())
+                                .progressPercentage(p.getProgressPercentage())
+                                .xpEarned(p.getXpEarned())
+                                .startedAt(p.getStartedAt())
+                                .completedAt(p.getCompletedAt())
+                                .build())
+                        .toList();
+        return ResponseEntity.ok(
+                ApiResponse.success("Progress retrieved", progress));
     }
 
     @PutMapping("/me")

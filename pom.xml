@@ -89,6 +89,13 @@
             <version>4.0.0</version>
         </dependency>
 
+        <!-- Video metadata extraction -->
+        <dependency>
+            <groupId>ws.schild</groupId>
+            <artifactId>jave-all-deps</artifactId>
+            <version>3.3.1</version>
+        </dependency>
+
         <!-- ===== JWT ===== -->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
@@ -152,6 +159,12 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- H2 for testing -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
             <scope>test</scope>
         </dependency>
 

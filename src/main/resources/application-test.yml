@@ -1,0 +1,42 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+
+  flyway:
+    enabled: false
+
+  mail:
+    host: localhost
+    port: 25
+
+jwt:
+  secret: dGVzdFNlY3JldEtleUZvclRlc3RpbmdQdXJwb3Nlc09ubHkxMjM0NTY=
+  access-token-expiration: 86400000
+  refresh-token-expiration: 604800000
+
+otp:
+  expiration-minutes: 10
+  length: 6
+
+file:
+  upload:
+    base-path: ./test-uploads
+    videos-path: ./test-uploads/videos
+    images-path: ./test-uploads/images
+
+app:
+  name: MathWeb Test
+  base-url: http://localhost:8080
+  mail-from: test@test.com
+  max-comment-depth: 10
+  max-problem-attempts: 3
