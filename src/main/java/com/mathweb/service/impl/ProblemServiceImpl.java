@@ -9,6 +9,8 @@ import com.mathweb.entity.*;
 import com.mathweb.enums.QuestStatus;
 import com.mathweb.exception.BadRequestException;
 import com.mathweb.exception.ResourceNotFoundException;
+import com.mathweb.service.FileStorageService;
+import com.mathweb.util.FileUtil;
 import com.mathweb.util.SanitizationUtil;
 import com.mathweb.repository.*;
 import com.mathweb.service.ProblemService;
@@ -16,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -31,19 +34,21 @@ public class ProblemServiceImpl implements ProblemService {
     private final UserRepository userRepository;
     private final QuestRepository questRepository;
     private final UserQuestProgressRepository progressRepository;
+    private final FileStorageService fileStorageService;
 
     public ProblemServiceImpl(ProblemRepository problemRepository,
                               AnswerOptionRepository answerOptionRepository,
                               ProblemAttemptRepository attemptRepository,
                               UserRepository userRepository,
                               QuestRepository questRepository,
-                              UserQuestProgressRepository progressRepository) {
+                              UserQuestProgressRepository progressRepository, FileStorageService fileStorageService) {
         this.problemRepository = problemRepository;
         this.answerOptionRepository = answerOptionRepository;
         this.attemptRepository = attemptRepository;
         this.userRepository = userRepository;
         this.questRepository = questRepository;
         this.progressRepository = progressRepository;
+        this.fileStorageService = fileStorageService;
     }
 
     @Override
@@ -95,6 +100,47 @@ public class ProblemServiceImpl implements ProblemService {
                 : null;
 
         return mapToProblemResponse(problem, attempt);
+    }
+
+    @Override
+    @Transactional
+    public ProblemResponse uploadQuestionImage(Long problemId,
+                                               MultipartFile image) {
+        Problem problem = problemRepository.findById(problemId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Problem", problemId));
+
+        FileUtil.validateImage(image);
+
+        // Delete old image if exists
+        if (problem.getQuestionImagePath() != null) {
+            // inject fileStorageService
+        }
+
+        String imagePath = fileStorageService.storeImage(image);
+        problem.setQuestionImagePath(imagePath);
+        problemRepository.save(problem);
+
+        log.info("Question image uploaded for problem {}", problemId);
+        return mapToProblemResponse(problem, null);
+    }
+
+    @Override
+    @Transactional
+    public ProblemResponse uploadExplanationImage(Long problemId,
+                                                  MultipartFile image) {
+        Problem problem = problemRepository.findById(problemId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Problem", problemId));
+
+        FileUtil.validateImage(image);
+
+        String imagePath = fileStorageService.storeImage(image);
+        problem.setExplanationImagePath(imagePath);
+        problemRepository.save(problem);
+
+        log.info("Explanation image uploaded for problem {}", problemId);
+        return mapToProblemResponse(problem, null);
     }
 
     @Override

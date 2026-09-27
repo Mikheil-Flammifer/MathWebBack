@@ -20,6 +20,7 @@ import com.mathweb.repository.UserRepository;
 import com.mathweb.repository.VideoRepository;
 import com.mathweb.service.FileStorageService;
 import com.mathweb.service.VideoService;
+import com.mathweb.util.FileUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -149,6 +150,40 @@ public class VideoServiceImpl implements VideoService {
         }
 
         videoRepository.save(video);
+        return mapToVideoResponse(video);
+    }
+
+    @Override
+    @Transactional
+    public VideoResponse uploadThumbnail(Long videoId,
+                                         MultipartFile thumbnail,
+                                         Long userId) {
+        Video video = videoRepository.findById(videoId)
+                .orElseThrow(() -> new ResourceNotFoundException("Video", videoId));
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User", userId));
+
+        boolean isAdmin = user.getRole().name().equals("ADMIN");
+        boolean isUploader = video.getUploadedBy().getId().equals(userId);
+
+        if (!isAdmin && !isUploader) {
+            throw new ForbiddenException(
+                    "You are not allowed to update this video");
+        }
+
+        FileUtil.validateImage(thumbnail);
+
+        // Delete old thumbnail if exists
+        if (video.getThumbnailPath() != null) {
+            fileStorageService.deleteFile(video.getThumbnailPath());
+        }
+
+        String thumbnailPath = fileStorageService.storeImage(thumbnail);
+        video.setThumbnailPath(thumbnailPath);
+        videoRepository.save(video);
+
+        log.info("Thumbnail uploaded for video {}", videoId);
         return mapToVideoResponse(video);
     }
 

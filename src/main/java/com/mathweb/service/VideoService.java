@@ -13,6 +13,7 @@ public interface VideoService {
     PageResponse<VideoResponse> getAllVideos(int page, int size, DifficultyLevel level);
     PageResponse<VideoResponse> searchVideos(String keyword, int page, int size);
     VideoResponse updateVideo(Long id, UpdateVideoRequest request, Long userId);
+    VideoResponse uploadThumbnail(Long videoId, MultipartFile thumbnail, Long userId);
     void deleteVideo(Long id, Long userId);
     void incrementViewCount(Long id);
 }

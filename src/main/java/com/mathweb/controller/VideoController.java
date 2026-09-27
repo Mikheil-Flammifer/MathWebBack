@@ -61,6 +61,18 @@ public class VideoController {
                 .body(ApiResponse.success("Video uploaded successfully", video));
     }
 
+    @PostMapping(value = "/{id}/thumbnail",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ApiResponse<VideoResponse>> uploadThumbnail(
+            @PathVariable Long id,
+            @RequestPart("file") MultipartFile thumbnail,
+            @AuthenticationPrincipal UserPrincipal principal) {
+        VideoResponse video = videoService.uploadThumbnail(
+                id, thumbnail, principal.getId());
+        return ResponseEntity.ok(
+                ApiResponse.success("Thumbnail uploaded", video));
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<VideoResponse>> updateVideo(
             @PathVariable Long id,

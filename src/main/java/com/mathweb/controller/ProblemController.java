@@ -9,10 +9,12 @@ import com.mathweb.security.UserPrincipal;
 import com.mathweb.service.ProblemService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -59,6 +61,29 @@ public class ProblemController {
             @AuthenticationPrincipal UserPrincipal principal) {
         AnswerResultResponse result = problemService.submitAnswer(request, principal.getId());
         return ResponseEntity.ok(ApiResponse.success("Answer submitted", result));
+    }
+
+    @PostMapping(value = "/{id}/image/question",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER')")
+    public ResponseEntity<ApiResponse<ProblemResponse>> uploadQuestionImage(
+            @PathVariable Long id,
+            @RequestPart("file") MultipartFile image) {
+        ProblemResponse problem = problemService.uploadQuestionImage(id, image);
+        return ResponseEntity.ok(
+                ApiResponse.success("Question image uploaded", problem));
+    }
+
+    @PostMapping(value = "/{id}/image/explanation",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER')")
+    public ResponseEntity<ApiResponse<ProblemResponse>> uploadExplanationImage(
+            @PathVariable Long id,
+            @RequestPart("file") MultipartFile image) {
+        ProblemResponse problem =
+                problemService.uploadExplanationImage(id, image);
+        return ResponseEntity.ok(
+                ApiResponse.success("Explanation image uploaded", problem));
     }
 
     @DeleteMapping("/{id}")
