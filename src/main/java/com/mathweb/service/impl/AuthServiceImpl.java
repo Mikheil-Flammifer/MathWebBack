@@ -28,7 +28,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.security.SecureRandom;
 import java.time.LocalDateTime;
 
 @Service
@@ -43,6 +42,7 @@ public class AuthServiceImpl implements AuthService {
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthenticationManager authenticationManager;
     private final EmailService emailService;
+    private final TokenBlacklistService tokenBlacklistService;
 
     @Value("${otp.expiration-minutes}")
     private int otpExpirationMinutes;
@@ -56,7 +56,7 @@ public class AuthServiceImpl implements AuthService {
                            PasswordEncoder passwordEncoder,
                            JwtTokenProvider jwtTokenProvider,
                            AuthenticationManager authenticationManager,
-                           EmailService emailService) {
+                           EmailService emailService, TokenBlacklistService tokenBlacklistService) {
         this.userRepository = userRepository;
         this.otpCodeRepository = otpCodeRepository;
         this.refreshTokenRepository = refreshTokenRepository;
@@ -64,6 +64,7 @@ public class AuthServiceImpl implements AuthService {
         this.jwtTokenProvider = jwtTokenProvider;
         this.authenticationManager = authenticationManager;
         this.emailService = emailService;
+        this.tokenBlacklistService = tokenBlacklistService;
     }
 
     @Override
@@ -253,23 +254,29 @@ public class AuthServiceImpl implements AuthService {
     @Override
     @Transactional
     public void logout(String token) {
-        if (token == null || token.isBlank()) {
-            // No token provided — nothing to do, still return success
-            return;
-        }
+        if (token == null || token.isBlank()) return;
 
         try {
             if (jwtTokenProvider.validateToken(token)) {
+                // Blacklist the access token
+                LocalDateTime expiresAt = jwtTokenProvider
+                        .getExpirationFromToken(token)
+                        .toInstant()
+                        .atZone(java.time.ZoneId.systemDefault())
+                        .toLocalDateTime();
+
+                tokenBlacklistService.blacklist(token, expiresAt);
+
+                // Revoke refresh token
                 Long userId = jwtTokenProvider.getUserIdFromToken(token);
                 User user = userRepository.findById(userId).orElse(null);
                 if (user != null) {
                     refreshTokenRepository.revokeAllByUser(user);
-                    log.info("User {} logged out successfully", user.getEmail());
+                    log.info("User {} logged out", user.getEmail());
                 }
             }
         } catch (Exception e) {
-            // Token may be expired but we still logout successfully
-            log.warn("Logout called with invalid token, ignoring: {}", e.getMessage());
+            log.warn("Logout called with invalid token: {}", e.getMessage());
         }
     }
 

@@ -22,13 +22,15 @@ public class ScheduledTaskService {
     private final OtpCodeRepository otpCodeRepository;
     private final RefreshTokenRepository refreshTokenRepository;
     private final SubscriptionRepository subscriptionRepository;
+    private final TokenBlacklistService tokenBlacklistService;
 
     public ScheduledTaskService(OtpCodeRepository otpCodeRepository,
                                 RefreshTokenRepository refreshTokenRepository,
-                                SubscriptionRepository subscriptionRepository) {
+                                SubscriptionRepository subscriptionRepository, TokenBlacklistService tokenBlacklistService) {
         this.otpCodeRepository = otpCodeRepository;
         this.refreshTokenRepository = refreshTokenRepository;
         this.subscriptionRepository = subscriptionRepository;
+        this.tokenBlacklistService = tokenBlacklistService;
     }
 
     // ===== RUNS EVERY HOUR =====
@@ -92,5 +94,11 @@ public class ScheduledTaskService {
 
         subscriptionRepository.deleteAll(incomplete);
         log.info("Deleted {} incomplete subscriptions", incomplete.size());
+    }
+
+    @Scheduled(fixedRate = 3600000)
+    public void cleanupBlacklistedTokens() {
+        log.info("Cleaning up blacklisted tokens...");
+        tokenBlacklistService.removeExpiredTokens();
     }
 }
