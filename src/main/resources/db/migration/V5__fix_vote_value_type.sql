@@ -1,0 +1,1 @@
+ALTER TABLE comment_votes ALTER COLUMN vote_value TYPE INTEGER;

@@ -27,9 +27,11 @@ public class CommentController {
     public ResponseEntity<ApiResponse<PageResponse<CommentResponse>>> getVideoComments(
             @PathVariable Long videoId,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "20") int size) {
+            @RequestParam(defaultValue = "20") int size,
+            @AuthenticationPrincipal UserPrincipal principal) {
+        Long userId = principal != null ? principal.getId() : null;
         PageResponse<CommentResponse> comments =
-                commentService.getVideoComments(videoId, page, size);
+                commentService.getVideoComments(videoId, page, size, userId);
         return ResponseEntity.ok(ApiResponse.success("Comments retrieved", comments));
     }
 
@@ -59,11 +61,21 @@ public class CommentController {
         return ResponseEntity.ok(ApiResponse.success("Comment deleted"));
     }
 
+    // Toggle: none -> up, up -> none, down -> up
     @PostMapping("/{id}/upvote")
     public ResponseEntity<ApiResponse<CommentResponse>> upvoteComment(
             @PathVariable Long id,
             @AuthenticationPrincipal UserPrincipal principal) {
         CommentResponse comment = commentService.upvoteComment(id, principal.getId());
-        return ResponseEntity.ok(ApiResponse.success("Comment upvoted", comment));
+        return ResponseEntity.ok(ApiResponse.success("Vote updated", comment));
+    }
+
+    // Toggle: none -> down, down -> none, up -> down
+    @PostMapping("/{id}/downvote")
+    public ResponseEntity<ApiResponse<CommentResponse>> downvoteComment(
+            @PathVariable Long id,
+            @AuthenticationPrincipal UserPrincipal principal) {
+        CommentResponse comment = commentService.downvoteComment(id, principal.getId());
+        return ResponseEntity.ok(ApiResponse.success("Vote updated", comment));
     }
 }

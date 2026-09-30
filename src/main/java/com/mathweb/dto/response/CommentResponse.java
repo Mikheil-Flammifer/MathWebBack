@@ -24,6 +24,8 @@ public class CommentResponse {
     private Long videoId;
     private Long parentId;
     private List<CommentResponse> replies;  // nested replies
+    private Integer score;
+    private Integer myVote;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

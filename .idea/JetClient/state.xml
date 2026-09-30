@@ -79,7 +79,7 @@
                 <authState>
                   <option name="bearer">
                     <pF>
-                      <option name="token" value="eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJtaWtlc2ltb25pc2h2aWxpMjNAZ21haWwuY29tIiwiaWF0IjoxNzkwNTA0NTM1LCJleHAiOjE3OTA1OTA5MzV9.TrOshNod1R9Lc2Zia4kdAaABKfePnbyz77e0e_guKCdUrmZxdc6XbauIS0GDhN8y" />
+                      <option name="token" value="eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJtaWtlc2ltb25pc2h2aWxpMjNAZ21haWwuY29tIiwiaWF0IjoxNzkwNTc5ODU1LCJleHAiOjE3OTA2NjYyNTV9.5ORDE6-gCdd7zCT2uKXv_6GffWHcA3liLAUkX8oaFdTAyhnAYWlj_5OWFyEhZkQL" />
                     </pF>
                   </option>
                   <option name="type" value="BEARER" />
@@ -93,14 +93,14 @@
               <option name="id" value="06267f2d-3fc5-4f3b-b521-94640eefaf47" />
               <option name="method" value="GET" />
               <option name="name" value="me" />
-              <option name="url" value="GET http://localhost:8080/api/users/1" />
+              <option name="url" value="GET http://localhost:8080/api/users/me" />
             </requestState>
             <requestState>
               <option name="auth">
                 <authState>
                   <option name="bearer">
                     <pF>
-                      <option name="token" value="eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJtaWtlc2ltb25pc2h2aWxpMjNAZ21haWwuY29tIiwiaWF0IjoxNzkwNTA0NTM1LCJleHAiOjE3OTA1OTA5MzV9.TrOshNod1R9Lc2Zia4kdAaABKfePnbyz77e0e_guKCdUrmZxdc6XbauIS0GDhN8y" />
+                      <option name="token" value="eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJtaWtlc2ltb25pc2h2aWxpMjNAZ21haWwuY29tIiwiaWF0IjoxNzkwNjgzMTI1LCJleHAiOjE3OTA3Njk1MjV9.5Q5CRotcijY6v-x_P5a0PmALHPNn6ptomQQgEdTAkvSm6aHmNvZ-RZRk1CmvX94e" />
                     </pF>
                   </option>
                   <option name="type" value="BEARER" />
@@ -108,7 +108,7 @@
               </option>
               <option name="body">
                 <bodyState>
-                  <option name="raw" value="{&#10;  &quot;title&quot;: &quot;Introduction to Algebra&quot;,&#10;  &quot;description&quot;: &quot;Learn the basics of algebra&quot;,&#10;  &quot;difficultyLevel&quot;: &quot;LEVEL_1_BEGINNER&quot;,&#10;  &quot;xpReward&quot;: 100,&#10;  &quot;positionX&quot;: 100,&#10;  &quot;positionY&quot;: 100,&#10;  &quot;prerequisiteIds&quot;: []&#10;}" />
+                  <option name="raw" value="{&#10;  &quot;title&quot;: &quot;Perimeter &amp; Area&quot;,&#10;  &quot;description&quot;: &quot;Measure shapes.&quot;,&#10;  &quot;difficultyLevel&quot;: &quot;LEVEL_2_ELEMENTARY&quot;,&#10;  &quot;xpReward&quot;: 150,&#10;  &quot;positionX&quot;: 300,&#10;  &quot;positionY&quot;: 450,&#10;  &quot;prerequisiteIds&quot;: [1, 2]&#10;}" />
                   <option name="type" value="JSON" />
                 </bodyState>
               </option>
@@ -160,6 +160,98 @@
               <option name="method" value="POST" />
               <option name="name" value="Draft" />
               <option name="url" value="http://localhost:8080/api/problems/submit" />
+            </requestState>
+            <requestState>
+              <option name="auth">
+                <authState>
+                  <option name="bearer">
+                    <pF>
+                      <option name="token" value="eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJtaWtlc2ltb25pc2h2aWxpMjNAZ21haWwuY29tIiwiaWF0IjoxNzkwNTc5ODU1LCJleHAiOjE3OTA2NjYyNTV9.5ORDE6-gCdd7zCT2uKXv_6GffWHcA3liLAUkX8oaFdTAyhnAYWlj_5OWFyEhZkQL" />
+                    </pF>
+                  </option>
+                  <option name="type" value="BEARER" />
+                </authState>
+              </option>
+              <option name="id" value="f435e71f-71b4-4ef7-af59-0be5fcabedc4" />
+              <option name="method" value="GET" />
+              <option name="name" value="my stats" />
+              <option name="url" value="GET http://localhost:8080/api/users/me/stats" />
+            </requestState>
+            <requestState>
+              <option name="auth">
+                <authState>
+                  <option name="bearer">
+                    <pF>
+                      <option name="token" value="eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJtaWtlc2ltb25pc2h2aWxpMjNAZ21haWwuY29tIiwiaWF0IjoxNzkwNTc5ODU1LCJleHAiOjE3OTA2NjYyNTV9.5ORDE6-gCdd7zCT2uKXv_6GffWHcA3liLAUkX8oaFdTAyhnAYWlj_5OWFyEhZkQL" />
+                    </pF>
+                  </option>
+                  <option name="type" value="BEARER" />
+                </authState>
+              </option>
+              <option name="id" value="c28cb321-5421-444b-967f-575dcdcd33bb" />
+              <option name="method" value="GET" />
+              <option name="name" value="my progress" />
+              <option name="url" value="GET http://localhost:8080/api/users/me/progress" />
+            </requestState>
+            <requestState>
+              <option name="auth">
+                <authState>
+                  <option name="bearer">
+                    <pF>
+                      <option name="token" value="eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJtaWtlc2ltb25pc2h2aWxpMjNAZ21haWwuY29tIiwiaWF0IjoxNzkwNTc5ODU1LCJleHAiOjE3OTA2NjYyNTV9.5ORDE6-gCdd7zCT2uKXv_6GffWHcA3liLAUkX8oaFdTAyhnAYWlj_5OWFyEhZkQL" />
+                    </pF>
+                  </option>
+                  <option name="type" value="BEARER" />
+                </authState>
+              </option>
+              <option name="body">
+                <bodyState>
+                  <option name="raw" value="{&#10;  &quot;firstName&quot;: &quot;Mikheil&quot;,&#10;  &quot;lastName&quot;: &quot;Simonishvili&quot;&#10;}" />
+                  <option name="type" value="JSON" />
+                </bodyState>
+              </option>
+              <option name="id" value="060be14a-9634-4127-9bc6-ccacebaa542a" />
+              <option name="method" value="PUT" />
+              <option name="name" value="update profile" />
+              <option name="url" value="http://localhost:8080/api/users/me" />
+            </requestState>
+            <requestState>
+              <option name="auth">
+                <authState>
+                  <option name="bearer">
+                    <pF>
+                      <option name="token" value="eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJtaWtlc2ltb25pc2h2aWxpMjNAZ21haWwuY29tIiwiaWF0IjoxNzkwNTc5ODU1LCJleHAiOjE3OTA2NjYyNTV9.5ORDE6-gCdd7zCT2uKXv_6GffWHcA3liLAUkX8oaFdTAyhnAYWlj_5OWFyEhZkQL" />
+                    </pF>
+                  </option>
+                  <option name="type" value="BEARER" />
+                </authState>
+              </option>
+              <option name="body">
+                <bodyState>
+                  <option name="raw" value="{&#10;  &quot;currentPassword&quot;: &quot;Admin@2000!&quot;,&#10;  &quot;newPassword&quot;: &quot;Admin@2000!&quot;&#10;}" />
+                  <option name="type" value="JSON" />
+                </bodyState>
+              </option>
+              <option name="id" value="9c90d0f6-0dc4-4848-8f7d-fa6f91e05b28" />
+              <option name="method" value="PUT" />
+              <option name="name" value="change password" />
+              <option name="url" value="PUT http://localhost:8080/api/users/me/password" />
+            </requestState>
+            <requestState>
+              <option name="auth">
+                <authState>
+                  <option name="bearer">
+                    <pF>
+                      <option name="token" value="eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJtaWtlc2ltb25pc2h2aWxpMjNAZ21haWwuY29tIiwiaWF0IjoxNzkwNjgzMTI1LCJleHAiOjE3OTA3Njk1MjV9.5Q5CRotcijY6v-x_P5a0PmALHPNn6ptomQQgEdTAkvSm6aHmNvZ-RZRk1CmvX94e" />
+                    </pF>
+                  </option>
+                  <option name="type" value="BEARER" />
+                </authState>
+              </option>
+              <option name="id" value="c4f83d3e-38d2-490a-aa6a-71ae03670af7" />
+              <option name="method" value="POST" />
+              <option name="name" value="publish quest" />
+              <option name="url" value="http://localhost:8080/api/quests/1/publish" />
             </requestState>
           </list>
         </option>

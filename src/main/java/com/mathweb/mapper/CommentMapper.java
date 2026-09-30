@@ -16,5 +16,9 @@ public interface CommentMapper {
             expression = "java(comment.getDisplayContent())")
     @Mapping(target = "replies",
             ignore = true)
+    @Mapping(target = "score",
+            ignore = true)
+    @Mapping(target = "myVote",
+            ignore = true)
     CommentResponse toResponse(Comment comment);
 }

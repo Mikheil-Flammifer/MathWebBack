@@ -9,6 +9,7 @@ public interface CommentService {
     CommentResponse createComment(CreateCommentRequest request, Long userId);
     CommentResponse updateComment(Long commentId, UpdateCommentRequest request, Long userId);
     void deleteComment(Long commentId, Long userId);
-    PageResponse<CommentResponse> getVideoComments(Long videoId, int page, int size);
+    PageResponse<CommentResponse> getVideoComments(Long videoId, int page, int size, Long currentUserId);
     CommentResponse upvoteComment(Long commentId, Long userId);
+    CommentResponse downvoteComment(Long commentId, Long userId);
 }

@@ -34,6 +34,10 @@ public class Comment extends BaseEntity {
     @Builder.Default
     private Integer upvotes = 0;
 
+    @Column(name = "downvotes", nullable = false)
+    @Builder.Default
+    private Integer downvotes = 0;
+
     // ===== RELATIONS =====
 
     @ManyToOne(fetch = FetchType.LAZY)
