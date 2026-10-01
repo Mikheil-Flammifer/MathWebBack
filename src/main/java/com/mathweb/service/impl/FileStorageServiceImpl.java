@@ -54,12 +54,14 @@ public class FileStorageServiceImpl implements FileStorageService {
     @Override
     public String getFileUrl(String filePath) {
         if (filePath == null) return null;
-        // Convert local path to URL
-        String relativePath = filePath.replace("\\", "/");
-        if (relativePath.startsWith("./")) {
-            relativePath = relativePath.substring(2);
-        }
-        return baseUrl + "/" + relativePath;
+
+        String normalized = filePath.replace("\\", "/");
+        int lastSlash = normalized.lastIndexOf('/');
+        int prevSlash = lastSlash > 0 ? normalized.lastIndexOf('/', lastSlash - 1) : -1;
+
+        String relative = normalized.substring(prevSlash + 1);
+
+        return baseUrl + "/uploads/" + relative;
     }
 
     // ===== PRIVATE HELPERS =====

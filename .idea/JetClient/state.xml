@@ -253,6 +253,57 @@
               <option name="name" value="publish quest" />
               <option name="url" value="http://localhost:8080/api/quests/1/publish" />
             </requestState>
+            <requestState>
+              <option name="auth">
+                <authState>
+                  <option name="bearer">
+                    <pF>
+                      <option name="token" value="eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJtaWtlc2ltb25pc2h2aWxpMjNAZ21haWwuY29tIiwiaWF0IjoxNzkwNzgyMjc0LCJleHAiOjE3OTA4Njg2NzR9.BxVEIBG1S-oLiHFcOYIO55APPo0MeyONTSfAbdPomYprMhX3ErY4loDNtNVz8tmm" />
+                    </pF>
+                  </option>
+                  <option name="type" value="BEARER" />
+                </authState>
+              </option>
+              <option name="id" value="1e727143-de04-4a34-b712-7f884d7ddcf9" />
+              <option name="method" value="GET" />
+              <option name="name" value="get videos" />
+              <option name="url" value="http://localhost:8080/api/videos/5" />
+            </requestState>
+            <requestState>
+              <option name="auth">
+                <authState>
+                  <option name="bearer">
+                    <pF>
+                      <option name="token" value="eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJtaWtlc2ltb25pc2h2aWxpMjNAZ21haWwuY29tIiwiaWF0IjoxNzkwNzgyMjc0LCJleHAiOjE3OTA4Njg2NzR9.BxVEIBG1S-oLiHFcOYIO55APPo0MeyONTSfAbdPomYprMhX3ErY4loDNtNVz8tmm" />
+                    </pF>
+                  </option>
+                  <option name="type" value="BEARER" />
+                </authState>
+              </option>
+              <option name="body">
+                <bodyState>
+                  <option name="formData">
+                    <list>
+                      <formDataParameterState>
+                        <option name="contentType" value="application/json" />
+                        <option name="key" value="data" />
+                        <option name="value" value="{   &quot;title&quot;: &quot;Introduction to Counting&quot;,   &quot;description&quot;: &quot;First steps with numbers.&quot;,   &quot;difficultyLevel&quot;: &quot;LEVEL_1_BEGINNER&quot; }" />
+                      </formDataParameterState>
+                      <formDataParameterState>
+                        <option name="key" value="file" />
+                        <option name="type" value="FILE" />
+                        <option name="value" value="D:\Portfolio\uploads\videos\counting.mp4" />
+                      </formDataParameterState>
+                    </list>
+                  </option>
+                  <option name="type" value="FORM_DATA" />
+                </bodyState>
+              </option>
+              <option name="id" value="46026505-88e0-40ae-b060-8318caec435a" />
+              <option name="method" value="POST" />
+              <option name="name" value="upload video" />
+              <option name="url" value="http://localhost:8080/api/videos/upload" />
+            </requestState>
           </list>
         </option>
       </draftsState>

@@ -16,7 +16,6 @@ public class VideoMetadataService {
     private static final Logger log =
             LoggerFactory.getLogger(VideoMetadataService.class);
 
-    @Async
     public long extractDuration(String filePath) {
         try {
             File file = new File(filePath);
