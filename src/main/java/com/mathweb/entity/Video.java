@@ -59,6 +59,11 @@ public class Video extends BaseEntity {
     @JoinColumn(name = "quest_id")
     private Quest quest;
 
+    // NEW: topic of the video (main category or subcategory)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    private Category category;
+
     // ===== RELATIONS =====
 
     @OneToMany(mappedBy = "video", cascade = CascadeType.ALL, orphanRemoval = true)

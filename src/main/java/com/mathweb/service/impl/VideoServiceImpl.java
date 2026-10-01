@@ -5,6 +5,7 @@ import com.mathweb.dto.request.VideoUploadRequest;
 import com.mathweb.dto.response.PageResponse;
 import com.mathweb.dto.response.UserResponse;
 import com.mathweb.dto.response.VideoResponse;
+import com.mathweb.entity.Category;
 import com.mathweb.entity.Quest;
 import com.mathweb.entity.User;
 import com.mathweb.entity.Video;
@@ -15,10 +16,7 @@ import com.mathweb.exception.ResourceNotFoundException;
 import com.mathweb.mapper.CommentMapper;
 import com.mathweb.mapper.UserMapper;
 import com.mathweb.mapper.VideoMapper;
-import com.mathweb.repository.CommentRepository;
-import com.mathweb.repository.QuestRepository;
-import com.mathweb.repository.UserRepository;
-import com.mathweb.repository.VideoRepository;
+import com.mathweb.repository.*;
 import com.mathweb.service.FileStorageService;
 import com.mathweb.service.VideoService;
 import com.mathweb.util.FileUtil;
@@ -41,6 +39,7 @@ public class VideoServiceImpl implements VideoService {
     private final QuestRepository questRepository;
     private final CommentRepository commentRepository;
     private final FileStorageService fileStorageService;
+    private final CategoryRepository categoryRepository;
     private UserMapper userMapper;
     private VideoMapper videoMapper;
     private final VideoMetadataService videoMetadataService;
@@ -49,7 +48,7 @@ public class VideoServiceImpl implements VideoService {
                             UserRepository userRepository,
                             QuestRepository questRepository,
                             CommentRepository commentRepository,
-                            FileStorageService fileStorageService,
+                            FileStorageService fileStorageService, CategoryRepository categoryRepository,
                             VideoMapper videoMapper,
                             UserMapper userMapper,
                             VideoMetadataService videoMetadataService) {
@@ -58,6 +57,7 @@ public class VideoServiceImpl implements VideoService {
         this.questRepository = questRepository;
         this.commentRepository = commentRepository;
         this.fileStorageService = fileStorageService;
+        this.categoryRepository = categoryRepository;
         this.videoMapper = videoMapper;
         this.userMapper = userMapper;
         this.videoMetadataService = videoMetadataService;
@@ -90,6 +90,9 @@ public class VideoServiceImpl implements VideoService {
                     .orElseThrow(() -> new ResourceNotFoundException("Quest", request.getQuestId()));
             video.setQuest(quest);
         }
+
+
+        applyCategory(video, request.getCategoryId());
 
         // Extract duration asynchronously
         Long duration = videoMetadataService.extractDuration(filePath);
@@ -161,6 +164,8 @@ public class VideoServiceImpl implements VideoService {
             video.setQuest(quest);
         }
 
+        applyCategory(video, request.getCategoryId());
+
         videoRepository.save(video);
 
         return mapToVideoResponse(video);
@@ -198,6 +203,23 @@ public class VideoServiceImpl implements VideoService {
 
         log.info("Thumbnail uploaded for video {}", videoId);
         return mapToVideoResponse(video);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public PageResponse<VideoResponse> getAllVideos(int page, int size, DifficultyLevel level,
+                                                    Long categoryId, String sort) {
+        Sort s = switch (sort == null ? "newest" : sort) {
+            case "oldest"   -> Sort.by("createdAt").ascending();
+            case "popular"  -> Sort.by("viewCount").descending();
+            case "shortest" -> Sort.by("durationSeconds").ascending();
+            case "longest"  -> Sort.by("durationSeconds").descending();
+            default         -> Sort.by("createdAt").descending();
+        };
+
+        Page<Video> videoPage = videoRepository.findFiltered(
+                VideoStatus.PUBLISHED, categoryId, level, PageRequest.of(page, size, s));
+        return mapToPageResponse(videoPage);
     }
 
     @Override
@@ -242,5 +264,12 @@ public class VideoServiceImpl implements VideoService {
         response.setThumbnailPath(fileStorageService.getFileUrl(video.getThumbnailPath()));
         response.setCommentCount(commentCount);
         return response;
+    }
+
+    private void applyCategory(Video video, Long categoryId) {
+        if (categoryId == null) return;   // null = leave unchanged
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new ResourceNotFoundException("Category", categoryId));
+        video.setCategory(category);
     }
 }

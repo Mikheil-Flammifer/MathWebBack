@@ -15,5 +15,9 @@ public interface VideoMapper {
     @Mapping(target = "uploadedBy",
             source = "uploadedBy")
     @Mapping(target = "commentCount", constant = "0L")
+    @Mapping(target = "categoryId", source = "category.id")
+    @Mapping(target = "categoryName", source = "category.name")
+    @Mapping(target = "parentCategoryId", source = "category.parent.id")
+    @Mapping(target = "parentCategoryName", source = "category.parent.name")
     VideoResponse toResponse(Video video);
 }

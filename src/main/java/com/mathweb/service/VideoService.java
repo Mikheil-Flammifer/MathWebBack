@@ -14,6 +14,7 @@ public interface VideoService {
     PageResponse<VideoResponse> searchVideos(String keyword, int page, int size);
     VideoResponse updateVideo(Long id, UpdateVideoRequest request, Long userId);
     VideoResponse uploadThumbnail(Long videoId, MultipartFile thumbnail, Long userId);
+    PageResponse<VideoResponse> getAllVideos(int page, int size, DifficultyLevel level, Long categoryId, String sort);
     void deleteVideo(Long id, Long userId);
     void incrementViewCount(Long id);
 }

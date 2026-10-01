@@ -20,4 +20,6 @@ public class VideoUploadRequest {
     private DifficultyLevel difficultyLevel;
 
     private Long questId;  // Optional — attach video to a quest
+
+    private Long categoryId;
 }

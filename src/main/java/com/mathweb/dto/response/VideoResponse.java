@@ -27,6 +27,10 @@ public class VideoResponse {
     private Long viewCount;
     private Long questId;
     private String questTitle;
+    private Long categoryId;
+    private String categoryName;
+    private Long parentCategoryId;
+    private String parentCategoryName;
     private UserResponse uploadedBy;
     private long commentCount;
     private LocalDateTime createdAt;

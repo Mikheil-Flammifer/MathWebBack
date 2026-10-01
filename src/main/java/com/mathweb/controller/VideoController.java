@@ -30,8 +30,11 @@ public class VideoController {
     public ResponseEntity<ApiResponse<PageResponse<VideoResponse>>> getAllVideos(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(required = false) DifficultyLevel level) {
-        PageResponse<VideoResponse> videos = videoService.getAllVideos(page, size, level);
+            @RequestParam(required = false) DifficultyLevel level,
+            @RequestParam(required = false) Long categoryId,
+            @RequestParam(defaultValue = "newest") String sort) {
+        PageResponse<VideoResponse> videos =
+                videoService.getAllVideos(page, size, level, categoryId, sort);
         return ResponseEntity.ok(ApiResponse.success("Videos retrieved", videos));
     }
 

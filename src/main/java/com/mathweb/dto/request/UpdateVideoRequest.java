@@ -19,4 +19,6 @@ public class UpdateVideoRequest {
     private VideoStatus status;
 
     private Long questId;
+
+    private Long categoryId;
 }
