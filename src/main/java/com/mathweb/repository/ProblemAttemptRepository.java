@@ -23,4 +23,8 @@ public interface ProblemAttemptRepository extends JpaRepository<ProblemAttempt, 
 
     @Query("SELECT SUM(pa.xpEarned) FROM ProblemAttempt pa WHERE pa.user.id = :userId")
     Long sumXpEarnedByUserId(Long userId);
+
+    @Query("SELECT pa.problem.id FROM ProblemAttempt pa " +
+            "WHERE pa.user.id = :userId AND pa.problem.quest.id = :questId AND pa.solved = true")
+    List<Long> findSolvedProblemIds(Long userId, Long questId);
 }

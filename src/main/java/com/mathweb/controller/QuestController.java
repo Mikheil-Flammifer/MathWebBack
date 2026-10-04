@@ -1,10 +1,13 @@
 package com.mathweb.controller;
 
 import com.mathweb.dto.request.CreateQuestRequest;
+import com.mathweb.dto.request.SaveQuestMapRequest;
 import com.mathweb.dto.response.ApiResponse;
+import com.mathweb.dto.response.QuestMapResponse;
 import com.mathweb.dto.response.QuestResponse;
 import com.mathweb.security.UserPrincipal;
 import com.mathweb.service.QuestService;
+import com.mathweb.service.impl.QuestMapService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,9 +22,11 @@ import java.util.List;
 public class QuestController {
 
     private final QuestService questService;
+    private final QuestMapService questMapService;
 
-    public QuestController(QuestService questService) {
+    public QuestController(QuestService questService, QuestMapService questMapService) {
         this.questService = questService;
+        this.questMapService = questMapService;
     }
 
     @GetMapping
@@ -41,6 +46,15 @@ public class QuestController {
         return ResponseEntity.ok(ApiResponse.success("Quest retrieved", quest));
     }
 
+    @GetMapping("/{id}/map")
+    public ResponseEntity<ApiResponse<QuestMapResponse>> getQuestMap(
+            @PathVariable Long id,
+            @AuthenticationPrincipal UserPrincipal principal) {
+        Long userId = principal != null ? principal.getId() : null;
+        return ResponseEntity.ok(ApiResponse.success("Quest map retrieved",
+                questMapService.getMap(id, userId)));
+    }
+
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER')")
     public ResponseEntity<ApiResponse<QuestResponse>> createQuest(
@@ -57,6 +71,15 @@ public class QuestController {
             @Valid @RequestBody CreateQuestRequest request) {
         QuestResponse quest = questService.updateQuest(id, request);
         return ResponseEntity.ok(ApiResponse.success("Quest updated", quest));
+    }
+
+    @PutMapping("/{id}/map")
+    @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER')")
+    public ResponseEntity<ApiResponse<QuestMapResponse>> saveQuestMap(
+            @PathVariable Long id,
+            @Valid @RequestBody SaveQuestMapRequest request) {
+        return ResponseEntity.ok(ApiResponse.success("Quest map saved",
+                questMapService.saveMap(id, request)));
     }
 
     @PostMapping("/{id}/publish")

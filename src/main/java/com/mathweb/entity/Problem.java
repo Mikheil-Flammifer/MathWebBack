@@ -52,7 +52,23 @@ public class Problem extends BaseEntity {
     @Builder.Default
     private Integer xpReward = 10;
 
+    @Column(name = "position_x")
+    private Integer positionX;
+
+    @Column(name = "position_y")
+    private Integer positionY;
+
+    @Column(name = "is_start", nullable = false)
+    @Builder.Default
+    private Boolean startNode = false;
+
+    @Column(name = "node_icon", length = 50)
+    private String nodeIcon;
+
     // ===== RELATIONS =====
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    private Category category;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "quest_id", nullable = false)

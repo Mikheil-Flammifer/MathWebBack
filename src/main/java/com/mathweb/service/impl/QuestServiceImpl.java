@@ -12,6 +12,7 @@ import com.mathweb.repository.QuestRepository;
 import com.mathweb.repository.UserQuestProgressRepository;
 import com.mathweb.repository.VideoRepository;
 import com.mathweb.service.QuestService;
+import com.mathweb.service.impl.QuestMapService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -25,15 +26,17 @@ public class QuestServiceImpl implements QuestService {
 
     private static final Logger log = LoggerFactory.getLogger(QuestServiceImpl.class);
 
+    private final QuestMapService questMapService;
     private final QuestRepository questRepository;
     private final UserQuestProgressRepository progressRepository;
     private final ProblemRepository problemRepository;
     private final VideoRepository videoRepository;
 
-    public QuestServiceImpl(QuestRepository questRepository,
+    public QuestServiceImpl(QuestMapService questMapService, QuestRepository questRepository,
                             UserQuestProgressRepository progressRepository,
                             ProblemRepository problemRepository,
                             VideoRepository videoRepository) {
+        this.questMapService = questMapService;
         this.questRepository = questRepository;
         this.progressRepository = progressRepository;
         this.problemRepository = problemRepository;
@@ -141,6 +144,7 @@ public class QuestServiceImpl implements QuestService {
     public void publishQuest(Long id) {
         Quest quest = questRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Quest", id));
+        questMapService.assertMapValid(id);
         quest.setPublished(true);
         questRepository.save(quest);
         log.info("Quest published: {}", id);

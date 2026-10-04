@@ -3,6 +3,8 @@ package com.mathweb.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "problem_attempts",
         uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "problem_id"}))
@@ -39,6 +41,9 @@ public class ProblemAttempt extends BaseEntity {
     @Column(name = "xp_earned")
     @Builder.Default
     private Integer xpEarned = 0;
+
+    @Column(name = "last_attempt_at")
+    private LocalDateTime lastAttemptAt;
 
     // ===== HELPERS =====
 
