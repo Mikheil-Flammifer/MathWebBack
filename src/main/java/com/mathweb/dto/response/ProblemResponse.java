@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -24,6 +25,11 @@ public class ProblemResponse {
     private Integer maxAttempts;
     private Integer xpReward;
     private Long questId;
+    private Long categoryId;
+    private String categoryName;
+    private Long mainCategoryId;
+    private String mainCategoryName;
+    private LocalDateTime retryAvailableAt;
 
     // Answer options for MULTIPLE_CHOICE (isCorrect hidden from student)
     private List<AnswerOptionResponse> answerOptions;

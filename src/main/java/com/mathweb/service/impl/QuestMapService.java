@@ -177,6 +177,32 @@ public class QuestMapService {
         return getMap(questId, null);
     }
 
+    /** Called right after a problem is created: put it on the map and link it. */
+    @Transactional
+    public void attachNewProblem(Problem added) {
+        Long questId = added.getQuest().getId();
+        List<Problem> others = problemRepository.findByQuestIdOrderByOrderIndexAsc(questId).stream()
+                .filter(p -> !p.getId().equals(added.getId()))
+                .sorted(Comparator.comparing(Problem::getOrderIndex).thenComparing(Problem::getId))
+                .toList();
+
+        if (others.isEmpty()) {
+            added.setStartNode(true);
+            added.setPositionX(100);
+            added.setPositionY(200);
+        } else {
+            Problem prev = others.get(others.size() - 1);
+            added.setPositionX((prev.getPositionX() != null ? prev.getPositionX() : 100) + 160);
+            added.setPositionY(prev.getPositionY() != null ? prev.getPositionY() : 200);
+            linkRepository.save(ProblemLink.builder()
+                    .questId(questId)
+                    .problemAId(Math.min(prev.getId(), added.getId()))
+                    .problemBId(Math.max(prev.getId(), added.getId()))
+                    .build());
+        }
+        problemRepository.save(added);
+    }
+
     /** Called before publishing: every problem must be reachable from a start node. */
     @Transactional(readOnly = true)
     public void assertMapValid(Long questId) {
@@ -191,22 +217,13 @@ public class QuestMapService {
     // ===== COOLDOWN HELPERS =====
 
     /** Non-null only while the player is locked out after using all attempts. */
+    /** No cooldown anymore: attempts are unlimited. */
     public LocalDateTime retryAvailableAt(ProblemAttempt a) {
-        if (a == null || Boolean.TRUE.equals(a.getSolved())
-                || a.getAttemptsUsed() < a.getProblem().getMaxAttempts()
-                || a.getLastAttemptAt() == null) {
-            return null;
-        }
-        LocalDateTime t = a.getLastAttemptAt().plusMinutes(retryCooldownMinutes);
-        return t.isAfter(LocalDateTime.now()) ? t : null;
+        return null;
     }
 
-    /** Attempts shown to the player: reset to 0 once the cooldown has passed. */
     public int effectiveAttemptsUsed(ProblemAttempt a) {
-        if (a == null) return 0;
-        boolean exhausted = !Boolean.TRUE.equals(a.getSolved())
-                && a.getAttemptsUsed() >= a.getProblem().getMaxAttempts();
-        return (exhausted && retryAvailableAt(a) == null) ? 0 : a.getAttemptsUsed();
+        return a == null ? 0 : a.getAttemptsUsed();
     }
 
     // ===== PRIVATE =====

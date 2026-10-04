@@ -2,6 +2,7 @@ package com.mathweb.controller;
 
 import com.mathweb.dto.request.CreateProblemRequest;
 import com.mathweb.dto.request.SubmitAnswerRequest;
+import com.mathweb.dto.request.UpdateProblemRequest;
 import com.mathweb.dto.response.AnswerResultResponse;
 import com.mathweb.dto.response.ApiResponse;
 import com.mathweb.dto.response.ProblemResponse;
@@ -84,6 +85,15 @@ public class ProblemController {
                 problemService.uploadExplanationImage(id, image);
         return ResponseEntity.ok(
                 ApiResponse.success("Explanation image uploaded", problem));
+    }
+
+    @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER')")
+    public ResponseEntity<ApiResponse<ProblemResponse>> updateProblem(
+            @PathVariable Long id,
+            @Valid @RequestBody UpdateProblemRequest request) {
+        return ResponseEntity.ok(ApiResponse.success("Problem updated",
+                problemService.updateProblem(id, request)));
     }
 
     @DeleteMapping("/{id}")

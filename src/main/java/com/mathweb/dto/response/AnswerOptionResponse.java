@@ -15,6 +15,7 @@ public class AnswerOptionResponse {
     private String optionText;
     private String optionImagePath;
     private Integer orderIndex;
+    private Boolean isCorrect;
     // isCorrect is intentionally NOT included here
     // It is only revealed after attempts are exhausted
 }

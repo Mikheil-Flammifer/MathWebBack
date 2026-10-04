@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -20,4 +22,5 @@ public class AnswerResultResponse {
     private String explanationImagePath;
     private Integer xpEarned;         // only populated when correct = true
     private Boolean questCompleted;   // true if this was the last problem in the quest
+    private LocalDateTime retryAvailableAt;
 }

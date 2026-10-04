@@ -100,7 +100,7 @@
                 <authState>
                   <option name="bearer">
                     <pF>
-                      <option name="token" value="eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJtaWtlc2ltb25pc2h2aWxpMjNAZ21haWwuY29tIiwiaWF0IjoxNzkwNjgzMTI1LCJleHAiOjE3OTA3Njk1MjV9.5Q5CRotcijY6v-x_P5a0PmALHPNn6ptomQQgEdTAkvSm6aHmNvZ-RZRk1CmvX94e" />
+                      <option name="token" value="eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJtaWtlc2ltb25pc2h2aWxpMjNAZ21haWwuY29tIiwiaWF0IjoxNzkxMTM4NzYzLCJleHAiOjE3OTEyMjUxNjN9.JNSIceil_-PSib0EyC-exmphz7633hYPUEksgHvl3yt0dyRhfmmajVOivCyU5tMQ" />
                     </pF>
                   </option>
                   <option name="type" value="BEARER" />
@@ -108,7 +108,7 @@
               </option>
               <option name="body">
                 <bodyState>
-                  <option name="raw" value="{&#10;  &quot;title&quot;: &quot;Perimeter &amp; Area&quot;,&#10;  &quot;description&quot;: &quot;Measure shapes.&quot;,&#10;  &quot;difficultyLevel&quot;: &quot;LEVEL_2_ELEMENTARY&quot;,&#10;  &quot;xpReward&quot;: 150,&#10;  &quot;positionX&quot;: 300,&#10;  &quot;positionY&quot;: 450,&#10;  &quot;prerequisiteIds&quot;: [1, 2]&#10;}" />
+                  <option name="raw" value="{ &quot;title&quot;: &quot;Test Island&quot;, &quot;difficultyLevel&quot;: &quot;LEVEL_1_BEGINNER&quot;, &quot;xpReward&quot;: 50 }" />
                   <option name="type" value="JSON" />
                 </bodyState>
               </option>
@@ -122,7 +122,7 @@
                 <authState>
                   <option name="bearer">
                     <pF>
-                      <option name="token" value="eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJtaWtlc2ltb25pc2h2aWxpMjNAZ21haWwuY29tIiwiaWF0IjoxNzkwNTA0NTM1LCJleHAiOjE3OTA1OTA5MzV9.TrOshNod1R9Lc2Zia4kdAaABKfePnbyz77e0e_guKCdUrmZxdc6XbauIS0GDhN8y" />
+                      <option name="token" value="eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJtaWtlc2ltb25pc2h2aWxpMjNAZ21haWwuY29tIiwiaWF0IjoxNzkxMTM4NzYzLCJleHAiOjE3OTEyMjUxNjN9.JNSIceil_-PSib0EyC-exmphz7633hYPUEksgHvl3yt0dyRhfmmajVOivCyU5tMQ" />
                     </pF>
                   </option>
                   <option name="type" value="BEARER" />
@@ -130,14 +130,14 @@
               </option>
               <option name="body">
                 <bodyState>
-                  <option name="raw" value="{&#10;  &quot;questId&quot;: 1,&#10;  &quot;questionText&quot;: &quot;What is 2 + 2?&quot;,&#10;  &quot;problemType&quot;: &quot;MULTIPLE_CHOICE&quot;,&#10;  &quot;difficultyLevel&quot;: &quot;LEVEL_1_BEGINNER&quot;,&#10;  &quot;explanation&quot;: &quot;Basic addition&quot;,&#10;  &quot;orderIndex&quot;: 1,&#10;  &quot;xpReward&quot;: 10,&#10;  &quot;answerOptions&quot;: [&#10;    { &quot;optionText&quot;: &quot;3&quot;, &quot;isCorrect&quot;: false, &quot;orderIndex&quot;: 0 },&#10;    { &quot;optionText&quot;: &quot;4&quot;, &quot;isCorrect&quot;: true, &quot;orderIndex&quot;: 1 },&#10;    { &quot;optionText&quot;: &quot;5&quot;, &quot;isCorrect&quot;: false, &quot;orderIndex&quot;: 2 },&#10;    { &quot;optionText&quot;: &quot;6&quot;, &quot;isCorrect&quot;: false, &quot;orderIndex&quot;: 3 }&#10;  ]&#10;}" />
+                  <option name="raw" value="{&#10;  &quot;questId&quot;: 5,&#10;  &quot;questionText&quot;: &quot;A rectangle has a length of 8 cm and a width of 5 cm. What is its perimeter in cm?&quot;,&#10;  &quot;problemType&quot;: &quot;OPEN_ANSWER&quot;,&#10;  &quot;difficultyLevel&quot;: &quot;LEVEL_1_BEGINNER&quot;,&#10;  &quot;correctAnswer&quot;: &quot;26&quot;,&#10;  &quot;explanation&quot;: &quot;Perimeter = 2 x (8 + 5) = 26.&quot;,&#10;  &quot;xpReward&quot;: 20,&#10;  &quot;orderIndex&quot;: 5,&#10;  &quot;categoryId&quot;: 2&#10;}" />
                   <option name="type" value="JSON" />
                 </bodyState>
               </option>
               <option name="id" value="ace6f298-58c8-47f7-92e2-62ee2aad4bfd" />
               <option name="method" value="POST" />
               <option name="name" value="create problem" />
-              <option name="url" value="POST http://localhost:8080/api/problems" />
+              <option name="url" value="http://localhost:8080/api/problems" />
             </requestState>
             <requestState>
               <option name="auth">
@@ -303,6 +303,28 @@
               <option name="method" value="POST" />
               <option name="name" value="upload video" />
               <option name="url" value="http://localhost:8080/api/videos/upload" />
+            </requestState>
+            <requestState>
+              <option name="auth">
+                <authState>
+                  <option name="bearer">
+                    <pF>
+                      <option name="token" value="eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJtaWtlc2ltb25pc2h2aWxpMjNAZ21haWwuY29tIiwiaWF0IjoxNzkxMTM4NzYzLCJleHAiOjE3OTEyMjUxNjN9.JNSIceil_-PSib0EyC-exmphz7633hYPUEksgHvl3yt0dyRhfmmajVOivCyU5tMQ" />
+                    </pF>
+                  </option>
+                  <option name="type" value="BEARER" />
+                </authState>
+              </option>
+              <option name="body">
+                <bodyState>
+                  <option name="raw" value="{&#10;  &quot;nodes&quot;: [&#10;    { &quot;problemId&quot;: 2, &quot;x&quot;: 100, &quot;y&quot;: 200, &quot;start&quot;: true },&#10;    { &quot;problemId&quot;: 3, &quot;x&quot;: 260, &quot;y&quot;: 200 },&#10;    { &quot;problemId&quot;: 4, &quot;x&quot;: 420, &quot;y&quot;: 120 },&#10;    { &quot;problemId&quot;: 5, &quot;x&quot;: 420, &quot;y&quot;: 280 },&#10;    { &quot;problemId&quot;: 6, &quot;x&quot;: 580, &quot;y&quot;: 280 },&#10;    { &quot;problemId&quot;: 7, &quot;x&quot;: 740, &quot;y&quot;: 280 }&#10;  ],&#10;  &quot;edges&quot;: [&#10;    { &quot;from&quot;: 2, &quot;to&quot;: 3 },&#10;    { &quot;from&quot;: 3, &quot;to&quot;: 4 },&#10;    { &quot;from&quot;: 3, &quot;to&quot;: 5 },&#10;    { &quot;from&quot;: 5, &quot;to&quot;: 6 },&#10;    { &quot;from&quot;: 6, &quot;to&quot;: 7 }&#10;  ]&#10;}" />
+                  <option name="type" value="JSON" />
+                </bodyState>
+              </option>
+              <option name="id" value="ee5ae20f-d16e-4cbf-94a2-ed8ed2ab717f" />
+              <option name="method" value="PUT" />
+              <option name="name" value="make nodes graph for map" />
+              <option name="url" value="http://localhost:8080/api/quests/5/map" />
             </requestState>
           </list>
         </option>

@@ -1340,100 +1340,6 @@
           <option name="workspaceId" value="drafts" />
         </requestHistoryState>
         <requestHistoryState>
-          <option name="dateTime" value="1790438884364" />
-          <option name="id" value="4d063fcc-84e0-4a1b-8bf8-400517a974a1" />
-          <option name="request">
-            <requestState>
-              <option name="body">
-                <bodyState>
-                  <option name="raw" value="{&#10;  &quot;email&quot;: &quot;msimo18@freeuni.edu.ge&quot;,&#10;  &quot;password&quot;: &quot;Admin234!&quot;&#10;}" />
-                  <option name="type" value="JSON" />
-                </bodyState>
-              </option>
-              <option name="id" value="245c8a98-bfa3-48ef-a74d-e63ad412a321" />
-              <option name="method" value="POST" />
-              <option name="name" value="login" />
-              <option name="url" value=" http://localhost:8080/api/auth/login" />
-            </requestState>
-          </option>
-          <option name="response">
-            <responseState>
-              <option name="bodyBytesBase64" value="eyJzdWNjZXNzIjpmYWxzZSwibWVzc2FnZSI6IkludmFsaWQgZW1haWwgb3IgcGFzc3dvcmQifQ==" />
-              <option name="bodyString" value="{&#10;  &quot;success&quot;: false,&#10;  &quot;message&quot;: &quot;Invalid email or password&quot;&#10;}" />
-              <option name="code" value="401" />
-              <option name="connectionEstablishingTime" value="9" />
-              <option name="contentType" value="application/json" />
-              <option name="headers">
-                <list>
-                  <headerState>
-                    <option name="key" value="Vary" />
-                    <option name="value" value="Origin" />
-                  </headerState>
-                  <headerState>
-                    <option name="key" value="Vary" />
-                    <option name="value" value="Access-Control-Request-Method" />
-                  </headerState>
-                  <headerState>
-                    <option name="key" value="Vary" />
-                    <option name="value" value="Access-Control-Request-Headers" />
-                  </headerState>
-                  <headerState>
-                    <option name="key" value="X-Content-Type-Options" />
-                    <option name="value" value="nosniff" />
-                  </headerState>
-                  <headerState>
-                    <option name="key" value="X-XSS-Protection" />
-                    <option name="value" value="0" />
-                  </headerState>
-                  <headerState>
-                    <option name="key" value="Cache-Control" />
-                    <option name="value" value="no-cache, no-store, max-age=0, must-revalidate" />
-                  </headerState>
-                  <headerState>
-                    <option name="key" value="Pragma" />
-                    <option name="value" value="no-cache" />
-                  </headerState>
-                  <headerState>
-                    <option name="key" value="Expires" />
-                    <option name="value" value="0" />
-                  </headerState>
-                  <headerState>
-                    <option name="key" value="X-Frame-Options" />
-                    <option name="value" value="DENY" />
-                  </headerState>
-                  <headerState>
-                    <option name="key" value="Content-Type" />
-                    <option name="value" value="application/json" />
-                  </headerState>
-                  <headerState>
-                    <option name="key" value="Transfer-Encoding" />
-                    <option name="value" value="chunked" />
-                  </headerState>
-                  <headerState>
-                    <option name="key" value="Date" />
-                    <option name="value" value="Sat, 26 Sep 2026 16:08:04 GMT" />
-                  </headerState>
-                  <headerState>
-                    <option name="key" value="Keep-Alive" />
-                    <option name="value" value="timeout=60" />
-                  </headerState>
-                  <headerState>
-                    <option name="key" value="Connection" />
-                    <option name="value" value="keep-alive" />
-                  </headerState>
-                </list>
-              </option>
-              <option name="id" value="4d063fcc-84e0-4a1b-8bf8-400517a974a1" />
-              <option name="message" value="Unauthorized" />
-              <option name="prettyResponseType" value="JSON" />
-              <option name="rawBodyString" value="{&quot;success&quot;:false,&quot;message&quot;:&quot;Invalid email or password&quot;}" />
-              <option name="size" value="55" />
-              <option name="time" value="226" />
-            </responseState>
-          </option>
-          <option name="workspaceId" value="drafts" />
-        </requestHistoryState>
-        <requestHistoryState>
           <option name="dateTime" value="1790439185951" />
           <option name="id" value="28532275-0343-42fa-bb1f-743586af9612" />
           <option name="request">
@@ -7151,6 +7057,1438 @@
               <option name="rawBodyString" value="{&quot;success&quot;:true,&quot;message&quot;:&quot;Video retrieved&quot;,&quot;data&quot;:{&quot;id&quot;:5,&quot;title&quot;:&quot;Introduction to Counting&quot;,&quot;description&quot;:&quot;First steps with numbers.&quot;,&quot;filePath&quot;:&quot;http://localhost:8080/uploads/videos/7d30604c-f5c8-4703-bf29-55de224db401.mp4&quot;,&quot;thumbnailPath&quot;:null,&quot;durationSeconds&quot;:10,&quot;fileSizeBytes&quot;:1716435,&quot;status&quot;:&quot;PUBLISHED&quot;,&quot;difficultyLevel&quot;:&quot;LEVEL_1_BEGINNER&quot;,&quot;viewCount&quot;:1,&quot;questId&quot;:null,&quot;questTitle&quot;:null,&quot;uploadedBy&quot;:{&quot;id&quot;:3,&quot;firstName&quot;:&quot;Mikheil&quot;,&quot;lastName&quot;:&quot;Simonishvili&quot;,&quot;email&quot;:&quot;mikesimonishvili23@gmail.com&quot;,&quot;role&quot;:&quot;ADMIN&quot;,&quot;emailVerified&quot;:true,&quot;active&quot;:true,&quot;avatarUrl&quot;:null,&quot;hasActiveSubscription&quot;:false,&quot;createdAt&quot;:&quot;2026-09-26T20:16:36.940326&quot;},&quot;commentCount&quot;:0,&quot;createdAt&quot;:&quot;2026-10-01T11:53:19.591126&quot;,&quot;updatedAt&quot;:&quot;2026-10-01T11:53:19.591126&quot;}}" />
               <option name="size" value="745" />
               <option name="time" value="32" />
+            </responseState>
+          </option>
+          <option name="workspaceId" value="drafts" />
+        </requestHistoryState>
+        <requestHistoryState>
+          <option name="dateTime" value="1791138757148" />
+          <option name="id" value="75ef5bd3-ae38-4d0d-96eb-7f2286ac8f38" />
+          <option name="request">
+            <requestState>
+              <option name="auth">
+                <authState>
+                  <option name="bearer">
+                    <pF>
+                      <option name="token" value="eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJtaWtlc2ltb25pc2h2aWxpMjNAZ21haWwuY29tIiwiaWF0IjoxNzkwNjgzMTI1LCJleHAiOjE3OTA3Njk1MjV9.5Q5CRotcijY6v-x_P5a0PmALHPNn6ptomQQgEdTAkvSm6aHmNvZ-RZRk1CmvX94e" />
+                    </pF>
+                  </option>
+                  <option name="type" value="BEARER" />
+                </authState>
+              </option>
+              <option name="body">
+                <bodyState>
+                  <option name="raw" value="{ &quot;title&quot;: &quot;Test Island&quot;, &quot;difficultyLevel&quot;: &quot;LEVEL_1_BEGINNER&quot;, &quot;xpReward&quot;: 50 }" />
+                  <option name="type" value="JSON" />
+                </bodyState>
+              </option>
+              <option name="id" value="6e4e3aab-d1a5-4e05-84d0-65990f8e8e20" />
+              <option name="method" value="POST" />
+              <option name="name" value="create quest" />
+              <option name="url" value="http://localhost:8080/api/quests" />
+            </requestState>
+          </option>
+          <option name="response">
+            <responseState>
+              <option name="bodyBytesBase64" value="eyJzdWNjZXNzIjpmYWxzZSwibWVzc2FnZSI6IlVuYXV0aG9yaXplZDogRnVsbCBhdXRoZW50aWNhdGlvbiBpcyByZXF1aXJlZCB0byBhY2Nlc3MgdGhpcyByZXNvdXJjZSJ9" />
+              <option name="bodyString" value="{&#10;  &quot;success&quot;: false,&#10;  &quot;message&quot;: &quot;Unauthorized: Full authentication is required to access this resource&quot;&#10;}" />
+              <option name="code" value="401" />
+              <option name="connectionEstablishingTime" value="222" />
+              <option name="contentType" value="application/json; charset=ISO-8859-1" />
+              <option name="headers">
+                <list>
+                  <headerState>
+                    <option name="key" value="Vary" />
+                    <option name="value" value="Origin" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Vary" />
+                    <option name="value" value="Access-Control-Request-Method" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Vary" />
+                    <option name="value" value="Access-Control-Request-Headers" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-Content-Type-Options" />
+                    <option name="value" value="nosniff" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-XSS-Protection" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Cache-Control" />
+                    <option name="value" value="no-cache, no-store, max-age=0, must-revalidate" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Pragma" />
+                    <option name="value" value="no-cache" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Expires" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-Frame-Options" />
+                    <option name="value" value="DENY" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Content-Type" />
+                    <option name="value" value="application/json;charset=ISO-8859-1" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Content-Length" />
+                    <option name="value" value="99" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Date" />
+                    <option name="value" value="Sun, 04 Oct 2026 18:32:37 GMT" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Keep-Alive" />
+                    <option name="value" value="timeout=60" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Connection" />
+                    <option name="value" value="keep-alive" />
+                  </headerState>
+                </list>
+              </option>
+              <option name="id" value="75ef5bd3-ae38-4d0d-96eb-7f2286ac8f38" />
+              <option name="message" value="Unauthorized" />
+              <option name="prettyResponseType" value="JSON" />
+              <option name="rawBodyString" value="{&quot;success&quot;:false,&quot;message&quot;:&quot;Unauthorized: Full authentication is required to access this resource&quot;}" />
+              <option name="size" value="99" />
+              <option name="time" value="242" />
+            </responseState>
+          </option>
+          <option name="workspaceId" value="drafts" />
+        </requestHistoryState>
+        <requestHistoryState>
+          <option name="dateTime" value="1791138764148" />
+          <option name="id" value="4d21b9aa-8fc2-4bce-b934-989be96e158f" />
+          <option name="request">
+            <requestState>
+              <option name="body">
+                <bodyState>
+                  <option name="raw" value="{&#10; /** &quot;email&quot;: &quot;msimo18@freeuni.edu.ge&quot;,&#10;  &quot;password&quot;: &quot;Admin1234!&quot;*/&#10;  &quot;email&quot;: &quot;mikesimonishvili23@gmail.com&quot;,&#10;  &quot;password&quot;: &quot;Admin@2000!&quot;&#10;}" />
+                  <option name="type" value="JSON" />
+                </bodyState>
+              </option>
+              <option name="id" value="245c8a98-bfa3-48ef-a74d-e63ad412a321" />
+              <option name="method" value="POST" />
+              <option name="name" value="login" />
+              <option name="url" value=" http://localhost:8080/api/auth/login" />
+            </requestState>
+          </option>
+          <option name="response">
+            <responseState>
+              <option name="bodyBytesBase64" value="eyJzdWNjZXNzIjp0cnVlLCJtZXNzYWdlIjoiTG9naW4gc3VjY2Vzc2Z1bCIsImRhdGEiOnsiYWNjZXNzVG9rZW4iOiJleUpoYkdjaU9pSklVek00TkNKOS5leUp6ZFdJaU9pSXpJaXdpWlcxaGFXd2lPaUp0YVd0bGMybHRiMjVwYzJoMmFXeHBNak5BWjIxaGFXd3VZMjl0SWl3aWFXRjBJam94TnpreE1UTTROell6TENKbGVIQWlPakUzT1RFeU1qVXhOak45LkpOU0ljZWlsXy1QU2liMEV5Qy1leG1waHo3NjMzaFlQVUVrc2dIdmwzeXQwZHlSaGZtbWFqVk9pdkN5VTV0TVEiLCJyZWZyZXNoVG9rZW4iOiJleUpoYkdjaU9pSklVek00TkNKOS5leUp6ZFdJaU9pSXpJaXdpWlcxaGFXd2lPaUp0YVd0bGMybHRiMjVwYzJoMmFXeHBNak5BWjIxaGFXd3VZMjl0SWl3aWFXRjBJam94TnpreE1UTTROelkwTENKbGVIQWlPakUzT1RFM05ETTFOalI5LmE1WVBBSDVLeklCU1YxR1hkNEtfWkRLQ01MYmNtby1BcG8ycnltTl84d1JacTNkTzBLOFE1ZDhPQ0FiOUdscUsiLCJ0b2tlblR5cGUiOiJCZWFyZXIiLCJ1c2VyIjp7ImlkIjozLCJmaXJzdE5hbWUiOiJNaWtoZWlsIiwibGFzdE5hbWUiOiJTaW1vbmlzaHZpbGkiLCJlbWFpbCI6Im1pa2VzaW1vbmlzaHZpbGkyM0BnbWFpbC5jb20iLCJyb2xlIjoiQURNSU4iLCJlbWFpbFZlcmlmaWVkIjp0cnVlLCJhY3RpdmUiOnRydWUsImF2YXRhclVybCI6bnVsbCwiaGFzQWN0aXZlU3Vic2NyaXB0aW9uIjpmYWxzZSwiY3JlYXRlZEF0IjoiMjAyNi0wOS0yNlQyMDoxNjozNi45NDAzMjYifX19" />
+              <option name="bodyString" value="{&#10;  &quot;success&quot;: true,&#10;  &quot;message&quot;: &quot;Login successful&quot;,&#10;  &quot;data&quot;: {&#10;    &quot;accessToken&quot;: &quot;eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJtaWtlc2ltb25pc2h2aWxpMjNAZ21haWwuY29tIiwiaWF0IjoxNzkxMTM4NzYzLCJleHAiOjE3OTEyMjUxNjN9.JNSIceil_-PSib0EyC-exmphz7633hYPUEksgHvl3yt0dyRhfmmajVOivCyU5tMQ&quot;,&#10;    &quot;refreshToken&quot;: &quot;eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJtaWtlc2ltb25pc2h2aWxpMjNAZ21haWwuY29tIiwiaWF0IjoxNzkxMTM4NzY0LCJleHAiOjE3OTE3NDM1NjR9.a5YPAH5KzIBSV1GXd4K_ZDKCMLbcmo-Apo2rymN_8wRZq3dO0K8Q5d8OCAb9GlqK&quot;,&#10;    &quot;tokenType&quot;: &quot;Bearer&quot;,&#10;    &quot;user&quot;: {&#10;      &quot;id&quot;: 3,&#10;      &quot;firstName&quot;: &quot;Mikheil&quot;,&#10;      &quot;lastName&quot;: &quot;Simonishvili&quot;,&#10;      &quot;email&quot;: &quot;mikesimonishvili23@gmail.com&quot;,&#10;      &quot;role&quot;: &quot;ADMIN&quot;,&#10;      &quot;emailVerified&quot;: true,&#10;      &quot;active&quot;: true,&#10;      &quot;avatarUrl&quot;: null,&#10;      &quot;hasActiveSubscription&quot;: false,&#10;      &quot;createdAt&quot;: &quot;2026-09-26T20:16:36.940326&quot;&#10;    }&#10;  }&#10;}" />
+              <option name="code" value="200" />
+              <option name="connectionEstablishingTime" value="1" />
+              <option name="contentType" value="application/json" />
+              <option name="headers">
+                <list>
+                  <headerState>
+                    <option name="key" value="Vary" />
+                    <option name="value" value="Origin" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Vary" />
+                    <option name="value" value="Access-Control-Request-Method" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Vary" />
+                    <option name="value" value="Access-Control-Request-Headers" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-Content-Type-Options" />
+                    <option name="value" value="nosniff" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-XSS-Protection" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Cache-Control" />
+                    <option name="value" value="no-cache, no-store, max-age=0, must-revalidate" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Pragma" />
+                    <option name="value" value="no-cache" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Expires" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-Frame-Options" />
+                    <option name="value" value="DENY" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Content-Type" />
+                    <option name="value" value="application/json" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Transfer-Encoding" />
+                    <option name="value" value="chunked" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Date" />
+                    <option name="value" value="Sun, 04 Oct 2026 18:32:44 GMT" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Keep-Alive" />
+                    <option name="value" value="timeout=60" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Connection" />
+                    <option name="value" value="keep-alive" />
+                  </headerState>
+                </list>
+              </option>
+              <option name="id" value="4d21b9aa-8fc2-4bce-b934-989be96e158f" />
+              <option name="message" value="OK" />
+              <option name="prettyResponseType" value="JSON" />
+              <option name="rawBodyString" value="{&quot;success&quot;:true,&quot;message&quot;:&quot;Login successful&quot;,&quot;data&quot;:{&quot;accessToken&quot;:&quot;eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJtaWtlc2ltb25pc2h2aWxpMjNAZ21haWwuY29tIiwiaWF0IjoxNzkxMTM4NzYzLCJleHAiOjE3OTEyMjUxNjN9.JNSIceil_-PSib0EyC-exmphz7633hYPUEksgHvl3yt0dyRhfmmajVOivCyU5tMQ&quot;,&quot;refreshToken&quot;:&quot;eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJtaWtlc2ltb25pc2h2aWxpMjNAZ21haWwuY29tIiwiaWF0IjoxNzkxMTM4NzY0LCJleHAiOjE3OTE3NDM1NjR9.a5YPAH5KzIBSV1GXd4K_ZDKCMLbcmo-Apo2rymN_8wRZq3dO0K8Q5d8OCAb9GlqK&quot;,&quot;tokenType&quot;:&quot;Bearer&quot;,&quot;user&quot;:{&quot;id&quot;:3,&quot;firstName&quot;:&quot;Mikheil&quot;,&quot;lastName&quot;:&quot;Simonishvili&quot;,&quot;email&quot;:&quot;mikesimonishvili23@gmail.com&quot;,&quot;role&quot;:&quot;ADMIN&quot;,&quot;emailVerified&quot;:true,&quot;active&quot;:true,&quot;avatarUrl&quot;:null,&quot;hasActiveSubscription&quot;:false,&quot;createdAt&quot;:&quot;2026-09-26T20:16:36.940326&quot;}}}" />
+              <option name="size" value="747" />
+              <option name="time" value="464" />
+            </responseState>
+          </option>
+          <option name="workspaceId" value="drafts" />
+        </requestHistoryState>
+        <requestHistoryState>
+          <option name="dateTime" value="1791138793191" />
+          <option name="id" value="38fb3fed-30e3-4250-8945-7ffea6a97960" />
+          <option name="request">
+            <requestState>
+              <option name="auth">
+                <authState>
+                  <option name="bearer">
+                    <pF>
+                      <option name="token" value="eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJtaWtlc2ltb25pc2h2aWxpMjNAZ21haWwuY29tIiwiaWF0IjoxNzkxMTM4NzYzLCJleHAiOjE3OTEyMjUxNjN9.JNSIceil_-PSib0EyC-exmphz7633hYPUEksgHvl3yt0dyRhfmmajVOivCyU5tMQ" />
+                    </pF>
+                  </option>
+                  <option name="type" value="BEARER" />
+                </authState>
+              </option>
+              <option name="body">
+                <bodyState>
+                  <option name="raw" value="{ &quot;title&quot;: &quot;Test Island&quot;, &quot;difficultyLevel&quot;: &quot;LEVEL_1_BEGINNER&quot;, &quot;xpReward&quot;: 50 }" />
+                  <option name="type" value="JSON" />
+                </bodyState>
+              </option>
+              <option name="id" value="6e4e3aab-d1a5-4e05-84d0-65990f8e8e20" />
+              <option name="method" value="POST" />
+              <option name="name" value="create quest" />
+              <option name="url" value="http://localhost:8080/api/quests" />
+            </requestState>
+          </option>
+          <option name="response">
+            <responseState>
+              <option name="bodyBytesBase64" value="eyJzdWNjZXNzIjp0cnVlLCJtZXNzYWdlIjoiUXVlc3QgY3JlYXRlZCIsImRhdGEiOnsiaWQiOjUsInRpdGxlIjoiVGVzdCBJc2xhbmQiLCJkZXNjcmlwdGlvbiI6bnVsbCwiaWNvblVybCI6bnVsbCwiZGlmZmljdWx0eUxldmVsIjoiTEVWRUxfMV9CRUdJTk5FUiIsInBvc2l0aW9uWCI6bnVsbCwicG9zaXRpb25ZIjpudWxsLCJwdWJsaXNoZWQiOmZhbHNlLCJ4cFJld2FyZCI6NTAsInByZXJlcXVpc2l0ZUlkcyI6W10sImRlcGVuZGVudElkcyI6W10sInRvdGFsUHJvYmxlbXMiOjAsInRvdGFsVmlkZW9zIjowLCJ1c2VyU3RhdHVzIjpudWxsLCJ1c2VyUHJvYmxlbXNTb2x2ZWQiOm51bGwsInVzZXJQcm9ncmVzc1BlcmNlbnRhZ2UiOm51bGwsImNyZWF0ZWRBdCI6IjIwMjYtMTAtMDRUMjI6MzM6MTMuMTY4MzgwMiJ9fQ==" />
+              <option name="bodyString" value="{&#10;  &quot;success&quot;: true,&#10;  &quot;message&quot;: &quot;Quest created&quot;,&#10;  &quot;data&quot;: {&#10;    &quot;id&quot;: 5,&#10;    &quot;title&quot;: &quot;Test Island&quot;,&#10;    &quot;description&quot;: null,&#10;    &quot;iconUrl&quot;: null,&#10;    &quot;difficultyLevel&quot;: &quot;LEVEL_1_BEGINNER&quot;,&#10;    &quot;positionX&quot;: null,&#10;    &quot;positionY&quot;: null,&#10;    &quot;published&quot;: false,&#10;    &quot;xpReward&quot;: 50,&#10;    &quot;prerequisiteIds&quot;: [],&#10;    &quot;dependentIds&quot;: [],&#10;    &quot;totalProblems&quot;: 0,&#10;    &quot;totalVideos&quot;: 0,&#10;    &quot;userStatus&quot;: null,&#10;    &quot;userProblemsSolved&quot;: null,&#10;    &quot;userProgressPercentage&quot;: null,&#10;    &quot;createdAt&quot;: &quot;2026-10-04T22:33:13.1683802&quot;&#10;  }&#10;}" />
+              <option name="code" value="201" />
+              <option name="contentType" value="application/json" />
+              <option name="headers">
+                <list>
+                  <headerState>
+                    <option name="key" value="Vary" />
+                    <option name="value" value="Origin" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Vary" />
+                    <option name="value" value="Access-Control-Request-Method" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Vary" />
+                    <option name="value" value="Access-Control-Request-Headers" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-Content-Type-Options" />
+                    <option name="value" value="nosniff" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-XSS-Protection" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Cache-Control" />
+                    <option name="value" value="no-cache, no-store, max-age=0, must-revalidate" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Pragma" />
+                    <option name="value" value="no-cache" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Expires" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-Frame-Options" />
+                    <option name="value" value="DENY" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Content-Type" />
+                    <option name="value" value="application/json" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Transfer-Encoding" />
+                    <option name="value" value="chunked" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Date" />
+                    <option name="value" value="Sun, 04 Oct 2026 18:33:13 GMT" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Keep-Alive" />
+                    <option name="value" value="timeout=60" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Connection" />
+                    <option name="value" value="keep-alive" />
+                  </headerState>
+                </list>
+              </option>
+              <option name="id" value="38fb3fed-30e3-4250-8945-7ffea6a97960" />
+              <option name="message" value="Created" />
+              <option name="prettyResponseType" value="JSON" />
+              <option name="rawBodyString" value="{&quot;success&quot;:true,&quot;message&quot;:&quot;Quest created&quot;,&quot;data&quot;:{&quot;id&quot;:5,&quot;title&quot;:&quot;Test Island&quot;,&quot;description&quot;:null,&quot;iconUrl&quot;:null,&quot;difficultyLevel&quot;:&quot;LEVEL_1_BEGINNER&quot;,&quot;positionX&quot;:null,&quot;positionY&quot;:null,&quot;published&quot;:false,&quot;xpReward&quot;:50,&quot;prerequisiteIds&quot;:[],&quot;dependentIds&quot;:[],&quot;totalProblems&quot;:0,&quot;totalVideos&quot;:0,&quot;userStatus&quot;:null,&quot;userProblemsSolved&quot;:null,&quot;userProgressPercentage&quot;:null,&quot;createdAt&quot;:&quot;2026-10-04T22:33:13.1683802&quot;}}" />
+              <option name="size" value="406" />
+              <option name="time" value="101" />
+            </responseState>
+          </option>
+          <option name="workspaceId" value="drafts" />
+        </requestHistoryState>
+        <requestHistoryState>
+          <option name="dateTime" value="1791138893987" />
+          <option name="id" value="33d1696e-c41b-4a4b-a4f4-e1ecefdc8f55" />
+          <option name="request">
+            <requestState>
+              <option name="auth">
+                <authState>
+                  <option name="bearer">
+                    <pF>
+                      <option name="token" value="eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJtaWtlc2ltb25pc2h2aWxpMjNAZ21haWwuY29tIiwiaWF0IjoxNzkwNTA0NTM1LCJleHAiOjE3OTA1OTA5MzV9.TrOshNod1R9Lc2Zia4kdAaABKfePnbyz77e0e_guKCdUrmZxdc6XbauIS0GDhN8y" />
+                    </pF>
+                  </option>
+                  <option name="type" value="BEARER" />
+                </authState>
+              </option>
+              <option name="body">
+                <bodyState>
+                  <option name="raw" value="{&#10;  &quot;questId&quot;: 5,&#10;  &quot;questionText&quot;: &quot;2 + 2 = ?&quot;,&#10;  &quot;problemType&quot;: &quot;OPEN_ANSWER&quot;,&#10;  &quot;difficultyLevel&quot;: &quot;LEVEL_1_BEGINNER&quot;,&#10;  &quot;correctAnswer&quot;: &quot;4&quot;,&#10;  &quot;xpReward&quot;: 10,&#10;  &quot;orderIndex&quot;: 1,&#10;  &quot;categoryId&quot;: 5&#10;}" />
+                  <option name="type" value="JSON" />
+                </bodyState>
+              </option>
+              <option name="id" value="ace6f298-58c8-47f7-92e2-62ee2aad4bfd" />
+              <option name="method" value="POST" />
+              <option name="name" value="create problem" />
+              <option name="url" value="POST http://localhost:8080/api/problems" />
+            </requestState>
+          </option>
+          <option name="response">
+            <responseState>
+              <option name="bodyBytesBase64" value="eyJzdWNjZXNzIjpmYWxzZSwibWVzc2FnZSI6IlVuYXV0aG9yaXplZDogRnVsbCBhdXRoZW50aWNhdGlvbiBpcyByZXF1aXJlZCB0byBhY2Nlc3MgdGhpcyByZXNvdXJjZSJ9" />
+              <option name="bodyString" value="{&#10;  &quot;success&quot;: false,&#10;  &quot;message&quot;: &quot;Unauthorized: Full authentication is required to access this resource&quot;&#10;}" />
+              <option name="code" value="401" />
+              <option name="connectionEstablishingTime" value="3" />
+              <option name="contentType" value="application/json; charset=ISO-8859-1" />
+              <option name="headers">
+                <list>
+                  <headerState>
+                    <option name="key" value="Vary" />
+                    <option name="value" value="Origin" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Vary" />
+                    <option name="value" value="Access-Control-Request-Method" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Vary" />
+                    <option name="value" value="Access-Control-Request-Headers" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-Content-Type-Options" />
+                    <option name="value" value="nosniff" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-XSS-Protection" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Cache-Control" />
+                    <option name="value" value="no-cache, no-store, max-age=0, must-revalidate" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Pragma" />
+                    <option name="value" value="no-cache" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Expires" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-Frame-Options" />
+                    <option name="value" value="DENY" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Content-Type" />
+                    <option name="value" value="application/json;charset=ISO-8859-1" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Content-Length" />
+                    <option name="value" value="99" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Date" />
+                    <option name="value" value="Sun, 04 Oct 2026 18:34:53 GMT" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Keep-Alive" />
+                    <option name="value" value="timeout=60" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Connection" />
+                    <option name="value" value="keep-alive" />
+                  </headerState>
+                </list>
+              </option>
+              <option name="id" value="33d1696e-c41b-4a4b-a4f4-e1ecefdc8f55" />
+              <option name="message" value="Unauthorized" />
+              <option name="prettyResponseType" value="JSON" />
+              <option name="rawBodyString" value="{&quot;success&quot;:false,&quot;message&quot;:&quot;Unauthorized: Full authentication is required to access this resource&quot;}" />
+              <option name="size" value="99" />
+              <option name="time" value="8" />
+            </responseState>
+          </option>
+          <option name="workspaceId" value="drafts" />
+        </requestHistoryState>
+        <requestHistoryState>
+          <option name="dateTime" value="1791138915556" />
+          <option name="id" value="2394cc4b-088b-4e4c-8735-c0b1b912e25b" />
+          <option name="request">
+            <requestState>
+              <option name="auth">
+                <authState>
+                  <option name="bearer">
+                    <pF>
+                      <option name="token" value="eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJtaWtlc2ltb25pc2h2aWxpMjNAZ21haWwuY29tIiwiaWF0IjoxNzkxMTM4NzYzLCJleHAiOjE3OTEyMjUxNjN9.JNSIceil_-PSib0EyC-exmphz7633hYPUEksgHvl3yt0dyRhfmmajVOivCyU5tMQ" />
+                    </pF>
+                  </option>
+                  <option name="type" value="BEARER" />
+                </authState>
+              </option>
+              <option name="body">
+                <bodyState>
+                  <option name="raw" value="{&#10;  &quot;questId&quot;: 5,&#10;  &quot;questionText&quot;: &quot;2 + 2 = ?&quot;,&#10;  &quot;problemType&quot;: &quot;OPEN_ANSWER&quot;,&#10;  &quot;difficultyLevel&quot;: &quot;LEVEL_1_BEGINNER&quot;,&#10;  &quot;correctAnswer&quot;: &quot;4&quot;,&#10;  &quot;xpReward&quot;: 10,&#10;  &quot;orderIndex&quot;: 1,&#10;  &quot;categoryId&quot;: 5&#10;}" />
+                  <option name="type" value="JSON" />
+                </bodyState>
+              </option>
+              <option name="id" value="ace6f298-58c8-47f7-92e2-62ee2aad4bfd" />
+              <option name="method" value="POST" />
+              <option name="name" value="create problem" />
+              <option name="url" value="POST http://localhost:8080/api/problems" />
+            </requestState>
+          </option>
+          <option name="response">
+            <responseState>
+              <option name="bodyBytesBase64" value="eyJzdWNjZXNzIjp0cnVlLCJtZXNzYWdlIjoiUHJvYmxlbSBjcmVhdGVkIiwiZGF0YSI6eyJpZCI6MiwicXVlc3Rpb25UZXh0IjoiMiArIDIgPSA/IiwicXVlc3Rpb25JbWFnZVBhdGgiOm51bGwsInByb2JsZW1UeXBlIjoiT1BFTl9BTlNXRVIiLCJkaWZmaWN1bHR5TGV2ZWwiOiJMRVZFTF8xX0JFR0lOTkVSIiwib3JkZXJJbmRleCI6MSwibWF4QXR0ZW1wdHMiOjMsInhwUmV3YXJkIjoxMCwicXVlc3RJZCI6NSwiY2F0ZWdvcnlJZCI6NSwiY2F0ZWdvcnlOYW1lIjoiQ29tcGxleCBOdW1iZXJzIiwibWFpbkNhdGVnb3J5SWQiOjEsIm1haW5DYXRlZ29yeU5hbWUiOiJBbGdlYnJhIiwicmV0cnlBdmFpbGFibGVBdCI6bnVsbCwiYW5zd2VyT3B0aW9ucyI6W10sImV4cGxhbmF0aW9uIjpudWxsLCJleHBsYW5hdGlvbkltYWdlUGF0aCI6bnVsbCwiY29ycmVjdEFuc3dlciI6IjQiLCJhdHRlbXB0c1VzZWQiOjAsInNvbHZlZCI6ZmFsc2UsImFuc3dlclJldmVhbGVkIjpmYWxzZX19" />
+              <option name="bodyString" value="{&#10;  &quot;success&quot;: true,&#10;  &quot;message&quot;: &quot;Problem created&quot;,&#10;  &quot;data&quot;: {&#10;    &quot;id&quot;: 2,&#10;    &quot;questionText&quot;: &quot;2 + 2 = ?&quot;,&#10;    &quot;questionImagePath&quot;: null,&#10;    &quot;problemType&quot;: &quot;OPEN_ANSWER&quot;,&#10;    &quot;difficultyLevel&quot;: &quot;LEVEL_1_BEGINNER&quot;,&#10;    &quot;orderIndex&quot;: 1,&#10;    &quot;maxAttempts&quot;: 3,&#10;    &quot;xpReward&quot;: 10,&#10;    &quot;questId&quot;: 5,&#10;    &quot;categoryId&quot;: 5,&#10;    &quot;categoryName&quot;: &quot;Complex Numbers&quot;,&#10;    &quot;mainCategoryId&quot;: 1,&#10;    &quot;mainCategoryName&quot;: &quot;Algebra&quot;,&#10;    &quot;retryAvailableAt&quot;: null,&#10;    &quot;answerOptions&quot;: [],&#10;    &quot;explanation&quot;: null,&#10;    &quot;explanationImagePath&quot;: null,&#10;    &quot;correctAnswer&quot;: &quot;4&quot;,&#10;    &quot;attemptsUsed&quot;: 0,&#10;    &quot;solved&quot;: false,&#10;    &quot;answerRevealed&quot;: false&#10;  }&#10;}" />
+              <option name="code" value="201" />
+              <option name="connectionEstablishingTime" value="1" />
+              <option name="contentType" value="application/json" />
+              <option name="headers">
+                <list>
+                  <headerState>
+                    <option name="key" value="Vary" />
+                    <option name="value" value="Origin" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Vary" />
+                    <option name="value" value="Access-Control-Request-Method" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Vary" />
+                    <option name="value" value="Access-Control-Request-Headers" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-Content-Type-Options" />
+                    <option name="value" value="nosniff" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-XSS-Protection" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Cache-Control" />
+                    <option name="value" value="no-cache, no-store, max-age=0, must-revalidate" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Pragma" />
+                    <option name="value" value="no-cache" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Expires" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-Frame-Options" />
+                    <option name="value" value="DENY" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Content-Type" />
+                    <option name="value" value="application/json" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Transfer-Encoding" />
+                    <option name="value" value="chunked" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Date" />
+                    <option name="value" value="Sun, 04 Oct 2026 18:35:15 GMT" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Keep-Alive" />
+                    <option name="value" value="timeout=60" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Connection" />
+                    <option name="value" value="keep-alive" />
+                  </headerState>
+                </list>
+              </option>
+              <option name="id" value="2394cc4b-088b-4e4c-8735-c0b1b912e25b" />
+              <option name="message" value="Created" />
+              <option name="prettyResponseType" value="JSON" />
+              <option name="rawBodyString" value="{&quot;success&quot;:true,&quot;message&quot;:&quot;Problem created&quot;,&quot;data&quot;:{&quot;id&quot;:2,&quot;questionText&quot;:&quot;2 + 2 = ?&quot;,&quot;questionImagePath&quot;:null,&quot;problemType&quot;:&quot;OPEN_ANSWER&quot;,&quot;difficultyLevel&quot;:&quot;LEVEL_1_BEGINNER&quot;,&quot;orderIndex&quot;:1,&quot;maxAttempts&quot;:3,&quot;xpReward&quot;:10,&quot;questId&quot;:5,&quot;categoryId&quot;:5,&quot;categoryName&quot;:&quot;Complex Numbers&quot;,&quot;mainCategoryId&quot;:1,&quot;mainCategoryName&quot;:&quot;Algebra&quot;,&quot;retryAvailableAt&quot;:null,&quot;answerOptions&quot;:[],&quot;explanation&quot;:null,&quot;explanationImagePath&quot;:null,&quot;correctAnswer&quot;:&quot;4&quot;,&quot;attemptsUsed&quot;:0,&quot;solved&quot;:false,&quot;answerRevealed&quot;:false}}" />
+              <option name="size" value="495" />
+              <option name="time" value="88" />
+            </responseState>
+          </option>
+          <option name="workspaceId" value="drafts" />
+        </requestHistoryState>
+        <requestHistoryState>
+          <option name="dateTime" value="1791139158959" />
+          <option name="id" value="be5d48b6-9ce9-4c0e-911e-652d28c4e05c" />
+          <option name="request">
+            <requestState>
+              <option name="auth">
+                <authState>
+                  <option name="bearer">
+                    <pF>
+                      <option name="token" value="eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJtaWtlc2ltb25pc2h2aWxpMjNAZ21haWwuY29tIiwiaWF0IjoxNzkxMTM4NzYzLCJleHAiOjE3OTEyMjUxNjN9.JNSIceil_-PSib0EyC-exmphz7633hYPUEksgHvl3yt0dyRhfmmajVOivCyU5tMQ" />
+                    </pF>
+                  </option>
+                  <option name="type" value="BEARER" />
+                </authState>
+              </option>
+              <option name="body">
+                <bodyState>
+                  <option name="raw" value="{&#10;  &quot;questId&quot;: 5,&#10;  &quot;questionText&quot;: &quot;Solve for x: 3x + 5 = 20&quot;,&#10;  &quot;problemType&quot;: &quot;OPEN_ANSWER&quot;,&#10;  &quot;difficultyLevel&quot;: &quot;LEVEL_1_BEGINNER&quot;,&#10;  &quot;correctAnswer&quot;: &quot;5&quot;,&#10;  &quot;explanation&quot;: &quot;Subtract 5 from both sides to get 3x = 15, then divide by 3.&quot;,&#10;  &quot;xpReward&quot;: 10,&#10;  &quot;orderIndex&quot;: 1,&#10;  &quot;categoryId&quot;: 1&#10;}" />
+                  <option name="type" value="JSON" />
+                </bodyState>
+              </option>
+              <option name="id" value="ace6f298-58c8-47f7-92e2-62ee2aad4bfd" />
+              <option name="method" value="POST" />
+              <option name="name" value="create problem" />
+              <option name="url" value="POST http://localhost:8080/api/problems" />
+            </requestState>
+          </option>
+          <option name="response">
+            <responseState>
+              <option name="bodyBytesBase64" value="eyJzdWNjZXNzIjp0cnVlLCJtZXNzYWdlIjoiUHJvYmxlbSBjcmVhdGVkIiwiZGF0YSI6eyJpZCI6MywicXVlc3Rpb25UZXh0IjoiU29sdmUgZm9yIHg6IDN4ICsgNSA9IDIwIiwicXVlc3Rpb25JbWFnZVBhdGgiOm51bGwsInByb2JsZW1UeXBlIjoiT1BFTl9BTlNXRVIiLCJkaWZmaWN1bHR5TGV2ZWwiOiJMRVZFTF8xX0JFR0lOTkVSIiwib3JkZXJJbmRleCI6MSwibWF4QXR0ZW1wdHMiOjMsInhwUmV3YXJkIjoxMCwicXVlc3RJZCI6NSwiY2F0ZWdvcnlJZCI6MSwiY2F0ZWdvcnlOYW1lIjoiQWxnZWJyYSIsIm1haW5DYXRlZ29yeUlkIjoxLCJtYWluQ2F0ZWdvcnlOYW1lIjoiQWxnZWJyYSIsInJldHJ5QXZhaWxhYmxlQXQiOm51bGwsImFuc3dlck9wdGlvbnMiOltdLCJleHBsYW5hdGlvbiI6IlN1YnRyYWN0IDUgZnJvbSBib3RoIHNpZGVzIHRvIGdldCAzeCA9IDE1LCB0aGVuIGRpdmlkZSBieSAzLiIsImV4cGxhbmF0aW9uSW1hZ2VQYXRoIjpudWxsLCJjb3JyZWN0QW5zd2VyIjoiNSIsImF0dGVtcHRzVXNlZCI6MCwic29sdmVkIjpmYWxzZSwiYW5zd2VyUmV2ZWFsZWQiOmZhbHNlfX0=" />
+              <option name="bodyString" value="{&#10;  &quot;success&quot;: true,&#10;  &quot;message&quot;: &quot;Problem created&quot;,&#10;  &quot;data&quot;: {&#10;    &quot;id&quot;: 3,&#10;    &quot;questionText&quot;: &quot;Solve for x: 3x + 5 = 20&quot;,&#10;    &quot;questionImagePath&quot;: null,&#10;    &quot;problemType&quot;: &quot;OPEN_ANSWER&quot;,&#10;    &quot;difficultyLevel&quot;: &quot;LEVEL_1_BEGINNER&quot;,&#10;    &quot;orderIndex&quot;: 1,&#10;    &quot;maxAttempts&quot;: 3,&#10;    &quot;xpReward&quot;: 10,&#10;    &quot;questId&quot;: 5,&#10;    &quot;categoryId&quot;: 1,&#10;    &quot;categoryName&quot;: &quot;Algebra&quot;,&#10;    &quot;mainCategoryId&quot;: 1,&#10;    &quot;mainCategoryName&quot;: &quot;Algebra&quot;,&#10;    &quot;retryAvailableAt&quot;: null,&#10;    &quot;answerOptions&quot;: [],&#10;    &quot;explanation&quot;: &quot;Subtract 5 from both sides to get 3x = 15, then divide by 3.&quot;,&#10;    &quot;explanationImagePath&quot;: null,&#10;    &quot;correctAnswer&quot;: &quot;5&quot;,&#10;    &quot;attemptsUsed&quot;: 0,&#10;    &quot;solved&quot;: false,&#10;    &quot;answerRevealed&quot;: false&#10;  }&#10;}" />
+              <option name="code" value="201" />
+              <option name="connectionEstablishingTime" value="2" />
+              <option name="contentType" value="application/json" />
+              <option name="headers">
+                <list>
+                  <headerState>
+                    <option name="key" value="Vary" />
+                    <option name="value" value="Origin" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Vary" />
+                    <option name="value" value="Access-Control-Request-Method" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Vary" />
+                    <option name="value" value="Access-Control-Request-Headers" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-Content-Type-Options" />
+                    <option name="value" value="nosniff" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-XSS-Protection" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Cache-Control" />
+                    <option name="value" value="no-cache, no-store, max-age=0, must-revalidate" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Pragma" />
+                    <option name="value" value="no-cache" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Expires" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-Frame-Options" />
+                    <option name="value" value="DENY" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Content-Type" />
+                    <option name="value" value="application/json" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Transfer-Encoding" />
+                    <option name="value" value="chunked" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Date" />
+                    <option name="value" value="Sun, 04 Oct 2026 18:39:18 GMT" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Keep-Alive" />
+                    <option name="value" value="timeout=60" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Connection" />
+                    <option name="value" value="keep-alive" />
+                  </headerState>
+                </list>
+              </option>
+              <option name="id" value="be5d48b6-9ce9-4c0e-911e-652d28c4e05c" />
+              <option name="message" value="Created" />
+              <option name="prettyResponseType" value="JSON" />
+              <option name="rawBodyString" value="{&quot;success&quot;:true,&quot;message&quot;:&quot;Problem created&quot;,&quot;data&quot;:{&quot;id&quot;:3,&quot;questionText&quot;:&quot;Solve for x: 3x + 5 = 20&quot;,&quot;questionImagePath&quot;:null,&quot;problemType&quot;:&quot;OPEN_ANSWER&quot;,&quot;difficultyLevel&quot;:&quot;LEVEL_1_BEGINNER&quot;,&quot;orderIndex&quot;:1,&quot;maxAttempts&quot;:3,&quot;xpReward&quot;:10,&quot;questId&quot;:5,&quot;categoryId&quot;:1,&quot;categoryName&quot;:&quot;Algebra&quot;,&quot;mainCategoryId&quot;:1,&quot;mainCategoryName&quot;:&quot;Algebra&quot;,&quot;retryAvailableAt&quot;:null,&quot;answerOptions&quot;:[],&quot;explanation&quot;:&quot;Subtract 5 from both sides to get 3x = 15, then divide by 3.&quot;,&quot;explanationImagePath&quot;:null,&quot;correctAnswer&quot;:&quot;5&quot;,&quot;attemptsUsed&quot;:0,&quot;solved&quot;:false,&quot;answerRevealed&quot;:false}}" />
+              <option name="size" value="560" />
+              <option name="time" value="59" />
+            </responseState>
+          </option>
+          <option name="workspaceId" value="drafts" />
+        </requestHistoryState>
+        <requestHistoryState>
+          <option name="dateTime" value="1791139172791" />
+          <option name="id" value="bf1cca62-5bef-4768-8580-f03019ad2baa" />
+          <option name="request">
+            <requestState>
+              <option name="auth">
+                <authState>
+                  <option name="bearer">
+                    <pF>
+                      <option name="token" value="eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJtaWtlc2ltb25pc2h2aWxpMjNAZ21haWwuY29tIiwiaWF0IjoxNzkxMTM4NzYzLCJleHAiOjE3OTEyMjUxNjN9.JNSIceil_-PSib0EyC-exmphz7633hYPUEksgHvl3yt0dyRhfmmajVOivCyU5tMQ" />
+                    </pF>
+                  </option>
+                  <option name="type" value="BEARER" />
+                </authState>
+              </option>
+              <option name="body">
+                <bodyState>
+                  <option name="raw" value="{&#10;  &quot;questId&quot;: 1,&#10;  &quot;questionText&quot;: &quot;What is the sum of the interior angles of a triangle?&quot;,&#10;  &quot;problemType&quot;: &quot;MULTIPLE_CHOICE&quot;,&#10;  &quot;difficultyLevel&quot;: &quot;LEVEL_1_BEGINNER&quot;,&#10;  &quot;explanation&quot;: &quot;The angles of any triangle add up to 180 degrees.&quot;,&#10;  &quot;xpReward&quot;: 10,&#10;  &quot;orderIndex&quot;: 2,&#10;  &quot;categoryId&quot;: 2,&#10;  &quot;answerOptions&quot;: [&#10;    { &quot;optionText&quot;: &quot;90 degrees&quot;, &quot;isCorrect&quot;: false },&#10;    { &quot;optionText&quot;: &quot;180 degrees&quot;, &quot;isCorrect&quot;: true },&#10;    { &quot;optionText&quot;: &quot;270 degrees&quot;, &quot;isCorrect&quot;: false },&#10;    { &quot;optionText&quot;: &quot;360 degrees&quot;, &quot;isCorrect&quot;: false }&#10;  ]&#10;}" />
+                  <option name="type" value="JSON" />
+                </bodyState>
+              </option>
+              <option name="id" value="ace6f298-58c8-47f7-92e2-62ee2aad4bfd" />
+              <option name="method" value="POST" />
+              <option name="name" value="create problem" />
+              <option name="url" value="POST http://localhost:8080/api/problems" />
+            </requestState>
+          </option>
+          <option name="response">
+            <responseState>
+              <option name="bodyBytesBase64" value="eyJzdWNjZXNzIjp0cnVlLCJtZXNzYWdlIjoiUHJvYmxlbSBjcmVhdGVkIiwiZGF0YSI6eyJpZCI6NCwicXVlc3Rpb25UZXh0IjoiV2hhdCBpcyB0aGUgc3VtIG9mIHRoZSBpbnRlcmlvciBhbmdsZXMgb2YgYSB0cmlhbmdsZT8iLCJxdWVzdGlvbkltYWdlUGF0aCI6bnVsbCwicHJvYmxlbVR5cGUiOiJNVUxUSVBMRV9DSE9JQ0UiLCJkaWZmaWN1bHR5TGV2ZWwiOiJMRVZFTF8xX0JFR0lOTkVSIiwib3JkZXJJbmRleCI6MiwibWF4QXR0ZW1wdHMiOjMsInhwUmV3YXJkIjoxMCwicXVlc3RJZCI6MSwiY2F0ZWdvcnlJZCI6MiwiY2F0ZWdvcnlOYW1lIjoiR2VvbWV0cnkiLCJtYWluQ2F0ZWdvcnlJZCI6MiwibWFpbkNhdGVnb3J5TmFtZSI6Ikdlb21ldHJ5IiwicmV0cnlBdmFpbGFibGVBdCI6bnVsbCwiYW5zd2VyT3B0aW9ucyI6W3siaWQiOjUsIm9wdGlvblRleHQiOiI5MCBkZWdyZWVzIiwib3B0aW9uSW1hZ2VQYXRoIjpudWxsLCJvcmRlckluZGV4IjowLCJpc0NvcnJlY3QiOmZhbHNlfSx7ImlkIjo2LCJvcHRpb25UZXh0IjoiMTgwIGRlZ3JlZXMiLCJvcHRpb25JbWFnZVBhdGgiOm51bGwsIm9yZGVySW5kZXgiOjEsImlzQ29ycmVjdCI6dHJ1ZX0seyJpZCI6Nywib3B0aW9uVGV4dCI6IjI3MCBkZWdyZWVzIiwib3B0aW9uSW1hZ2VQYXRoIjpudWxsLCJvcmRlckluZGV4IjoyLCJpc0NvcnJlY3QiOmZhbHNlfSx7ImlkIjo4LCJvcHRpb25UZXh0IjoiMzYwIGRlZ3JlZXMiLCJvcHRpb25JbWFnZVBhdGgiOm51bGwsIm9yZGVySW5kZXgiOjMsImlzQ29ycmVjdCI6ZmFsc2V9XSwiZXhwbGFuYXRpb24iOiJUaGUgYW5nbGVzIG9mIGFueSB0cmlhbmdsZSBhZGQgdXAgdG8gMTgwIGRlZ3JlZXMuIiwiZXhwbGFuYXRpb25JbWFnZVBhdGgiOm51bGwsImNvcnJlY3RBbnN3ZXIiOm51bGwsImF0dGVtcHRzVXNlZCI6MCwic29sdmVkIjpmYWxzZSwiYW5zd2VyUmV2ZWFsZWQiOmZhbHNlfX0=" />
+              <option name="bodyString" value="{&#10;  &quot;success&quot;: true,&#10;  &quot;message&quot;: &quot;Problem created&quot;,&#10;  &quot;data&quot;: {&#10;    &quot;id&quot;: 4,&#10;    &quot;questionText&quot;: &quot;What is the sum of the interior angles of a triangle?&quot;,&#10;    &quot;questionImagePath&quot;: null,&#10;    &quot;problemType&quot;: &quot;MULTIPLE_CHOICE&quot;,&#10;    &quot;difficultyLevel&quot;: &quot;LEVEL_1_BEGINNER&quot;,&#10;    &quot;orderIndex&quot;: 2,&#10;    &quot;maxAttempts&quot;: 3,&#10;    &quot;xpReward&quot;: 10,&#10;    &quot;questId&quot;: 1,&#10;    &quot;categoryId&quot;: 2,&#10;    &quot;categoryName&quot;: &quot;Geometry&quot;,&#10;    &quot;mainCategoryId&quot;: 2,&#10;    &quot;mainCategoryName&quot;: &quot;Geometry&quot;,&#10;    &quot;retryAvailableAt&quot;: null,&#10;    &quot;answerOptions&quot;: [&#10;      {&#10;        &quot;id&quot;: 5,&#10;        &quot;optionText&quot;: &quot;90 degrees&quot;,&#10;        &quot;optionImagePath&quot;: null,&#10;        &quot;orderIndex&quot;: 0,&#10;        &quot;isCorrect&quot;: false&#10;      },&#10;      {&#10;        &quot;id&quot;: 6,&#10;        &quot;optionText&quot;: &quot;180 degrees&quot;,&#10;        &quot;optionImagePath&quot;: null,&#10;        &quot;orderIndex&quot;: 1,&#10;        &quot;isCorrect&quot;: true&#10;      },&#10;      {&#10;        &quot;id&quot;: 7,&#10;        &quot;optionText&quot;: &quot;270 degrees&quot;,&#10;        &quot;optionImagePath&quot;: null,&#10;        &quot;orderIndex&quot;: 2,&#10;        &quot;isCorrect&quot;: false&#10;      },&#10;      {&#10;        &quot;id&quot;: 8,&#10;        &quot;optionText&quot;: &quot;360 degrees&quot;,&#10;        &quot;optionImagePath&quot;: null,&#10;        &quot;orderIndex&quot;: 3,&#10;        &quot;isCorrect&quot;: false&#10;      }&#10;    ],&#10;    &quot;explanation&quot;: &quot;The angles of any triangle add up to 180 degrees.&quot;,&#10;    &quot;explanationImagePath&quot;: null,&#10;    &quot;correctAnswer&quot;: null,&#10;    &quot;attemptsUsed&quot;: 0,&#10;    &quot;solved&quot;: false,&#10;    &quot;answerRevealed&quot;: false&#10;  }&#10;}" />
+              <option name="code" value="201" />
+              <option name="connectionEstablishingTime" value="1" />
+              <option name="contentType" value="application/json" />
+              <option name="headers">
+                <list>
+                  <headerState>
+                    <option name="key" value="Vary" />
+                    <option name="value" value="Origin" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Vary" />
+                    <option name="value" value="Access-Control-Request-Method" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Vary" />
+                    <option name="value" value="Access-Control-Request-Headers" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-Content-Type-Options" />
+                    <option name="value" value="nosniff" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-XSS-Protection" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Cache-Control" />
+                    <option name="value" value="no-cache, no-store, max-age=0, must-revalidate" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Pragma" />
+                    <option name="value" value="no-cache" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Expires" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-Frame-Options" />
+                    <option name="value" value="DENY" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Content-Type" />
+                    <option name="value" value="application/json" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Transfer-Encoding" />
+                    <option name="value" value="chunked" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Date" />
+                    <option name="value" value="Sun, 04 Oct 2026 18:39:32 GMT" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Keep-Alive" />
+                    <option name="value" value="timeout=60" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Connection" />
+                    <option name="value" value="keep-alive" />
+                  </headerState>
+                </list>
+              </option>
+              <option name="id" value="bf1cca62-5bef-4768-8580-f03019ad2baa" />
+              <option name="message" value="Created" />
+              <option name="prettyResponseType" value="JSON" />
+              <option name="rawBodyString" value="{&quot;success&quot;:true,&quot;message&quot;:&quot;Problem created&quot;,&quot;data&quot;:{&quot;id&quot;:4,&quot;questionText&quot;:&quot;What is the sum of the interior angles of a triangle?&quot;,&quot;questionImagePath&quot;:null,&quot;problemType&quot;:&quot;MULTIPLE_CHOICE&quot;,&quot;difficultyLevel&quot;:&quot;LEVEL_1_BEGINNER&quot;,&quot;orderIndex&quot;:2,&quot;maxAttempts&quot;:3,&quot;xpReward&quot;:10,&quot;questId&quot;:1,&quot;categoryId&quot;:2,&quot;categoryName&quot;:&quot;Geometry&quot;,&quot;mainCategoryId&quot;:2,&quot;mainCategoryName&quot;:&quot;Geometry&quot;,&quot;retryAvailableAt&quot;:null,&quot;answerOptions&quot;:[{&quot;id&quot;:5,&quot;optionText&quot;:&quot;90 degrees&quot;,&quot;optionImagePath&quot;:null,&quot;orderIndex&quot;:0,&quot;isCorrect&quot;:false},{&quot;id&quot;:6,&quot;optionText&quot;:&quot;180 degrees&quot;,&quot;optionImagePath&quot;:null,&quot;orderIndex&quot;:1,&quot;isCorrect&quot;:true},{&quot;id&quot;:7,&quot;optionText&quot;:&quot;270 degrees&quot;,&quot;optionImagePath&quot;:null,&quot;orderIndex&quot;:2,&quot;isCorrect&quot;:false},{&quot;id&quot;:8,&quot;optionText&quot;:&quot;360 degrees&quot;,&quot;optionImagePath&quot;:null,&quot;orderIndex&quot;:3,&quot;isCorrect&quot;:false}],&quot;explanation&quot;:&quot;The angles of any triangle add up to 180 degrees.&quot;,&quot;explanationImagePath&quot;:null,&quot;correctAnswer&quot;:null,&quot;attemptsUsed&quot;:0,&quot;solved&quot;:false,&quot;answerRevealed&quot;:false}}" />
+              <option name="size" value="950" />
+              <option name="time" value="59" />
+            </responseState>
+          </option>
+          <option name="workspaceId" value="drafts" />
+        </requestHistoryState>
+        <requestHistoryState>
+          <option name="dateTime" value="1791139185487" />
+          <option name="id" value="a0754006-6a9d-420d-bcfb-281a82b1faf2" />
+          <option name="request">
+            <requestState>
+              <option name="auth">
+                <authState>
+                  <option name="bearer">
+                    <pF>
+                      <option name="token" value="eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJtaWtlc2ltb25pc2h2aWxpMjNAZ21haWwuY29tIiwiaWF0IjoxNzkxMTM4NzYzLCJleHAiOjE3OTEyMjUxNjN9.JNSIceil_-PSib0EyC-exmphz7633hYPUEksgHvl3yt0dyRhfmmajVOivCyU5tMQ" />
+                    </pF>
+                  </option>
+                  <option name="type" value="BEARER" />
+                </authState>
+              </option>
+              <option name="body">
+                <bodyState>
+                  <option name="raw" value="{&#10;  &quot;questId&quot;: 1,&#10;  &quot;questionText&quot;: &quot;What is the smallest prime number greater than 20?&quot;,&#10;  &quot;problemType&quot;: &quot;OPEN_ANSWER&quot;,&#10;  &quot;difficultyLevel&quot;: &quot;LEVEL_1_BEGINNER&quot;,&#10;  &quot;correctAnswer&quot;: &quot;23&quot;,&#10;  &quot;explanation&quot;: &quot;21 = 3 x 7, 22 is even, and 23 has no divisors other than 1 and itself.&quot;,&#10;  &quot;xpReward&quot;: 15,&#10;  &quot;orderIndex&quot;: 3,&#10;  &quot;categoryId&quot;: 4&#10;}" />
+                  <option name="type" value="JSON" />
+                </bodyState>
+              </option>
+              <option name="id" value="ace6f298-58c8-47f7-92e2-62ee2aad4bfd" />
+              <option name="method" value="POST" />
+              <option name="name" value="create problem" />
+              <option name="url" value="POST http://localhost:8080/api/problems" />
+            </requestState>
+          </option>
+          <option name="response">
+            <responseState>
+              <option name="bodyBytesBase64" value="eyJzdWNjZXNzIjp0cnVlLCJtZXNzYWdlIjoiUHJvYmxlbSBjcmVhdGVkIiwiZGF0YSI6eyJpZCI6NSwicXVlc3Rpb25UZXh0IjoiV2hhdCBpcyB0aGUgc21hbGxlc3QgcHJpbWUgbnVtYmVyIGdyZWF0ZXIgdGhhbiAyMD8iLCJxdWVzdGlvbkltYWdlUGF0aCI6bnVsbCwicHJvYmxlbVR5cGUiOiJPUEVOX0FOU1dFUiIsImRpZmZpY3VsdHlMZXZlbCI6IkxFVkVMXzFfQkVHSU5ORVIiLCJvcmRlckluZGV4IjozLCJtYXhBdHRlbXB0cyI6MywieHBSZXdhcmQiOjE1LCJxdWVzdElkIjoxLCJjYXRlZ29yeUlkIjo0LCJjYXRlZ29yeU5hbWUiOiJOdW1iZXIgVGhlb3J5IiwibWFpbkNhdGVnb3J5SWQiOjQsIm1haW5DYXRlZ29yeU5hbWUiOiJOdW1iZXIgVGhlb3J5IiwicmV0cnlBdmFpbGFibGVBdCI6bnVsbCwiYW5zd2VyT3B0aW9ucyI6W10sImV4cGxhbmF0aW9uIjoiMjEgPSAzIHggNywgMjIgaXMgZXZlbiwgYW5kIDIzIGhhcyBubyBkaXZpc29ycyBvdGhlciB0aGFuIDEgYW5kIGl0c2VsZi4iLCJleHBsYW5hdGlvbkltYWdlUGF0aCI6bnVsbCwiY29ycmVjdEFuc3dlciI6IjIzIiwiYXR0ZW1wdHNVc2VkIjowLCJzb2x2ZWQiOmZhbHNlLCJhbnN3ZXJSZXZlYWxlZCI6ZmFsc2V9fQ==" />
+              <option name="bodyString" value="{&#10;  &quot;success&quot;: true,&#10;  &quot;message&quot;: &quot;Problem created&quot;,&#10;  &quot;data&quot;: {&#10;    &quot;id&quot;: 5,&#10;    &quot;questionText&quot;: &quot;What is the smallest prime number greater than 20?&quot;,&#10;    &quot;questionImagePath&quot;: null,&#10;    &quot;problemType&quot;: &quot;OPEN_ANSWER&quot;,&#10;    &quot;difficultyLevel&quot;: &quot;LEVEL_1_BEGINNER&quot;,&#10;    &quot;orderIndex&quot;: 3,&#10;    &quot;maxAttempts&quot;: 3,&#10;    &quot;xpReward&quot;: 15,&#10;    &quot;questId&quot;: 1,&#10;    &quot;categoryId&quot;: 4,&#10;    &quot;categoryName&quot;: &quot;Number Theory&quot;,&#10;    &quot;mainCategoryId&quot;: 4,&#10;    &quot;mainCategoryName&quot;: &quot;Number Theory&quot;,&#10;    &quot;retryAvailableAt&quot;: null,&#10;    &quot;answerOptions&quot;: [],&#10;    &quot;explanation&quot;: &quot;21 = 3 x 7, 22 is even, and 23 has no divisors other than 1 and itself.&quot;,&#10;    &quot;explanationImagePath&quot;: null,&#10;    &quot;correctAnswer&quot;: &quot;23&quot;,&#10;    &quot;attemptsUsed&quot;: 0,&#10;    &quot;solved&quot;: false,&#10;    &quot;answerRevealed&quot;: false&#10;  }&#10;}" />
+              <option name="code" value="201" />
+              <option name="connectionEstablishingTime" value="1" />
+              <option name="contentType" value="application/json" />
+              <option name="headers">
+                <list>
+                  <headerState>
+                    <option name="key" value="Vary" />
+                    <option name="value" value="Origin" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Vary" />
+                    <option name="value" value="Access-Control-Request-Method" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Vary" />
+                    <option name="value" value="Access-Control-Request-Headers" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-Content-Type-Options" />
+                    <option name="value" value="nosniff" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-XSS-Protection" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Cache-Control" />
+                    <option name="value" value="no-cache, no-store, max-age=0, must-revalidate" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Pragma" />
+                    <option name="value" value="no-cache" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Expires" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-Frame-Options" />
+                    <option name="value" value="DENY" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Content-Type" />
+                    <option name="value" value="application/json" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Transfer-Encoding" />
+                    <option name="value" value="chunked" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Date" />
+                    <option name="value" value="Sun, 04 Oct 2026 18:39:45 GMT" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Keep-Alive" />
+                    <option name="value" value="timeout=60" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Connection" />
+                    <option name="value" value="keep-alive" />
+                  </headerState>
+                </list>
+              </option>
+              <option name="id" value="a0754006-6a9d-420d-bcfb-281a82b1faf2" />
+              <option name="message" value="Created" />
+              <option name="prettyResponseType" value="JSON" />
+              <option name="rawBodyString" value="{&quot;success&quot;:true,&quot;message&quot;:&quot;Problem created&quot;,&quot;data&quot;:{&quot;id&quot;:5,&quot;questionText&quot;:&quot;What is the smallest prime number greater than 20?&quot;,&quot;questionImagePath&quot;:null,&quot;problemType&quot;:&quot;OPEN_ANSWER&quot;,&quot;difficultyLevel&quot;:&quot;LEVEL_1_BEGINNER&quot;,&quot;orderIndex&quot;:3,&quot;maxAttempts&quot;:3,&quot;xpReward&quot;:15,&quot;questId&quot;:1,&quot;categoryId&quot;:4,&quot;categoryName&quot;:&quot;Number Theory&quot;,&quot;mainCategoryId&quot;:4,&quot;mainCategoryName&quot;:&quot;Number Theory&quot;,&quot;retryAvailableAt&quot;:null,&quot;answerOptions&quot;:[],&quot;explanation&quot;:&quot;21 = 3 x 7, 22 is even, and 23 has no divisors other than 1 and itself.&quot;,&quot;explanationImagePath&quot;:null,&quot;correctAnswer&quot;:&quot;23&quot;,&quot;attemptsUsed&quot;:0,&quot;solved&quot;:false,&quot;answerRevealed&quot;:false}}" />
+              <option name="size" value="610" />
+              <option name="time" value="50" />
+            </responseState>
+          </option>
+          <option name="workspaceId" value="drafts" />
+        </requestHistoryState>
+        <requestHistoryState>
+          <option name="dateTime" value="1791139199616" />
+          <option name="id" value="30d2e7af-d0ed-4b6e-8db5-469da2ebf0f7" />
+          <option name="request">
+            <requestState>
+              <option name="auth">
+                <authState>
+                  <option name="bearer">
+                    <pF>
+                      <option name="token" value="eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJtaWtlc2ltb25pc2h2aWxpMjNAZ21haWwuY29tIiwiaWF0IjoxNzkxMTM4NzYzLCJleHAiOjE3OTEyMjUxNjN9.JNSIceil_-PSib0EyC-exmphz7633hYPUEksgHvl3yt0dyRhfmmajVOivCyU5tMQ" />
+                    </pF>
+                  </option>
+                  <option name="type" value="BEARER" />
+                </authState>
+              </option>
+              <option name="body">
+                <bodyState>
+                  <option name="raw" value="{&#10;  &quot;questId&quot;: 5,&#10;  &quot;questionText&quot;: &quot;In how many different ways can 3 books be arranged in a row on a shelf?&quot;,&#10;  &quot;problemType&quot;: &quot;MULTIPLE_CHOICE&quot;,&#10;  &quot;difficultyLevel&quot;: &quot;LEVEL_1_BEGINNER&quot;,&#10;  &quot;explanation&quot;: &quot;3! = 3 x 2 x 1 = 6 arrangements.&quot;,&#10;  &quot;xpReward&quot;: 15,&#10;  &quot;orderIndex&quot;: 4,&#10;  &quot;categoryId&quot;: 3,&#10;  &quot;answerOptions&quot;: [&#10;    { &quot;optionText&quot;: &quot;3&quot;, &quot;isCorrect&quot;: false },&#10;    { &quot;optionText&quot;: &quot;6&quot;, &quot;isCorrect&quot;: true },&#10;    { &quot;optionText&quot;: &quot;9&quot;, &quot;isCorrect&quot;: false }&#10;  ]&#10;}" />
+                  <option name="type" value="JSON" />
+                </bodyState>
+              </option>
+              <option name="id" value="ace6f298-58c8-47f7-92e2-62ee2aad4bfd" />
+              <option name="method" value="POST" />
+              <option name="name" value="create problem" />
+              <option name="url" value="POST http://localhost:8080/api/problems" />
+            </requestState>
+          </option>
+          <option name="response">
+            <responseState>
+              <option name="bodyBytesBase64" value="eyJzdWNjZXNzIjp0cnVlLCJtZXNzYWdlIjoiUHJvYmxlbSBjcmVhdGVkIiwiZGF0YSI6eyJpZCI6NiwicXVlc3Rpb25UZXh0IjoiSW4gaG93IG1hbnkgZGlmZmVyZW50IHdheXMgY2FuIDMgYm9va3MgYmUgYXJyYW5nZWQgaW4gYSByb3cgb24gYSBzaGVsZj8iLCJxdWVzdGlvbkltYWdlUGF0aCI6bnVsbCwicHJvYmxlbVR5cGUiOiJNVUxUSVBMRV9DSE9JQ0UiLCJkaWZmaWN1bHR5TGV2ZWwiOiJMRVZFTF8xX0JFR0lOTkVSIiwib3JkZXJJbmRleCI6NCwibWF4QXR0ZW1wdHMiOjMsInhwUmV3YXJkIjoxNSwicXVlc3RJZCI6NSwiY2F0ZWdvcnlJZCI6MywiY2F0ZWdvcnlOYW1lIjoiQ29tYmluYXRvcmljcyIsIm1haW5DYXRlZ29yeUlkIjozLCJtYWluQ2F0ZWdvcnlOYW1lIjoiQ29tYmluYXRvcmljcyIsInJldHJ5QXZhaWxhYmxlQXQiOm51bGwsImFuc3dlck9wdGlvbnMiOlt7ImlkIjo5LCJvcHRpb25UZXh0IjoiMyIsIm9wdGlvbkltYWdlUGF0aCI6bnVsbCwib3JkZXJJbmRleCI6MCwiaXNDb3JyZWN0IjpmYWxzZX0seyJpZCI6MTAsIm9wdGlvblRleHQiOiI2Iiwib3B0aW9uSW1hZ2VQYXRoIjpudWxsLCJvcmRlckluZGV4IjoxLCJpc0NvcnJlY3QiOnRydWV9LHsiaWQiOjExLCJvcHRpb25UZXh0IjoiOSIsIm9wdGlvbkltYWdlUGF0aCI6bnVsbCwib3JkZXJJbmRleCI6MiwiaXNDb3JyZWN0IjpmYWxzZX1dLCJleHBsYW5hdGlvbiI6IjMhID0gMyB4IDIgeCAxID0gNiBhcnJhbmdlbWVudHMuIiwiZXhwbGFuYXRpb25JbWFnZVBhdGgiOm51bGwsImNvcnJlY3RBbnN3ZXIiOm51bGwsImF0dGVtcHRzVXNlZCI6MCwic29sdmVkIjpmYWxzZSwiYW5zd2VyUmV2ZWFsZWQiOmZhbHNlfX0=" />
+              <option name="bodyString" value="{&#10;  &quot;success&quot;: true,&#10;  &quot;message&quot;: &quot;Problem created&quot;,&#10;  &quot;data&quot;: {&#10;    &quot;id&quot;: 6,&#10;    &quot;questionText&quot;: &quot;In how many different ways can 3 books be arranged in a row on a shelf?&quot;,&#10;    &quot;questionImagePath&quot;: null,&#10;    &quot;problemType&quot;: &quot;MULTIPLE_CHOICE&quot;,&#10;    &quot;difficultyLevel&quot;: &quot;LEVEL_1_BEGINNER&quot;,&#10;    &quot;orderIndex&quot;: 4,&#10;    &quot;maxAttempts&quot;: 3,&#10;    &quot;xpReward&quot;: 15,&#10;    &quot;questId&quot;: 5,&#10;    &quot;categoryId&quot;: 3,&#10;    &quot;categoryName&quot;: &quot;Combinatorics&quot;,&#10;    &quot;mainCategoryId&quot;: 3,&#10;    &quot;mainCategoryName&quot;: &quot;Combinatorics&quot;,&#10;    &quot;retryAvailableAt&quot;: null,&#10;    &quot;answerOptions&quot;: [&#10;      {&#10;        &quot;id&quot;: 9,&#10;        &quot;optionText&quot;: &quot;3&quot;,&#10;        &quot;optionImagePath&quot;: null,&#10;        &quot;orderIndex&quot;: 0,&#10;        &quot;isCorrect&quot;: false&#10;      },&#10;      {&#10;        &quot;id&quot;: 10,&#10;        &quot;optionText&quot;: &quot;6&quot;,&#10;        &quot;optionImagePath&quot;: null,&#10;        &quot;orderIndex&quot;: 1,&#10;        &quot;isCorrect&quot;: true&#10;      },&#10;      {&#10;        &quot;id&quot;: 11,&#10;        &quot;optionText&quot;: &quot;9&quot;,&#10;        &quot;optionImagePath&quot;: null,&#10;        &quot;orderIndex&quot;: 2,&#10;        &quot;isCorrect&quot;: false&#10;      }&#10;    ],&#10;    &quot;explanation&quot;: &quot;3! = 3 x 2 x 1 = 6 arrangements.&quot;,&#10;    &quot;explanationImagePath&quot;: null,&#10;    &quot;correctAnswer&quot;: null,&#10;    &quot;attemptsUsed&quot;: 0,&#10;    &quot;solved&quot;: false,&#10;    &quot;answerRevealed&quot;: false&#10;  }&#10;}" />
+              <option name="code" value="201" />
+              <option name="contentType" value="application/json" />
+              <option name="headers">
+                <list>
+                  <headerState>
+                    <option name="key" value="Vary" />
+                    <option name="value" value="Origin" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Vary" />
+                    <option name="value" value="Access-Control-Request-Method" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Vary" />
+                    <option name="value" value="Access-Control-Request-Headers" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-Content-Type-Options" />
+                    <option name="value" value="nosniff" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-XSS-Protection" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Cache-Control" />
+                    <option name="value" value="no-cache, no-store, max-age=0, must-revalidate" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Pragma" />
+                    <option name="value" value="no-cache" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Expires" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-Frame-Options" />
+                    <option name="value" value="DENY" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Content-Type" />
+                    <option name="value" value="application/json" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Transfer-Encoding" />
+                    <option name="value" value="chunked" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Date" />
+                    <option name="value" value="Sun, 04 Oct 2026 18:39:59 GMT" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Keep-Alive" />
+                    <option name="value" value="timeout=60" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Connection" />
+                    <option name="value" value="keep-alive" />
+                  </headerState>
+                </list>
+              </option>
+              <option name="id" value="30d2e7af-d0ed-4b6e-8db5-469da2ebf0f7" />
+              <option name="message" value="Created" />
+              <option name="prettyResponseType" value="JSON" />
+              <option name="rawBodyString" value="{&quot;success&quot;:true,&quot;message&quot;:&quot;Problem created&quot;,&quot;data&quot;:{&quot;id&quot;:6,&quot;questionText&quot;:&quot;In how many different ways can 3 books be arranged in a row on a shelf?&quot;,&quot;questionImagePath&quot;:null,&quot;problemType&quot;:&quot;MULTIPLE_CHOICE&quot;,&quot;difficultyLevel&quot;:&quot;LEVEL_1_BEGINNER&quot;,&quot;orderIndex&quot;:4,&quot;maxAttempts&quot;:3,&quot;xpReward&quot;:15,&quot;questId&quot;:5,&quot;categoryId&quot;:3,&quot;categoryName&quot;:&quot;Combinatorics&quot;,&quot;mainCategoryId&quot;:3,&quot;mainCategoryName&quot;:&quot;Combinatorics&quot;,&quot;retryAvailableAt&quot;:null,&quot;answerOptions&quot;:[{&quot;id&quot;:9,&quot;optionText&quot;:&quot;3&quot;,&quot;optionImagePath&quot;:null,&quot;orderIndex&quot;:0,&quot;isCorrect&quot;:false},{&quot;id&quot;:10,&quot;optionText&quot;:&quot;6&quot;,&quot;optionImagePath&quot;:null,&quot;orderIndex&quot;:1,&quot;isCorrect&quot;:true},{&quot;id&quot;:11,&quot;optionText&quot;:&quot;9&quot;,&quot;optionImagePath&quot;:null,&quot;orderIndex&quot;:2,&quot;isCorrect&quot;:false}],&quot;explanation&quot;:&quot;3! = 3 x 2 x 1 = 6 arrangements.&quot;,&quot;explanationImagePath&quot;:null,&quot;correctAnswer&quot;:null,&quot;attemptsUsed&quot;:0,&quot;solved&quot;:false,&quot;answerRevealed&quot;:false}}" />
+              <option name="size" value="842" />
+              <option name="time" value="58" />
+            </responseState>
+          </option>
+          <option name="workspaceId" value="drafts" />
+        </requestHistoryState>
+        <requestHistoryState>
+          <option name="dateTime" value="1791139305979" />
+          <option name="id" value="7bca159b-b599-4581-8c26-f0a062ffb0fe" />
+          <option name="request">
+            <requestState>
+              <option name="auth">
+                <authState>
+                  <option name="bearer">
+                    <pF>
+                      <option name="token" value="eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJtaWtlc2ltb25pc2h2aWxpMjNAZ21haWwuY29tIiwiaWF0IjoxNzkxMTM4NzYzLCJleHAiOjE3OTEyMjUxNjN9.JNSIceil_-PSib0EyC-exmphz7633hYPUEksgHvl3yt0dyRhfmmajVOivCyU5tMQ" />
+                    </pF>
+                  </option>
+                  <option name="type" value="BEARER" />
+                </authState>
+              </option>
+              <option name="body">
+                <bodyState>
+                  <option name="raw" value="{&#10;  &quot;questId&quot;: 5,&#10;  &quot;questionText&quot;: &quot;A rectangle has a length of 8 cm and a width of 5 cm. What is its perimeter in cm?&quot;,&#10;  &quot;problemType&quot;: &quot;OPEN_ANSWER&quot;,&#10;  &quot;difficultyLevel&quot;: &quot;LEVEL_1_BEGINNER&quot;,&#10;  &quot;correctAnswer&quot;: &quot;26&quot;,&#10;  &quot;explanation&quot;: &quot;Perimeter = 2 x (8 + 5) = 26.&quot;,&#10;  &quot;xpReward&quot;: 20,&#10;  &quot;orderIndex&quot;: 5,&#10;  &quot;categoryId&quot;: 2&#10;}" />
+                  <option name="type" value="JSON" />
+                </bodyState>
+              </option>
+              <option name="id" value="ace6f298-58c8-47f7-92e2-62ee2aad4bfd" />
+              <option name="method" value="POST" />
+              <option name="name" value="create problem" />
+              <option name="url" value="POST http://localhost:8080/api/problems" />
+            </requestState>
+          </option>
+          <option name="response">
+            <responseState>
+              <option name="bodyBytesBase64" value="eyJzdWNjZXNzIjp0cnVlLCJtZXNzYWdlIjoiUHJvYmxlbSBjcmVhdGVkIiwiZGF0YSI6eyJpZCI6NywicXVlc3Rpb25UZXh0IjoiQSByZWN0YW5nbGUgaGFzIGEgbGVuZ3RoIG9mIDggY20gYW5kIGEgd2lkdGggb2YgNSBjbS4gV2hhdCBpcyBpdHMgcGVyaW1ldGVyIGluIGNtPyIsInF1ZXN0aW9uSW1hZ2VQYXRoIjpudWxsLCJwcm9ibGVtVHlwZSI6Ik9QRU5fQU5TV0VSIiwiZGlmZmljdWx0eUxldmVsIjoiTEVWRUxfMV9CRUdJTk5FUiIsIm9yZGVySW5kZXgiOjUsIm1heEF0dGVtcHRzIjozLCJ4cFJld2FyZCI6MjAsInF1ZXN0SWQiOjUsImNhdGVnb3J5SWQiOjIsImNhdGVnb3J5TmFtZSI6Ikdlb21ldHJ5IiwibWFpbkNhdGVnb3J5SWQiOjIsIm1haW5DYXRlZ29yeU5hbWUiOiJHZW9tZXRyeSIsInJldHJ5QXZhaWxhYmxlQXQiOm51bGwsImFuc3dlck9wdGlvbnMiOltdLCJleHBsYW5hdGlvbiI6IlBlcmltZXRlciA9IDIgeCAoOCArIDUpID0gMjYuIiwiZXhwbGFuYXRpb25JbWFnZVBhdGgiOm51bGwsImNvcnJlY3RBbnN3ZXIiOiIyNiIsImF0dGVtcHRzVXNlZCI6MCwic29sdmVkIjpmYWxzZSwiYW5zd2VyUmV2ZWFsZWQiOmZhbHNlfX0=" />
+              <option name="bodyString" value="{&#10;  &quot;success&quot;: true,&#10;  &quot;message&quot;: &quot;Problem created&quot;,&#10;  &quot;data&quot;: {&#10;    &quot;id&quot;: 7,&#10;    &quot;questionText&quot;: &quot;A rectangle has a length of 8 cm and a width of 5 cm. What is its perimeter in cm?&quot;,&#10;    &quot;questionImagePath&quot;: null,&#10;    &quot;problemType&quot;: &quot;OPEN_ANSWER&quot;,&#10;    &quot;difficultyLevel&quot;: &quot;LEVEL_1_BEGINNER&quot;,&#10;    &quot;orderIndex&quot;: 5,&#10;    &quot;maxAttempts&quot;: 3,&#10;    &quot;xpReward&quot;: 20,&#10;    &quot;questId&quot;: 5,&#10;    &quot;categoryId&quot;: 2,&#10;    &quot;categoryName&quot;: &quot;Geometry&quot;,&#10;    &quot;mainCategoryId&quot;: 2,&#10;    &quot;mainCategoryName&quot;: &quot;Geometry&quot;,&#10;    &quot;retryAvailableAt&quot;: null,&#10;    &quot;answerOptions&quot;: [],&#10;    &quot;explanation&quot;: &quot;Perimeter = 2 x (8 + 5) = 26.&quot;,&#10;    &quot;explanationImagePath&quot;: null,&#10;    &quot;correctAnswer&quot;: &quot;26&quot;,&#10;    &quot;attemptsUsed&quot;: 0,&#10;    &quot;solved&quot;: false,&#10;    &quot;answerRevealed&quot;: false&#10;  }&#10;}" />
+              <option name="code" value="201" />
+              <option name="connectionEstablishingTime" value="2" />
+              <option name="contentType" value="application/json" />
+              <option name="headers">
+                <list>
+                  <headerState>
+                    <option name="key" value="Vary" />
+                    <option name="value" value="Origin" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Vary" />
+                    <option name="value" value="Access-Control-Request-Method" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Vary" />
+                    <option name="value" value="Access-Control-Request-Headers" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-Content-Type-Options" />
+                    <option name="value" value="nosniff" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-XSS-Protection" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Cache-Control" />
+                    <option name="value" value="no-cache, no-store, max-age=0, must-revalidate" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Pragma" />
+                    <option name="value" value="no-cache" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Expires" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-Frame-Options" />
+                    <option name="value" value="DENY" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Content-Type" />
+                    <option name="value" value="application/json" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Transfer-Encoding" />
+                    <option name="value" value="chunked" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Date" />
+                    <option name="value" value="Sun, 04 Oct 2026 18:41:45 GMT" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Keep-Alive" />
+                    <option name="value" value="timeout=60" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Connection" />
+                    <option name="value" value="keep-alive" />
+                  </headerState>
+                </list>
+              </option>
+              <option name="id" value="7bca159b-b599-4581-8c26-f0a062ffb0fe" />
+              <option name="message" value="Created" />
+              <option name="prettyResponseType" value="JSON" />
+              <option name="rawBodyString" value="{&quot;success&quot;:true,&quot;message&quot;:&quot;Problem created&quot;,&quot;data&quot;:{&quot;id&quot;:7,&quot;questionText&quot;:&quot;A rectangle has a length of 8 cm and a width of 5 cm. What is its perimeter in cm?&quot;,&quot;questionImagePath&quot;:null,&quot;problemType&quot;:&quot;OPEN_ANSWER&quot;,&quot;difficultyLevel&quot;:&quot;LEVEL_1_BEGINNER&quot;,&quot;orderIndex&quot;:5,&quot;maxAttempts&quot;:3,&quot;xpReward&quot;:20,&quot;questId&quot;:5,&quot;categoryId&quot;:2,&quot;categoryName&quot;:&quot;Geometry&quot;,&quot;mainCategoryId&quot;:2,&quot;mainCategoryName&quot;:&quot;Geometry&quot;,&quot;retryAvailableAt&quot;:null,&quot;answerOptions&quot;:[],&quot;explanation&quot;:&quot;Perimeter = 2 x (8 + 5) = 26.&quot;,&quot;explanationImagePath&quot;:null,&quot;correctAnswer&quot;:&quot;26&quot;,&quot;attemptsUsed&quot;:0,&quot;solved&quot;:false,&quot;answerRevealed&quot;:false}}" />
+              <option name="size" value="590" />
+              <option name="time" value="40" />
+            </responseState>
+          </option>
+          <option name="workspaceId" value="drafts" />
+        </requestHistoryState>
+        <requestHistoryState>
+          <option name="dateTime" value="1791139386838" />
+          <option name="id" value="68f60b91-f992-4dd3-92db-7c107d772dd9" />
+          <option name="request">
+            <requestState>
+              <option name="auth">
+                <authState>
+                  <option name="bearer">
+                    <pF>
+                      <option name="token" value="eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJtaWtlc2ltb25pc2h2aWxpMjNAZ21haWwuY29tIiwiaWF0IjoxNzkxMTM4NzYzLCJleHAiOjE3OTEyMjUxNjN9.JNSIceil_-PSib0EyC-exmphz7633hYPUEksgHvl3yt0dyRhfmmajVOivCyU5tMQ" />
+                    </pF>
+                  </option>
+                  <option name="type" value="BEARER" />
+                </authState>
+              </option>
+              <option name="body">
+                <bodyState>
+                  <option name="raw" value="{&#10;  &quot;nodes&quot;: [&#10;    { &quot;problemId&quot;: 1, &quot;x&quot;: 100, &quot;y&quot;: 200, &quot;start&quot;: true },&#10;    { &quot;problemId&quot;: 2, &quot;x&quot;: 260, &quot;y&quot;: 200 },&#10;    { &quot;problemId&quot;: 3, &quot;x&quot;: 420, &quot;y&quot;: 120 },&#10;    { &quot;problemId&quot;: 4, &quot;x&quot;: 420, &quot;y&quot;: 280 },&#10;    { &quot;problemId&quot;: 5, &quot;x&quot;: 580, &quot;y&quot;: 280 }&#10;  ],&#10;  &quot;edges&quot;: [&#10;    { &quot;from&quot;: 1, &quot;to&quot;: 2 },&#10;    { &quot;from&quot;: 2, &quot;to&quot;: 3 },&#10;    { &quot;from&quot;: 2, &quot;to&quot;: 4 },&#10;    { &quot;from&quot;: 4, &quot;to&quot;: 5 }&#10;  ]&#10;}" />
+                  <option name="type" value="JSON" />
+                </bodyState>
+              </option>
+              <option name="id" value="ee5ae20f-d16e-4cbf-94a2-ed8ed2ab717f" />
+              <option name="method" value="PUT" />
+              <option name="name" value="make nodes graph for map" />
+              <option name="url" value="http://localhost:8080/api/quests/1/map" />
+            </requestState>
+          </option>
+          <option name="response">
+            <responseState>
+              <option name="bodyBytesBase64" value="eyJzdWNjZXNzIjpmYWxzZSwibWVzc2FnZSI6IlByb2JsZW0gMiBpcyBub3QgaW4gdGhpcyBxdWVzdCJ9" />
+              <option name="bodyString" value="{&#10;  &quot;success&quot;: false,&#10;  &quot;message&quot;: &quot;Problem 2 is not in this quest&quot;&#10;}" />
+              <option name="code" value="400" />
+              <option name="connectionEstablishingTime" value="2" />
+              <option name="contentType" value="application/json" />
+              <option name="headers">
+                <list>
+                  <headerState>
+                    <option name="key" value="Vary" />
+                    <option name="value" value="Origin" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Vary" />
+                    <option name="value" value="Access-Control-Request-Method" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Vary" />
+                    <option name="value" value="Access-Control-Request-Headers" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-Content-Type-Options" />
+                    <option name="value" value="nosniff" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-XSS-Protection" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Cache-Control" />
+                    <option name="value" value="no-cache, no-store, max-age=0, must-revalidate" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Pragma" />
+                    <option name="value" value="no-cache" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Expires" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-Frame-Options" />
+                    <option name="value" value="DENY" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Content-Type" />
+                    <option name="value" value="application/json" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Transfer-Encoding" />
+                    <option name="value" value="chunked" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Date" />
+                    <option name="value" value="Sun, 04 Oct 2026 18:43:06 GMT" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Connection" />
+                    <option name="value" value="close" />
+                  </headerState>
+                </list>
+              </option>
+              <option name="id" value="68f60b91-f992-4dd3-92db-7c107d772dd9" />
+              <option name="message" value="Bad Request" />
+              <option name="prettyResponseType" value="JSON" />
+              <option name="rawBodyString" value="{&quot;success&quot;:false,&quot;message&quot;:&quot;Problem 2 is not in this quest&quot;}" />
+              <option name="size" value="60" />
+              <option name="time" value="104" />
+            </responseState>
+          </option>
+          <option name="workspaceId" value="drafts" />
+        </requestHistoryState>
+        <requestHistoryState>
+          <option name="dateTime" value="1791139482373" />
+          <option name="id" value="d77556dd-688a-46ac-a39e-c6afc356ea44" />
+          <option name="request">
+            <requestState>
+              <option name="auth">
+                <authState>
+                  <option name="bearer">
+                    <pF>
+                      <option name="token" value="eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJtaWtlc2ltb25pc2h2aWxpMjNAZ21haWwuY29tIiwiaWF0IjoxNzkxMTM4NzYzLCJleHAiOjE3OTEyMjUxNjN9.JNSIceil_-PSib0EyC-exmphz7633hYPUEksgHvl3yt0dyRhfmmajVOivCyU5tMQ" />
+                    </pF>
+                  </option>
+                  <option name="type" value="BEARER" />
+                </authState>
+              </option>
+              <option name="body">
+                <bodyState>
+                  <option name="raw" value="{&#10;  &quot;nodes&quot;: [&#10;    { &quot;problemId&quot;: 2, &quot;x&quot;: 100, &quot;y&quot;: 200, &quot;start&quot;: true },&#10;    { &quot;problemId&quot;: 3, &quot;x&quot;: 260, &quot;y&quot;: 200 },&#10;    { &quot;problemId&quot;: 4, &quot;x&quot;: 420, &quot;y&quot;: 120 },&#10;    { &quot;problemId&quot;: 5, &quot;x&quot;: 420, &quot;y&quot;: 280 },&#10;    { &quot;problemId&quot;: 6, &quot;x&quot;: 580, &quot;y&quot;: 280 }&#10;  ],&#10;  &quot;edges&quot;: [&#10;    { &quot;from&quot;: 2, &quot;to&quot;: 3 },&#10;    { &quot;from&quot;: 3, &quot;to&quot;: 4 },&#10;    { &quot;from&quot;: 3, &quot;to&quot;: 5 },&#10;    { &quot;from&quot;: 5, &quot;to&quot;: 6 }&#10;  ]&#10;}" />
+                  <option name="type" value="JSON" />
+                </bodyState>
+              </option>
+              <option name="id" value="ee5ae20f-d16e-4cbf-94a2-ed8ed2ab717f" />
+              <option name="method" value="PUT" />
+              <option name="name" value="make nodes graph for map" />
+              <option name="url" value="http://localhost:8080/api/quests/1/map" />
+            </requestState>
+          </option>
+          <option name="response">
+            <responseState>
+              <option name="bodyBytesBase64" value="eyJzdWNjZXNzIjpmYWxzZSwibWVzc2FnZSI6IlByb2JsZW0gMiBpcyBub3QgaW4gdGhpcyBxdWVzdCJ9" />
+              <option name="bodyString" value="{&#10;  &quot;success&quot;: false,&#10;  &quot;message&quot;: &quot;Problem 2 is not in this quest&quot;&#10;}" />
+              <option name="code" value="400" />
+              <option name="connectionEstablishingTime" value="1" />
+              <option name="contentType" value="application/json" />
+              <option name="headers">
+                <list>
+                  <headerState>
+                    <option name="key" value="Vary" />
+                    <option name="value" value="Origin" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Vary" />
+                    <option name="value" value="Access-Control-Request-Method" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Vary" />
+                    <option name="value" value="Access-Control-Request-Headers" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-Content-Type-Options" />
+                    <option name="value" value="nosniff" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-XSS-Protection" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Cache-Control" />
+                    <option name="value" value="no-cache, no-store, max-age=0, must-revalidate" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Pragma" />
+                    <option name="value" value="no-cache" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Expires" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-Frame-Options" />
+                    <option name="value" value="DENY" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Content-Type" />
+                    <option name="value" value="application/json" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Transfer-Encoding" />
+                    <option name="value" value="chunked" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Date" />
+                    <option name="value" value="Sun, 04 Oct 2026 18:44:42 GMT" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Connection" />
+                    <option name="value" value="close" />
+                  </headerState>
+                </list>
+              </option>
+              <option name="id" value="d77556dd-688a-46ac-a39e-c6afc356ea44" />
+              <option name="message" value="Bad Request" />
+              <option name="prettyResponseType" value="JSON" />
+              <option name="rawBodyString" value="{&quot;success&quot;:false,&quot;message&quot;:&quot;Problem 2 is not in this quest&quot;}" />
+              <option name="size" value="60" />
+              <option name="time" value="22" />
+            </responseState>
+          </option>
+          <option name="workspaceId" value="drafts" />
+        </requestHistoryState>
+        <requestHistoryState>
+          <option name="dateTime" value="1791139528082" />
+          <option name="id" value="a4c5617a-d5f0-41a1-b24a-f2c900787027" />
+          <option name="request">
+            <requestState>
+              <option name="auth">
+                <authState>
+                  <option name="bearer">
+                    <pF>
+                      <option name="token" value="eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJtaWtlc2ltb25pc2h2aWxpMjNAZ21haWwuY29tIiwiaWF0IjoxNzkxMTM4NzYzLCJleHAiOjE3OTEyMjUxNjN9.JNSIceil_-PSib0EyC-exmphz7633hYPUEksgHvl3yt0dyRhfmmajVOivCyU5tMQ" />
+                    </pF>
+                  </option>
+                  <option name="type" value="BEARER" />
+                </authState>
+              </option>
+              <option name="body">
+                <bodyState>
+                  <option name="raw" value="{&#10;  &quot;nodes&quot;: [&#10;    { &quot;problemId&quot;: 2, &quot;x&quot;: 100, &quot;y&quot;: 200, &quot;start&quot;: true },&#10;    { &quot;problemId&quot;: 3, &quot;x&quot;: 260, &quot;y&quot;: 200 },&#10;    { &quot;problemId&quot;: 4, &quot;x&quot;: 420, &quot;y&quot;: 120 },&#10;    { &quot;problemId&quot;: 5, &quot;x&quot;: 420, &quot;y&quot;: 280 },&#10;    { &quot;problemId&quot;: 6, &quot;x&quot;: 580, &quot;y&quot;: 280 }&#10;  ],&#10;  &quot;edges&quot;: [&#10;    { &quot;from&quot;: 2, &quot;to&quot;: 3 },&#10;    { &quot;from&quot;: 3, &quot;to&quot;: 4 },&#10;    { &quot;from&quot;: 3, &quot;to&quot;: 5 },&#10;    { &quot;from&quot;: 5, &quot;to&quot;: 6 }&#10;  ]&#10;}" />
+                  <option name="type" value="JSON" />
+                </bodyState>
+              </option>
+              <option name="id" value="ee5ae20f-d16e-4cbf-94a2-ed8ed2ab717f" />
+              <option name="method" value="PUT" />
+              <option name="name" value="make nodes graph for map" />
+              <option name="url" value="http://localhost:8080/api/quests/5/map" />
+            </requestState>
+          </option>
+          <option name="response">
+            <responseState>
+              <option name="bodyBytesBase64" value="eyJzdWNjZXNzIjpmYWxzZSwibWVzc2FnZSI6IkV2ZXJ5IHByb2JsZW0gbXVzdCBiZSBvbiB0aGUgbWFwLiBNaXNzaW5nOiBbN10ifQ==" />
+              <option name="bodyString" value="{&#10;  &quot;success&quot;: false,&#10;  &quot;message&quot;: &quot;Every problem must be on the map. Missing: [7]&quot;&#10;}" />
+              <option name="code" value="400" />
+              <option name="connectionEstablishingTime" value="2" />
+              <option name="contentType" value="application/json" />
+              <option name="headers">
+                <list>
+                  <headerState>
+                    <option name="key" value="Vary" />
+                    <option name="value" value="Origin" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Vary" />
+                    <option name="value" value="Access-Control-Request-Method" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Vary" />
+                    <option name="value" value="Access-Control-Request-Headers" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-Content-Type-Options" />
+                    <option name="value" value="nosniff" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-XSS-Protection" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Cache-Control" />
+                    <option name="value" value="no-cache, no-store, max-age=0, must-revalidate" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Pragma" />
+                    <option name="value" value="no-cache" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Expires" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-Frame-Options" />
+                    <option name="value" value="DENY" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Content-Type" />
+                    <option name="value" value="application/json" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Transfer-Encoding" />
+                    <option name="value" value="chunked" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Date" />
+                    <option name="value" value="Sun, 04 Oct 2026 18:45:28 GMT" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Connection" />
+                    <option name="value" value="close" />
+                  </headerState>
+                </list>
+              </option>
+              <option name="id" value="a4c5617a-d5f0-41a1-b24a-f2c900787027" />
+              <option name="message" value="Bad Request" />
+              <option name="prettyResponseType" value="JSON" />
+              <option name="rawBodyString" value="{&quot;success&quot;:false,&quot;message&quot;:&quot;Every problem must be on the map. Missing: [7]&quot;}" />
+              <option name="size" value="76" />
+              <option name="time" value="22" />
+            </responseState>
+          </option>
+          <option name="workspaceId" value="drafts" />
+        </requestHistoryState>
+        <requestHistoryState>
+          <option name="dateTime" value="1791139606388" />
+          <option name="id" value="a857e65c-49b7-46fa-a773-1060764e0725" />
+          <option name="request">
+            <requestState>
+              <option name="auth">
+                <authState>
+                  <option name="bearer">
+                    <pF>
+                      <option name="token" value="eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJtaWtlc2ltb25pc2h2aWxpMjNAZ21haWwuY29tIiwiaWF0IjoxNzkxMTM4NzYzLCJleHAiOjE3OTEyMjUxNjN9.JNSIceil_-PSib0EyC-exmphz7633hYPUEksgHvl3yt0dyRhfmmajVOivCyU5tMQ" />
+                    </pF>
+                  </option>
+                  <option name="type" value="BEARER" />
+                </authState>
+              </option>
+              <option name="body">
+                <bodyState>
+                  <option name="raw" value="{&#10;  &quot;nodes&quot;: [&#10;    { &quot;problemId&quot;: 2, &quot;x&quot;: 100, &quot;y&quot;: 200, &quot;start&quot;: true },&#10;    { &quot;problemId&quot;: 3, &quot;x&quot;: 260, &quot;y&quot;: 200 },&#10;    { &quot;problemId&quot;: 4, &quot;x&quot;: 420, &quot;y&quot;: 120 },&#10;    { &quot;problemId&quot;: 5, &quot;x&quot;: 420, &quot;y&quot;: 280 },&#10;    { &quot;problemId&quot;: 6, &quot;x&quot;: 580, &quot;y&quot;: 280 },&#10;    { &quot;problemId&quot;: 7, &quot;x&quot;: 740, &quot;y&quot;: 280 }&#10;  ],&#10;  &quot;edges&quot;: [&#10;    { &quot;from&quot;: 2, &quot;to&quot;: 3 },&#10;    { &quot;from&quot;: 3, &quot;to&quot;: 4 },&#10;    { &quot;from&quot;: 3, &quot;to&quot;: 5 },&#10;    { &quot;from&quot;: 5, &quot;to&quot;: 6 },&#10;    { &quot;from&quot;: 6, &quot;to&quot;: 7 }&#10;  ]&#10;}" />
+                  <option name="type" value="JSON" />
+                </bodyState>
+              </option>
+              <option name="id" value="ee5ae20f-d16e-4cbf-94a2-ed8ed2ab717f" />
+              <option name="method" value="PUT" />
+              <option name="name" value="make nodes graph for map" />
+              <option name="url" value="http://localhost:8080/api/quests/5/map" />
+            </requestState>
+          </option>
+          <option name="response">
+            <responseState>
+              <option name="bodyBytesBase64" value="eyJzdWNjZXNzIjp0cnVlLCJtZXNzYWdlIjoiUXVlc3QgbWFwIHNhdmVkIiwiZGF0YSI6eyJxdWVzdElkIjo1LCJ0aXRsZSI6IlRlc3QgSXNsYW5kIiwiZGlmZmljdWx0eUxldmVsIjoiTEVWRUxfMV9CRUdJTk5FUiIsInF1ZXN0VW5sb2NrZWQiOnRydWUsIm5vZGVzIjpbeyJwcm9ibGVtSWQiOjIsIngiOjEwMCwieSI6MjAwLCJzdGFydCI6dHJ1ZSwibm9kZUljb24iOm51bGwsIm9yZGVySW5kZXgiOjEsInhwUmV3YXJkIjoxMCwiY2F0ZWdvcnlJZCI6NSwiY2F0ZWdvcnlOYW1lIjoiQ29tcGxleCBOdW1iZXJzIiwibWFpbkNhdGVnb3J5SWQiOjEsIm1haW5DYXRlZ29yeU5hbWUiOiJBbGdlYnJhIiwic3RhdHVzIjoiQVZBSUxBQkxFIiwiYXR0ZW1wdHNVc2VkIjowLCJtYXhBdHRlbXB0cyI6MywicmV0cnlBdmFpbGFibGVBdCI6bnVsbH0seyJwcm9ibGVtSWQiOjMsIngiOjI2MCwieSI6MjAwLCJzdGFydCI6ZmFsc2UsIm5vZGVJY29uIjpudWxsLCJvcmRlckluZGV4IjoxLCJ4cFJld2FyZCI6MTAsImNhdGVnb3J5SWQiOjEsImNhdGVnb3J5TmFtZSI6IkFsZ2VicmEiLCJtYWluQ2F0ZWdvcnlJZCI6MSwibWFpbkNhdGVnb3J5TmFtZSI6IkFsZ2VicmEiLCJzdGF0dXMiOiJMT0NLRUQiLCJhdHRlbXB0c1VzZWQiOjAsIm1heEF0dGVtcHRzIjozLCJyZXRyeUF2YWlsYWJsZUF0IjpudWxsfSx7InByb2JsZW1JZCI6NCwieCI6NDIwLCJ5IjoxMjAsInN0YXJ0IjpmYWxzZSwibm9kZUljb24iOm51bGwsIm9yZGVySW5kZXgiOjIsInhwUmV3YXJkIjoxMCwiY2F0ZWdvcnlJZCI6MiwiY2F0ZWdvcnlOYW1lIjoiR2VvbWV0cnkiLCJtYWluQ2F0ZWdvcnlJZCI6MiwibWFpbkNhdGVnb3J5TmFtZSI6Ikdlb21ldHJ5Iiwic3RhdHVzIjoiTE9DS0VEIiwiYXR0ZW1wdHNVc2VkIjowLCJtYXhBdHRlbXB0cyI6MywicmV0cnlBdmFpbGFibGVBdCI6bnVsbH0seyJwcm9ibGVtSWQiOjUsIngiOjQyMCwieSI6MjgwLCJzdGFydCI6ZmFsc2UsIm5vZGVJY29uIjpudWxsLCJvcmRlckluZGV4IjozLCJ4cFJld2FyZCI6MTUsImNhdGVnb3J5SWQiOjQsImNhdGVnb3J5TmFtZSI6Ik51bWJlciBUaGVvcnkiLCJtYWluQ2F0ZWdvcnlJZCI6NCwibWFpbkNhdGVnb3J5TmFtZSI6Ik51bWJlciBUaGVvcnkiLCJzdGF0dXMiOiJMT0NLRUQiLCJhdHRlbXB0c1VzZWQiOjAsIm1heEF0dGVtcHRzIjozLCJyZXRyeUF2YWlsYWJsZUF0IjpudWxsfSx7InByb2JsZW1JZCI6NiwieCI6NTgwLCJ5IjoyODAsInN0YXJ0IjpmYWxzZSwibm9kZUljb24iOm51bGwsIm9yZGVySW5kZXgiOjQsInhwUmV3YXJkIjoxNSwiY2F0ZWdvcnlJZCI6MywiY2F0ZWdvcnlOYW1lIjoiQ29tYmluYXRvcmljcyIsIm1haW5DYXRlZ29yeUlkIjozLCJtYWluQ2F0ZWdvcnlOYW1lIjoiQ29tYmluYXRvcmljcyIsInN0YXR1cyI6IkxPQ0tFRCIsImF0dGVtcHRzVXNlZCI6MCwibWF4QXR0ZW1wdHMiOjMsInJldHJ5QXZhaWxhYmxlQXQiOm51bGx9LHsicHJvYmxlbUlkIjo3LCJ4Ijo3NDAsInkiOjI4MCwic3RhcnQiOmZhbHNlLCJub2RlSWNvbiI6bnVsbCwib3JkZXJJbmRleCI6NSwieHBSZXdhcmQiOjIwLCJjYXRlZ29yeUlkIjoyLCJjYXRlZ29yeU5hbWUiOiJHZW9tZXRyeSIsIm1haW5DYXRlZ29yeUlkIjoyLCJtYWluQ2F0ZWdvcnlOYW1lIjoiR2VvbWV0cnkiLCJzdGF0dXMiOiJMT0NLRUQiLCJhdHRlbXB0c1VzZWQiOjAsIm1heEF0dGVtcHRzIjozLCJyZXRyeUF2YWlsYWJsZUF0IjpudWxsfV0sImVkZ2VzIjpbeyJmcm9tIjoyLCJ0byI6M30seyJmcm9tIjozLCJ0byI6NH0seyJmcm9tIjozLCJ0byI6NX0seyJmcm9tIjo1LCJ0byI6Nn0seyJmcm9tIjo2LCJ0byI6N31dfX0=" />
+              <option name="bodyString" value="{&#10;  &quot;success&quot;: true,&#10;  &quot;message&quot;: &quot;Quest map saved&quot;,&#10;  &quot;data&quot;: {&#10;    &quot;questId&quot;: 5,&#10;    &quot;title&quot;: &quot;Test Island&quot;,&#10;    &quot;difficultyLevel&quot;: &quot;LEVEL_1_BEGINNER&quot;,&#10;    &quot;questUnlocked&quot;: true,&#10;    &quot;nodes&quot;: [&#10;      {&#10;        &quot;problemId&quot;: 2,&#10;        &quot;x&quot;: 100,&#10;        &quot;y&quot;: 200,&#10;        &quot;start&quot;: true,&#10;        &quot;nodeIcon&quot;: null,&#10;        &quot;orderIndex&quot;: 1,&#10;        &quot;xpReward&quot;: 10,&#10;        &quot;categoryId&quot;: 5,&#10;        &quot;categoryName&quot;: &quot;Complex Numbers&quot;,&#10;        &quot;mainCategoryId&quot;: 1,&#10;        &quot;mainCategoryName&quot;: &quot;Algebra&quot;,&#10;        &quot;status&quot;: &quot;AVAILABLE&quot;,&#10;        &quot;attemptsUsed&quot;: 0,&#10;        &quot;maxAttempts&quot;: 3,&#10;        &quot;retryAvailableAt&quot;: null&#10;      },&#10;      {&#10;        &quot;problemId&quot;: 3,&#10;        &quot;x&quot;: 260,&#10;        &quot;y&quot;: 200,&#10;        &quot;start&quot;: false,&#10;        &quot;nodeIcon&quot;: null,&#10;        &quot;orderIndex&quot;: 1,&#10;        &quot;xpReward&quot;: 10,&#10;        &quot;categoryId&quot;: 1,&#10;        &quot;categoryName&quot;: &quot;Algebra&quot;,&#10;        &quot;mainCategoryId&quot;: 1,&#10;        &quot;mainCategoryName&quot;: &quot;Algebra&quot;,&#10;        &quot;status&quot;: &quot;LOCKED&quot;,&#10;        &quot;attemptsUsed&quot;: 0,&#10;        &quot;maxAttempts&quot;: 3,&#10;        &quot;retryAvailableAt&quot;: null&#10;      },&#10;      {&#10;        &quot;problemId&quot;: 4,&#10;        &quot;x&quot;: 420,&#10;        &quot;y&quot;: 120,&#10;        &quot;start&quot;: false,&#10;        &quot;nodeIcon&quot;: null,&#10;        &quot;orderIndex&quot;: 2,&#10;        &quot;xpReward&quot;: 10,&#10;        &quot;categoryId&quot;: 2,&#10;        &quot;categoryName&quot;: &quot;Geometry&quot;,&#10;        &quot;mainCategoryId&quot;: 2,&#10;        &quot;mainCategoryName&quot;: &quot;Geometry&quot;,&#10;        &quot;status&quot;: &quot;LOCKED&quot;,&#10;        &quot;attemptsUsed&quot;: 0,&#10;        &quot;maxAttempts&quot;: 3,&#10;        &quot;retryAvailableAt&quot;: null&#10;      },&#10;      {&#10;        &quot;problemId&quot;: 5,&#10;        &quot;x&quot;: 420,&#10;        &quot;y&quot;: 280,&#10;        &quot;start&quot;: false,&#10;        &quot;nodeIcon&quot;: null,&#10;        &quot;orderIndex&quot;: 3,&#10;        &quot;xpReward&quot;: 15,&#10;        &quot;categoryId&quot;: 4,&#10;        &quot;categoryName&quot;: &quot;Number Theory&quot;,&#10;        &quot;mainCategoryId&quot;: 4,&#10;        &quot;mainCategoryName&quot;: &quot;Number Theory&quot;,&#10;        &quot;status&quot;: &quot;LOCKED&quot;,&#10;        &quot;attemptsUsed&quot;: 0,&#10;        &quot;maxAttempts&quot;: 3,&#10;        &quot;retryAvailableAt&quot;: null&#10;      },&#10;      {&#10;        &quot;problemId&quot;: 6,&#10;        &quot;x&quot;: 580,&#10;        &quot;y&quot;: 280,&#10;        &quot;start&quot;: false,&#10;        &quot;nodeIcon&quot;: null,&#10;        &quot;orderIndex&quot;: 4,&#10;        &quot;xpReward&quot;: 15,&#10;        &quot;categoryId&quot;: 3,&#10;        &quot;categoryName&quot;: &quot;Combinatorics&quot;,&#10;        &quot;mainCategoryId&quot;: 3,&#10;        &quot;mainCategoryName&quot;: &quot;Combinatorics&quot;,&#10;        &quot;status&quot;: &quot;LOCKED&quot;,&#10;        &quot;attemptsUsed&quot;: 0,&#10;        &quot;maxAttempts&quot;: 3,&#10;        &quot;retryAvailableAt&quot;: null&#10;      },&#10;      {&#10;        &quot;problemId&quot;: 7,&#10;        &quot;x&quot;: 740,&#10;        &quot;y&quot;: 280,&#10;        &quot;start&quot;: false,&#10;        &quot;nodeIcon&quot;: null,&#10;        &quot;orderIndex&quot;: 5,&#10;        &quot;xpReward&quot;: 20,&#10;        &quot;categoryId&quot;: 2,&#10;        &quot;categoryName&quot;: &quot;Geometry&quot;,&#10;        &quot;mainCategoryId&quot;: 2,&#10;        &quot;mainCategoryName&quot;: &quot;Geometry&quot;,&#10;        &quot;status&quot;: &quot;LOCKED&quot;,&#10;        &quot;attemptsUsed&quot;: 0,&#10;        &quot;maxAttempts&quot;: 3,&#10;        &quot;retryAvailableAt&quot;: null&#10;      }&#10;    ],&#10;    &quot;edges&quot;: [&#10;      {&#10;        &quot;from&quot;: 2,&#10;        &quot;to&quot;: 3&#10;      },&#10;      {&#10;        &quot;from&quot;: 3,&#10;        &quot;to&quot;: 4&#10;      },&#10;      {&#10;        &quot;from&quot;: 3,&#10;        &quot;to&quot;: 5&#10;      },&#10;      {&#10;        &quot;from&quot;: 5,&#10;        &quot;to&quot;: 6&#10;      },&#10;      {&#10;        &quot;from&quot;: 6,&#10;        &quot;to&quot;: 7&#10;      }&#10;    ]&#10;  }&#10;}" />
+              <option name="code" value="200" />
+              <option name="connectionEstablishingTime" value="2" />
+              <option name="contentType" value="application/json" />
+              <option name="headers">
+                <list>
+                  <headerState>
+                    <option name="key" value="Vary" />
+                    <option name="value" value="Origin" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Vary" />
+                    <option name="value" value="Access-Control-Request-Method" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Vary" />
+                    <option name="value" value="Access-Control-Request-Headers" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-Content-Type-Options" />
+                    <option name="value" value="nosniff" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-XSS-Protection" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Cache-Control" />
+                    <option name="value" value="no-cache, no-store, max-age=0, must-revalidate" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Pragma" />
+                    <option name="value" value="no-cache" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Expires" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-Frame-Options" />
+                    <option name="value" value="DENY" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Content-Type" />
+                    <option name="value" value="application/json" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Transfer-Encoding" />
+                    <option name="value" value="chunked" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Date" />
+                    <option name="value" value="Sun, 04 Oct 2026 18:46:46 GMT" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Keep-Alive" />
+                    <option name="value" value="timeout=60" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Connection" />
+                    <option name="value" value="keep-alive" />
+                  </headerState>
+                </list>
+              </option>
+              <option name="id" value="a857e65c-49b7-46fa-a773-1060764e0725" />
+              <option name="message" value="OK" />
+              <option name="prettyResponseType" value="JSON" />
+              <option name="rawBodyString" value="{&quot;success&quot;:true,&quot;message&quot;:&quot;Quest map saved&quot;,&quot;data&quot;:{&quot;questId&quot;:5,&quot;title&quot;:&quot;Test Island&quot;,&quot;difficultyLevel&quot;:&quot;LEVEL_1_BEGINNER&quot;,&quot;questUnlocked&quot;:true,&quot;nodes&quot;:[{&quot;problemId&quot;:2,&quot;x&quot;:100,&quot;y&quot;:200,&quot;start&quot;:true,&quot;nodeIcon&quot;:null,&quot;orderIndex&quot;:1,&quot;xpReward&quot;:10,&quot;categoryId&quot;:5,&quot;categoryName&quot;:&quot;Complex Numbers&quot;,&quot;mainCategoryId&quot;:1,&quot;mainCategoryName&quot;:&quot;Algebra&quot;,&quot;status&quot;:&quot;AVAILABLE&quot;,&quot;attemptsUsed&quot;:0,&quot;maxAttempts&quot;:3,&quot;retryAvailableAt&quot;:null},{&quot;problemId&quot;:3,&quot;x&quot;:260,&quot;y&quot;:200,&quot;start&quot;:false,&quot;nodeIcon&quot;:null,&quot;orderIndex&quot;:1,&quot;xpReward&quot;:10,&quot;categoryId&quot;:1,&quot;categoryName&quot;:&quot;Algebra&quot;,&quot;mainCategoryId&quot;:1,&quot;mainCategoryName&quot;:&quot;Algebra&quot;,&quot;status&quot;:&quot;LOCKED&quot;,&quot;attemptsUsed&quot;:0,&quot;maxAttempts&quot;:3,&quot;retryAvailableAt&quot;:null},{&quot;problemId&quot;:4,&quot;x&quot;:420,&quot;y&quot;:120,&quot;start&quot;:false,&quot;nodeIcon&quot;:null,&quot;orderIndex&quot;:2,&quot;xpReward&quot;:10,&quot;categoryId&quot;:2,&quot;categoryName&quot;:&quot;Geometry&quot;,&quot;mainCategoryId&quot;:2,&quot;mainCategoryName&quot;:&quot;Geometry&quot;,&quot;status&quot;:&quot;LOCKED&quot;,&quot;attemptsUsed&quot;:0,&quot;maxAttempts&quot;:3,&quot;retryAvailableAt&quot;:null},{&quot;problemId&quot;:5,&quot;x&quot;:420,&quot;y&quot;:280,&quot;start&quot;:false,&quot;nodeIcon&quot;:null,&quot;orderIndex&quot;:3,&quot;xpReward&quot;:15,&quot;categoryId&quot;:4,&quot;categoryName&quot;:&quot;Number Theory&quot;,&quot;mainCategoryId&quot;:4,&quot;mainCategoryName&quot;:&quot;Number Theory&quot;,&quot;status&quot;:&quot;LOCKED&quot;,&quot;attemptsUsed&quot;:0,&quot;maxAttempts&quot;:3,&quot;retryAvailableAt&quot;:null},{&quot;problemId&quot;:6,&quot;x&quot;:580,&quot;y&quot;:280,&quot;start&quot;:false,&quot;nodeIcon&quot;:null,&quot;orderIndex&quot;:4,&quot;xpReward&quot;:15,&quot;categoryId&quot;:3,&quot;categoryName&quot;:&quot;Combinatorics&quot;,&quot;mainCategoryId&quot;:3,&quot;mainCategoryName&quot;:&quot;Combinatorics&quot;,&quot;status&quot;:&quot;LOCKED&quot;,&quot;attemptsUsed&quot;:0,&quot;maxAttempts&quot;:3,&quot;retryAvailableAt&quot;:null},{&quot;problemId&quot;:7,&quot;x&quot;:740,&quot;y&quot;:280,&quot;start&quot;:false,&quot;nodeIcon&quot;:null,&quot;orderIndex&quot;:5,&quot;xpReward&quot;:20,&quot;categoryId&quot;:2,&quot;categoryName&quot;:&quot;Geometry&quot;,&quot;mainCategoryId&quot;:2,&quot;mainCategoryName&quot;:&quot;Geometry&quot;,&quot;status&quot;:&quot;LOCKED&quot;,&quot;attemptsUsed&quot;:0,&quot;maxAttempts&quot;:3,&quot;retryAvailableAt&quot;:null}],&quot;edges&quot;:[{&quot;from&quot;:2,&quot;to&quot;:3},{&quot;from&quot;:3,&quot;to&quot;:4},{&quot;from&quot;:3,&quot;to&quot;:5},{&quot;from&quot;:5,&quot;to&quot;:6},{&quot;from&quot;:6,&quot;to&quot;:7}]}}" />
+              <option name="size" value="1817" />
+              <option name="time" value="80" />
             </responseState>
           </option>
           <option name="workspaceId" value="drafts" />
