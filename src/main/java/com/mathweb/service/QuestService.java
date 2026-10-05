@@ -6,6 +6,7 @@ import com.mathweb.dto.response.QuestResponse;
 import java.util.List;
 
 public interface QuestService {
+    List<QuestResponse> getAllQuestsForAdmin();
     QuestResponse createQuest(CreateQuestRequest request);
     QuestResponse getQuestById(Long id, Long userId);
     List<QuestResponse> getAllQuests(Long userId);

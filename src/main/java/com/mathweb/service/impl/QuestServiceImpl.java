@@ -44,6 +44,14 @@ public class QuestServiceImpl implements QuestService {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public List<QuestResponse> getAllQuestsForAdmin() {
+        return questRepository.findAllByOrderByDifficultyLevelAscIdAsc().stream()
+                .map(q -> mapToQuestResponse(q, null))   // per-user fields stay null
+                .toList();
+    }
+
+    @Override
     @Transactional
     public QuestResponse createQuest(CreateQuestRequest request) {
         Quest quest = Quest.builder()

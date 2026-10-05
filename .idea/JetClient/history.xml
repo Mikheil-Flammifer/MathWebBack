@@ -8493,6 +8493,207 @@
           </option>
           <option name="workspaceId" value="drafts" />
         </requestHistoryState>
+        <requestHistoryState>
+          <option name="dateTime" value="1791140274651" />
+          <option name="id" value="c4e6b5da-ace2-44b2-b90b-24ea7e5d03c2" />
+          <option name="request">
+            <requestState>
+              <option name="auth">
+                <authState>
+                  <option name="bearer">
+                    <pF>
+                      <option name="token" value="eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJtaWtlc2ltb25pc2h2aWxpMjNAZ21haWwuY29tIiwiaWF0IjoxNzkxMTM4NzYzLCJleHAiOjE3OTEyMjUxNjN9.JNSIceil_-PSib0EyC-exmphz7633hYPUEksgHvl3yt0dyRhfmmajVOivCyU5tMQ" />
+                    </pF>
+                  </option>
+                  <option name="type" value="BEARER" />
+                </authState>
+              </option>
+              <option name="body">
+                <bodyState>
+                  <option name="type" value="JSON" />
+                </bodyState>
+              </option>
+              <option name="id" value="c4f83d3e-38d2-490a-aa6a-71ae03670af7" />
+              <option name="method" value="POST" />
+              <option name="name" value="publish quest" />
+              <option name="url" value="http://localhost:8080/api/quests/5/publish" />
+            </requestState>
+          </option>
+          <option name="response">
+            <responseState>
+              <option name="bodyBytesBase64" value="eyJzdWNjZXNzIjp0cnVlLCJtZXNzYWdlIjoiUXVlc3QgcHVibGlzaGVkIn0=" />
+              <option name="bodyString" value="{&#10;  &quot;success&quot;: true,&#10;  &quot;message&quot;: &quot;Quest published&quot;&#10;}" />
+              <option name="code" value="200" />
+              <option name="connectionEstablishingTime" value="3" />
+              <option name="contentType" value="application/json" />
+              <option name="headers">
+                <list>
+                  <headerState>
+                    <option name="key" value="Vary" />
+                    <option name="value" value="Origin" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Vary" />
+                    <option name="value" value="Access-Control-Request-Method" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Vary" />
+                    <option name="value" value="Access-Control-Request-Headers" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-Content-Type-Options" />
+                    <option name="value" value="nosniff" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-XSS-Protection" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Cache-Control" />
+                    <option name="value" value="no-cache, no-store, max-age=0, must-revalidate" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Pragma" />
+                    <option name="value" value="no-cache" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Expires" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-Frame-Options" />
+                    <option name="value" value="DENY" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Content-Type" />
+                    <option name="value" value="application/json" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Transfer-Encoding" />
+                    <option name="value" value="chunked" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Date" />
+                    <option name="value" value="Sun, 04 Oct 2026 18:57:54 GMT" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Keep-Alive" />
+                    <option name="value" value="timeout=60" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Connection" />
+                    <option name="value" value="keep-alive" />
+                  </headerState>
+                </list>
+              </option>
+              <option name="id" value="c4e6b5da-ace2-44b2-b90b-24ea7e5d03c2" />
+              <option name="message" value="OK" />
+              <option name="prettyResponseType" value="JSON" />
+              <option name="rawBodyString" value="{&quot;success&quot;:true,&quot;message&quot;:&quot;Quest published&quot;}" />
+              <option name="size" value="44" />
+              <option name="time" value="38" />
+            </responseState>
+          </option>
+          <option name="workspaceId" value="drafts" />
+        </requestHistoryState>
+        <requestHistoryState>
+          <option name="dateTime" value="1791141273533" />
+          <option name="id" value="6a8b982a-805f-4253-860d-583ccd104e34" />
+          <option name="request">
+            <requestState>
+              <option name="auth">
+                <authState>
+                  <option name="bearer">
+                    <pF>
+                      <option name="token" value="eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJtaWtlc2ltb25pc2h2aWxpMjNAZ21haWwuY29tIiwiaWF0IjoxNzkxMTM4NzYzLCJleHAiOjE3OTEyMjUxNjN9.JNSIceil_-PSib0EyC-exmphz7633hYPUEksgHvl3yt0dyRhfmmajVOivCyU5tMQ" />
+                    </pF>
+                  </option>
+                  <option name="type" value="BEARER" />
+                </authState>
+              </option>
+              <option name="id" value="6085e1fa-9dc8-4847-b62f-11c027b2a6bb" />
+              <option name="method" value="GET" />
+              <option name="name" value="get problem" />
+              <option name="url" value="http://localhost:8080/api/problems/2" />
+            </requestState>
+          </option>
+          <option name="response">
+            <responseState>
+              <option name="bodyBytesBase64" value="eyJzdWNjZXNzIjp0cnVlLCJtZXNzYWdlIjoiUHJvYmxlbSByZXRyaWV2ZWQiLCJkYXRhIjp7ImlkIjoyLCJxdWVzdGlvblRleHQiOiIyICsgMiA9ID8iLCJxdWVzdGlvbkltYWdlUGF0aCI6bnVsbCwicHJvYmxlbVR5cGUiOiJPUEVOX0FOU1dFUiIsImRpZmZpY3VsdHlMZXZlbCI6IkxFVkVMXzFfQkVHSU5ORVIiLCJvcmRlckluZGV4IjoxLCJtYXhBdHRlbXB0cyI6MywieHBSZXdhcmQiOjEwLCJxdWVzdElkIjo1LCJjYXRlZ29yeUlkIjo1LCJjYXRlZ29yeU5hbWUiOiJDb21wbGV4IE51bWJlcnMiLCJtYWluQ2F0ZWdvcnlJZCI6MSwibWFpbkNhdGVnb3J5TmFtZSI6IkFsZ2VicmEiLCJyZXRyeUF2YWlsYWJsZUF0IjpudWxsLCJhbnN3ZXJPcHRpb25zIjpbXSwiZXhwbGFuYXRpb24iOm51bGwsImV4cGxhbmF0aW9uSW1hZ2VQYXRoIjpudWxsLCJjb3JyZWN0QW5zd2VyIjoiNCIsImF0dGVtcHRzVXNlZCI6MCwic29sdmVkIjpmYWxzZSwiYW5zd2VyUmV2ZWFsZWQiOmZhbHNlfX0=" />
+              <option name="bodyString" value="{&#10;  &quot;success&quot;: true,&#10;  &quot;message&quot;: &quot;Problem retrieved&quot;,&#10;  &quot;data&quot;: {&#10;    &quot;id&quot;: 2,&#10;    &quot;questionText&quot;: &quot;2 + 2 = ?&quot;,&#10;    &quot;questionImagePath&quot;: null,&#10;    &quot;problemType&quot;: &quot;OPEN_ANSWER&quot;,&#10;    &quot;difficultyLevel&quot;: &quot;LEVEL_1_BEGINNER&quot;,&#10;    &quot;orderIndex&quot;: 1,&#10;    &quot;maxAttempts&quot;: 3,&#10;    &quot;xpReward&quot;: 10,&#10;    &quot;questId&quot;: 5,&#10;    &quot;categoryId&quot;: 5,&#10;    &quot;categoryName&quot;: &quot;Complex Numbers&quot;,&#10;    &quot;mainCategoryId&quot;: 1,&#10;    &quot;mainCategoryName&quot;: &quot;Algebra&quot;,&#10;    &quot;retryAvailableAt&quot;: null,&#10;    &quot;answerOptions&quot;: [],&#10;    &quot;explanation&quot;: null,&#10;    &quot;explanationImagePath&quot;: null,&#10;    &quot;correctAnswer&quot;: &quot;4&quot;,&#10;    &quot;attemptsUsed&quot;: 0,&#10;    &quot;solved&quot;: false,&#10;    &quot;answerRevealed&quot;: false&#10;  }&#10;}" />
+              <option name="code" value="200" />
+              <option name="connectionEstablishingTime" value="3" />
+              <option name="contentType" value="application/json" />
+              <option name="headers">
+                <list>
+                  <headerState>
+                    <option name="key" value="Vary" />
+                    <option name="value" value="Origin" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Vary" />
+                    <option name="value" value="Access-Control-Request-Method" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Vary" />
+                    <option name="value" value="Access-Control-Request-Headers" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-Content-Type-Options" />
+                    <option name="value" value="nosniff" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-XSS-Protection" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Cache-Control" />
+                    <option name="value" value="no-cache, no-store, max-age=0, must-revalidate" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Pragma" />
+                    <option name="value" value="no-cache" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Expires" />
+                    <option name="value" value="0" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="X-Frame-Options" />
+                    <option name="value" value="DENY" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Content-Type" />
+                    <option name="value" value="application/json" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Transfer-Encoding" />
+                    <option name="value" value="chunked" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Date" />
+                    <option name="value" value="Sun, 04 Oct 2026 19:14:33 GMT" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Keep-Alive" />
+                    <option name="value" value="timeout=60" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Connection" />
+                    <option name="value" value="keep-alive" />
+                  </headerState>
+                </list>
+              </option>
+              <option name="id" value="6a8b982a-805f-4253-860d-583ccd104e34" />
+              <option name="message" value="OK" />
+              <option name="prettyResponseType" value="JSON" />
+              <option name="rawBodyString" value="{&quot;success&quot;:true,&quot;message&quot;:&quot;Problem retrieved&quot;,&quot;data&quot;:{&quot;id&quot;:2,&quot;questionText&quot;:&quot;2 + 2 = ?&quot;,&quot;questionImagePath&quot;:null,&quot;problemType&quot;:&quot;OPEN_ANSWER&quot;,&quot;difficultyLevel&quot;:&quot;LEVEL_1_BEGINNER&quot;,&quot;orderIndex&quot;:1,&quot;maxAttempts&quot;:3,&quot;xpReward&quot;:10,&quot;questId&quot;:5,&quot;categoryId&quot;:5,&quot;categoryName&quot;:&quot;Complex Numbers&quot;,&quot;mainCategoryId&quot;:1,&quot;mainCategoryName&quot;:&quot;Algebra&quot;,&quot;retryAvailableAt&quot;:null,&quot;answerOptions&quot;:[],&quot;explanation&quot;:null,&quot;explanationImagePath&quot;:null,&quot;correctAnswer&quot;:&quot;4&quot;,&quot;attemptsUsed&quot;:0,&quot;solved&quot;:false,&quot;answerRevealed&quot;:false}}" />
+              <option name="size" value="497" />
+              <option name="time" value="26" />
+            </responseState>
+          </option>
+          <option name="workspaceId" value="drafts" />
+        </requestHistoryState>
       </list>
     </option>
   </component>

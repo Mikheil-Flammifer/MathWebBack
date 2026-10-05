@@ -29,5 +29,7 @@ public interface QuestRepository extends JpaRepository<Quest, Long> {
             """)
     List<Quest> findNotStartedByUser(Long userId);
 
+    List<Quest> findAllByOrderByDifficultyLevelAscIdAsc();
+
     boolean existsByTitleAndPublishedTrue(String title);
 }

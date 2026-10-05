@@ -5,18 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e03fdf07-73d9-48cf-9faf-4ef665572f76" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/mathweb/dto/request/UpdateProblemRequest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/JetClient/history.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/JetClient/history.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/JetClient/state.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/JetClient/state.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mathweb/controller/ProblemController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mathweb/controller/ProblemController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mathweb/dto/request/CreateProblemRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mathweb/dto/request/CreateProblemRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mathweb/dto/response/AnswerOptionResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mathweb/dto/response/AnswerOptionResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mathweb/dto/response/AnswerResultResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mathweb/dto/response/AnswerResultResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mathweb/dto/response/ProblemResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mathweb/dto/response/ProblemResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mathweb/service/ProblemService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mathweb/service/ProblemService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mathweb/service/impl/ProblemServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mathweb/service/impl/ProblemServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mathweb/service/impl/QuestMapService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mathweb/service/impl/QuestMapService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mathweb/controller/QuestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mathweb/controller/QuestController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mathweb/repository/QuestRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mathweb/repository/QuestRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mathweb/service/QuestService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mathweb/service/QuestService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mathweb/service/impl/QuestServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mathweb/service/impl/QuestServiceImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,6 +31,8 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="mock:///JetClient Request Console" root0="SKIP_INSPECTION" />
+    <setting file="mock:///JetClient Request Console" root0="SKIP_INSPECTION" />
     <setting file="mock:///JetClient Request Console" root0="SKIP_INSPECTION" />
     <setting file="mock:///JetClient Request Console" root0="SKIP_INSPECTION" />
     <setting file="mock:///JetClient Request Console" root0="SKIP_INSPECTION" />

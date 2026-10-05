@@ -29,6 +29,13 @@ public class QuestController {
         this.questMapService = questMapService;
     }
 
+    @GetMapping("/admin")
+    @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER')")
+    public ResponseEntity<ApiResponse<List<QuestResponse>>> getAllQuestsForAdmin() {
+        return ResponseEntity.ok(ApiResponse.success("Quests retrieved",
+                questService.getAllQuestsForAdmin()));
+    }
+
     @GetMapping
     public ResponseEntity<ApiResponse<List<QuestResponse>>> getAllQuests(
             @AuthenticationPrincipal UserPrincipal principal) {

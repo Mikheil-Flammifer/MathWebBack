@@ -242,16 +242,21 @@
                 <authState>
                   <option name="bearer">
                     <pF>
-                      <option name="token" value="eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJtaWtlc2ltb25pc2h2aWxpMjNAZ21haWwuY29tIiwiaWF0IjoxNzkwNjgzMTI1LCJleHAiOjE3OTA3Njk1MjV9.5Q5CRotcijY6v-x_P5a0PmALHPNn6ptomQQgEdTAkvSm6aHmNvZ-RZRk1CmvX94e" />
+                      <option name="token" value="eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJtaWtlc2ltb25pc2h2aWxpMjNAZ21haWwuY29tIiwiaWF0IjoxNzkxMTM4NzYzLCJleHAiOjE3OTEyMjUxNjN9.JNSIceil_-PSib0EyC-exmphz7633hYPUEksgHvl3yt0dyRhfmmajVOivCyU5tMQ" />
                     </pF>
                   </option>
                   <option name="type" value="BEARER" />
                 </authState>
               </option>
+              <option name="body">
+                <bodyState>
+                  <option name="type" value="JSON" />
+                </bodyState>
+              </option>
               <option name="id" value="c4f83d3e-38d2-490a-aa6a-71ae03670af7" />
               <option name="method" value="POST" />
               <option name="name" value="publish quest" />
-              <option name="url" value="http://localhost:8080/api/quests/1/publish" />
+              <option name="url" value="http://localhost:8080/api/quests/5/publish" />
             </requestState>
             <requestState>
               <option name="auth">
@@ -325,6 +330,22 @@
               <option name="method" value="PUT" />
               <option name="name" value="make nodes graph for map" />
               <option name="url" value="http://localhost:8080/api/quests/5/map" />
+            </requestState>
+            <requestState>
+              <option name="auth">
+                <authState>
+                  <option name="bearer">
+                    <pF>
+                      <option name="token" value="eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJtaWtlc2ltb25pc2h2aWxpMjNAZ21haWwuY29tIiwiaWF0IjoxNzkxMTM4NzYzLCJleHAiOjE3OTEyMjUxNjN9.JNSIceil_-PSib0EyC-exmphz7633hYPUEksgHvl3yt0dyRhfmmajVOivCyU5tMQ" />
+                    </pF>
+                  </option>
+                  <option name="type" value="BEARER" />
+                </authState>
+              </option>
+              <option name="id" value="6085e1fa-9dc8-4847-b62f-11c027b2a6bb" />
+              <option name="method" value="GET" />
+              <option name="name" value="get problem" />
+              <option name="url" value="http://localhost:8080/api/problems/2" />
             </requestState>
           </list>
         </option>
