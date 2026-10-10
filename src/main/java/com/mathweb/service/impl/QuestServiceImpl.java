@@ -1,6 +1,7 @@
 package com.mathweb.service.impl;
 
 import com.mathweb.dto.request.CreateQuestRequest;
+import com.mathweb.dto.request.UpdateQuestRequest;
 import com.mathweb.dto.response.QuestProgressResponse;
 import com.mathweb.dto.response.QuestResponse;
 import com.mathweb.entity.Quest;
@@ -119,25 +120,43 @@ public class QuestServiceImpl implements QuestService {
 
     @Override
     @Transactional
-    public QuestResponse updateQuest(Long id, CreateQuestRequest request) {
+    public QuestResponse updateQuest(Long id, UpdateQuestRequest request) {
         Quest quest = questRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Quest", id));
 
-        quest.setTitle(request.getTitle());
-        quest.setDescription(request.getDescription());
-        quest.setDifficultyLevel(request.getDifficultyLevel());
-        quest.setPositionX(request.getPositionX());
-        quest.setPositionY(request.getPositionY());
+        if (request.getTitle() != null) quest.setTitle(request.getTitle());
+        if (request.getDescription() != null) quest.setDescription(request.getDescription());
+        if (request.getDifficultyLevel() != null) quest.setDifficultyLevel(request.getDifficultyLevel());
+        if (request.getPositionX() != null) quest.setPositionX(request.getPositionX());
+        if (request.getPositionY() != null) quest.setPositionY(request.getPositionY());
+        if (request.getXpReward() != null) quest.setXpReward(request.getXpReward());
 
         if (request.getPrerequisiteIds() != null) {
-            List<Quest> prerequisites = questRepository.findAllById(request.getPrerequisiteIds());
-            quest.setPrerequisites(prerequisites);
+            List<Quest> prereqs = questRepository.findAllById(request.getPrerequisiteIds());
+            if (prereqs.size() != request.getPrerequisiteIds().stream().distinct().count()) {
+                throw new IllegalArgumentException("Some prerequisite quests do not exist");
+            }
+            for (Quest p : prereqs) {
+                if (reaches(p, id, new java.util.HashSet<>())) {
+                    throw new IllegalArgumentException("Prerequisites would create a cycle");
+                }
+            }
+            quest.setPrerequisites(prereqs);
         }
 
         questRepository.save(quest);
         return mapToQuestResponse(quest, null);
     }
 
+    // true if `from` or any of its prerequisites is the quest with targetId
+    private boolean reaches(Quest from, Long targetId, java.util.Set<Long> seen) {
+        if (from.getId().equals(targetId)) return true;
+        if (!seen.add(from.getId())) return false;
+        for (Quest p : from.getPrerequisites()) {
+            if (reaches(p, targetId, seen)) return true;
+        }
+        return false;
+    }
     @Override
     @Transactional
     public void deleteQuest(Long id) {

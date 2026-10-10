@@ -2,6 +2,7 @@ package com.mathweb.controller;
 
 import com.mathweb.dto.request.CreateQuestRequest;
 import com.mathweb.dto.request.SaveQuestMapRequest;
+import com.mathweb.dto.request.UpdateQuestRequest;
 import com.mathweb.dto.response.ApiResponse;
 import com.mathweb.dto.response.QuestMapResponse;
 import com.mathweb.dto.response.QuestResponse;
@@ -75,9 +76,9 @@ public class QuestController {
     @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER')")
     public ResponseEntity<ApiResponse<QuestResponse>> updateQuest(
             @PathVariable Long id,
-            @Valid @RequestBody CreateQuestRequest request) {
-        QuestResponse quest = questService.updateQuest(id, request);
-        return ResponseEntity.ok(ApiResponse.success("Quest updated", quest));
+            @Valid @RequestBody UpdateQuestRequest request) {
+        return ResponseEntity.ok(ApiResponse.success("Quest updated",
+                questService.updateQuest(id, request)));
     }
 
     @PutMapping("/{id}/map")
