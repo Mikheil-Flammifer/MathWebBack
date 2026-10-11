@@ -72,6 +72,10 @@ public class SecurityConfig {
                         // ===== ADMIN ONLY =====
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST,
+                                "/api/videos/**").hasAnyRole("ADMIN", "TEACHER")
+                        .requestMatchers(HttpMethod.PUT,
+                                "/api/videos/**").hasAnyRole("ADMIN", "TEACHER")
                         .requestMatchers(HttpMethod.DELETE,
                                 "/api/videos/**").hasAnyRole("ADMIN", "TEACHER")
                         .requestMatchers(HttpMethod.POST,
@@ -80,6 +84,8 @@ public class SecurityConfig {
                                 "/api/quests/**").hasAnyRole("ADMIN", "TEACHER")
                         .requestMatchers(HttpMethod.DELETE,
                                 "/api/quests/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST,
+                                "/api/problems/submit").authenticated()
                         .requestMatchers(HttpMethod.POST,
                                 "/api/problems/**").hasAnyRole("ADMIN", "TEACHER")
                         .requestMatchers(HttpMethod.PUT,
