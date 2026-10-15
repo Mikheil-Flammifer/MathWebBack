@@ -16,6 +16,7 @@ import com.mathweb.service.FileStorageService;
 import com.mathweb.util.FileUtil;
 import com.mathweb.util.RoleUtil;
 import com.mathweb.util.SanitizationUtil;
+import com.mathweb.util.AnswerChecker;
 import com.mathweb.repository.*;
 import com.mathweb.service.ProblemService;
 import org.slf4j.Logger;
@@ -76,6 +77,7 @@ public class ProblemServiceImpl implements ProblemService {
                 .problemType(request.getProblemType())
                 .difficultyLevel(request.getDifficultyLevel())
                 .correctAnswer(request.getCorrectAnswer())
+                .answerTolerance(request.getAnswerTolerance())
                 .explanation(request.getExplanation())
                 .orderIndex(request.getOrderIndex())
                 .xpReward(request.getXpReward())
@@ -139,6 +141,7 @@ public class ProblemServiceImpl implements ProblemService {
         problem.setProblemType(request.getProblemType());
         problem.setDifficultyLevel(request.getDifficultyLevel());
         problem.setCorrectAnswer(request.getCorrectAnswer());
+        problem.setAnswerTolerance(request.getAnswerTolerance());
         problem.setExplanation(request.getExplanation());
         problem.setOrderIndex(request.getOrderIndex());
         problem.setXpReward(request.getXpReward());
@@ -321,11 +324,22 @@ public class ProblemServiceImpl implements ProblemService {
                 yield selected.getIsCorrect();
             }
             case OPEN_ANSWER -> {
-                if (request.getOpenAnswer() == null || request.getOpenAnswer().isBlank()) {
+                String given = request.getOpenAnswer();
+                if (given == null || given.isBlank()) {
                     throw new BadRequestException("Please provide an answer");
                 }
-                yield problem.getCorrectAnswer().trim()
-                        .equalsIgnoreCase(request.getOpenAnswer().trim());
+                yield AnswerChecker.checkText(problem.getCorrectAnswer(), given);
+            }
+            case NUMERIC -> {
+                String given = request.getOpenAnswer();
+                if (given == null || given.isBlank()) {
+                    throw new BadRequestException("Please provide an answer");
+                }
+                if (AnswerChecker.parseNumber(given).isEmpty()) {
+                    throw new BadRequestException("Enter a number, for example 3, -2.5 or 1/2");
+                }
+                yield AnswerChecker.checkNumeric(problem.getCorrectAnswer(), given,
+                        problem.getAnswerTolerance());
             }
         };
     }
@@ -428,6 +442,7 @@ public class ProblemServiceImpl implements ProblemService {
                 .explanation(reveal ? problem.getExplanation() : null)
                 .explanationImagePath(reveal ? problem.getExplanationImagePath() : null)
                 .correctAnswer(reveal ? problem.getCorrectAnswer() : null)
+                .answerTolerance(staff ? problem.getAnswerTolerance() : null)
                 .attemptsUsed(questMapService.effectiveAttemptsUsed(attempt))
                 .solved(solved)
                 .answerRevealed(false)
@@ -449,8 +464,19 @@ public class ProblemServiceImpl implements ProblemService {
             if (optionCorrectFlags.stream().filter(Boolean::booleanValue).count() != 1) {
                 throw new BadRequestException("A multiple-choice problem needs exactly one correct option");
             }
-        } else if (correctAnswer == null || correctAnswer.isBlank()) {
-            throw new BadRequestException("An open-answer problem needs a correct answer");
+            return;
+        }
+
+        if (correctAnswer == null || correctAnswer.isBlank()) {
+            throw new BadRequestException("This problem needs a correct answer");
+        }
+        if (type == ProblemType.NUMERIC) {
+            for (String accepted : AnswerChecker.acceptedAnswers(correctAnswer)) {
+                if (AnswerChecker.parseNumber(accepted).isEmpty()) {
+                    throw new BadRequestException(
+                            "'" + accepted + "' is not a valid number (use 3, -2.5 or 1/2)");
+                }
+            }
         }
     }
 }

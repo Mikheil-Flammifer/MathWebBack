@@ -36,4 +36,7 @@ public class UpdateProblemRequest {
 
     @Valid
     private List<CreateProblemRequest.AnswerOptionRequest> answerOptions = new ArrayList<>();
+
+    @jakarta.validation.constraints.DecimalMin(value = "0", message = "Tolerance cannot be negative")
+    private Double answerTolerance;   // NUMERIC only
 }

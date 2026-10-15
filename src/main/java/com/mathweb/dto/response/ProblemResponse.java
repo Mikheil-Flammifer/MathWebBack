@@ -34,6 +34,8 @@ public class ProblemResponse {
     // Answer options for MULTIPLE_CHOICE (isCorrect hidden from student)
     private List<AnswerOptionResponse> answerOptions;
 
+    private Double answerTolerance;   // staff only
+
     // Only shown after attempts exhausted
     private String explanation;
     private String explanationImagePath;

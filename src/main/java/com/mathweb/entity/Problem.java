@@ -34,6 +34,9 @@ public class Problem extends BaseEntity {
     @Column(name = "correct_answer", columnDefinition = "TEXT")
     private String correctAnswer;
 
+    @Column(name = "answer_tolerance")
+    private Double answerTolerance;   // NUMERIC only; null = (almost) exact
+
     @Column(name = "explanation", columnDefinition = "TEXT")
     private String explanation;
 

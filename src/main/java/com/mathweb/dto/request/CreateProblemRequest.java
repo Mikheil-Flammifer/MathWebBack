@@ -43,4 +43,7 @@ public class CreateProblemRequest {
         private Boolean isCorrect = false;
         private Integer orderIndex = 0;
     }
+
+    @jakarta.validation.constraints.DecimalMin(value = "0", message = "Tolerance cannot be negative")
+    private Double answerTolerance;   // NUMERIC only
 }
