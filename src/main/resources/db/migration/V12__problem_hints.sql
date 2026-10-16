@@ -1,0 +1,5 @@
+ALTER TABLE problems
+    ADD COLUMN IF NOT EXISTS hints JSONB NOT NULL DEFAULT '[]'::jsonb;
+
+ALTER TABLE problem_attempts
+    ADD COLUMN IF NOT EXISTS hints_used INTEGER NOT NULL DEFAULT 0;

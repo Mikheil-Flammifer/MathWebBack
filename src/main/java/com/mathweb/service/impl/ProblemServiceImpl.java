@@ -6,6 +6,8 @@ import com.mathweb.dto.request.UpdateProblemRequest;
 import com.mathweb.dto.response.AnswerOptionResponse;
 import com.mathweb.dto.response.AnswerResultResponse;
 import com.mathweb.dto.response.ProblemResponse;
+import com.mathweb.dto.response.HintResponse;
+import com.mathweb.dto.response.SolutionResponse;
 import com.mathweb.entity.*;
 import com.mathweb.enums.NodeStatus;
 import com.mathweb.enums.ProblemType;
@@ -30,8 +32,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+
 @Service
 public class ProblemServiceImpl implements ProblemService {
+    private static final double GIVE_UP_PENALTY_RATE = 0.5;
 
     private static final Logger log = LoggerFactory.getLogger(ProblemServiceImpl.class);
 
@@ -79,6 +83,7 @@ public class ProblemServiceImpl implements ProblemService {
                 .correctAnswer(request.getCorrectAnswer())
                 .answerTolerance(request.getAnswerTolerance())
                 .explanation(request.getExplanation())
+                .hints(cleanHints(request.getHints()))
                 .orderIndex(request.getOrderIndex())
                 .xpReward(request.getXpReward())
                 .category(resolveCategory(request.getCategoryId()))
@@ -143,6 +148,7 @@ public class ProblemServiceImpl implements ProblemService {
         problem.setCorrectAnswer(request.getCorrectAnswer());
         problem.setAnswerTolerance(request.getAnswerTolerance());
         problem.setExplanation(request.getExplanation());
+        problem.setHints(cleanHints(request.getHints()));
         problem.setOrderIndex(request.getOrderIndex());
         problem.setXpReward(request.getXpReward());
         problem.setMaxAttempts(request.getMaxAttempts() != null ? request.getMaxAttempts() : 3);
@@ -262,7 +268,7 @@ public class ProblemServiceImpl implements ProblemService {
         int xpEarned = 0;
         if (correct) {
             attempt.setSolved(true);
-            xpEarned = problem.getXpReward();
+            xpEarned = Boolean.TRUE.equals(attempt.getAnswerRevealed()) ? 0 : problem.getXpReward();
             attempt.setXpEarned(xpEarned);
         }
         attemptRepository.save(attempt);
@@ -304,6 +310,65 @@ public class ProblemServiceImpl implements ProblemService {
             }
         }
         log.info("Problem deleted: {}", id);
+    }
+
+    @Override
+    @Transactional
+    public HintResponse revealHint(Long problemId, Long userId) {
+        Problem problem = problemRepository.findById(problemId)
+                .orElseThrow(() -> new ResourceNotFoundException("Problem", problemId));
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User", userId));
+        assertReachable(problem, userId);
+
+        ProblemAttempt attempt = findOrCreateAttempt(user, problem);
+        if (Boolean.TRUE.equals(attempt.getSolved())) {
+            throw new BadRequestException("You have already solved this problem");
+        }
+
+        List<String> all = problem.getHints() == null ? List.of() : problem.getHints();
+        int used = attempt.getHintsUsed() == null ? 0 : attempt.getHintsUsed();
+        if (used >= all.size()) {
+            throw new BadRequestException("There are no more hints for this problem");
+        }
+
+        attempt.setHintsUsed(used + 1);
+        attemptRepository.save(attempt);
+
+        return HintResponse.builder()
+                .hints(new ArrayList<>(all.subList(0, used + 1)))
+                .hintsUsed(used + 1)
+                .hintCount(all.size())
+                .build();
+    }
+
+    @Override
+    @Transactional
+    public SolutionResponse giveUp(Long problemId, Long userId) {
+        Problem problem = problemRepository.findById(problemId)
+                .orElseThrow(() -> new ResourceNotFoundException("Problem", problemId));
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User", userId));
+        assertReachable(problem, userId);
+
+        ProblemAttempt attempt = findOrCreateAttempt(user, problem);
+        if (Boolean.TRUE.equals(attempt.getSolved())) {
+            throw new BadRequestException("You have already solved this problem");
+        }
+
+        int penalty = 0;
+        if (!Boolean.TRUE.equals(attempt.getAnswerRevealed())) {   // charge only the first time
+            attempt.setAnswerRevealed(true);
+            attemptRepository.save(attempt);
+            penalty = applyGiveUpPenalty(user, problem);
+        }
+
+        return SolutionResponse.builder()
+                .correctAnswer(problem.getCorrectAnswer())
+                .explanation(problem.getExplanation())
+                .explanationImagePath(problem.getExplanationImagePath())
+                .xpPenalty(penalty)
+                .build();
     }
 
     // ===== PRIVATE HELPERS =====
@@ -443,6 +508,8 @@ public class ProblemServiceImpl implements ProblemService {
                 .explanationImagePath(reveal ? problem.getExplanationImagePath() : null)
                 .correctAnswer(reveal ? problem.getCorrectAnswer() : null)
                 .answerTolerance(staff ? problem.getAnswerTolerance() : null)
+                .hintCount(problem.getHints() == null ? 0 : problem.getHints().size())
+                .hints(staff ? problem.getHints() : null)
                 .attemptsUsed(questMapService.effectiveAttemptsUsed(attempt))
                 .solved(solved)
                 .answerRevealed(false)
@@ -478,5 +545,46 @@ public class ProblemServiceImpl implements ProblemService {
                 }
             }
         }
+    }
+
+    private List<String> cleanHints(List<String> raw) {
+        if (raw == null) return new ArrayList<>();
+        return raw.stream()
+                .filter(h -> h != null && !h.isBlank())
+                .map(SanitizationUtil::sanitizeText)
+                .collect(java.util.stream.Collectors.toCollection(ArrayList::new));
+    }
+
+    private void assertReachable(Problem problem, Long userId) {
+        NodeStatus status = questMapService
+                .getStatuses(problem.getQuest().getId(), userId).get(problem.getId());
+        if (status == NodeStatus.LOCKED) {
+            throw new BadRequestException("This problem is locked. Solve a neighbouring problem on the map first.");
+        }
+    }
+
+    private int applyGiveUpPenalty(User user, Problem problem) {
+        int reward = problem.getXpReward() == null ? 0 : problem.getXpReward();
+        if (reward <= 0) return 0;
+        int penalty = Math.max(1, (int) Math.round(reward * GIVE_UP_PENALTY_RATE));
+
+        UserQuestProgress progress = progressRepository
+                .findByUserIdAndQuestId(user.getId(), problem.getQuest().getId())
+                .orElse(null);
+        if (progress == null) return 0;
+
+        int current = progress.getXpEarned() == null ? 0 : progress.getXpEarned();
+        int charged = Math.min(penalty, current);
+        progress.setXpEarned(current - charged);
+        progressRepository.save(progress);
+        return charged;
+    }
+
+    private ProblemAttempt findOrCreateAttempt(User user, Problem problem) {
+        return attemptRepository.findByUserIdAndProblemId(user.getId(), problem.getId())
+                .orElseGet(() -> ProblemAttempt.builder()
+                        .user(user).problem(problem)
+                        .attemptsUsed(0).solved(false).answerRevealed(false).xpEarned(0)
+                        .build());
     }
 }

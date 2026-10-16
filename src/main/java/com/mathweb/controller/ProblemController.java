@@ -6,6 +6,8 @@ import com.mathweb.dto.request.UpdateProblemRequest;
 import com.mathweb.dto.response.AnswerResultResponse;
 import com.mathweb.dto.response.ApiResponse;
 import com.mathweb.dto.response.ProblemResponse;
+import com.mathweb.dto.response.HintResponse;
+import com.mathweb.dto.response.SolutionResponse;
 import com.mathweb.security.UserPrincipal;
 import com.mathweb.service.ProblemService;
 import jakarta.validation.Valid;
@@ -85,6 +87,22 @@ public class ProblemController {
                 problemService.uploadExplanationImage(id, image);
         return ResponseEntity.ok(
                 ApiResponse.success("Explanation image uploaded", problem));
+    }
+
+    @PostMapping("/{id}/hint")
+    public ResponseEntity<ApiResponse<HintResponse>> revealHint(
+            @PathVariable Long id,
+            @AuthenticationPrincipal UserPrincipal principal) {
+        return ResponseEntity.ok(ApiResponse.success("Hint revealed",
+                problemService.revealHint(id, principal.getId())));
+    }
+
+    @PostMapping("/{id}/give-up")
+    public ResponseEntity<ApiResponse<SolutionResponse>> giveUp(
+            @PathVariable Long id,
+            @AuthenticationPrincipal UserPrincipal principal) {
+        return ResponseEntity.ok(ApiResponse.success("Solution revealed",
+                problemService.giveUp(id, principal.getId())));
     }
 
     @PutMapping("/{id}")

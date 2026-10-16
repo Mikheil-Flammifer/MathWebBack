@@ -42,6 +42,10 @@ public class ProblemAttempt extends BaseEntity {
     @Builder.Default
     private Integer xpEarned = 0;
 
+    @Column(name = "hints_used", nullable = false)
+    @Builder.Default
+    private Integer hintsUsed = 0;
+
     @Column(name = "last_attempt_at")
     private LocalDateTime lastAttemptAt;
 

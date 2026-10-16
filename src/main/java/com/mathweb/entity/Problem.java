@@ -5,6 +5,9 @@ import com.mathweb.enums.ProblemType;
 import jakarta.persistence.*;
 import lombok.*;
 
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,6 +70,11 @@ public class Problem extends BaseEntity {
 
     @Column(name = "node_icon", length = 50)
     private String nodeIcon;
+
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name = "hints", nullable = false, columnDefinition = "jsonb")
+    @Builder.Default
+    private List<String> hints = new ArrayList<>();
 
     // ===== RELATIONS =====
     @ManyToOne(fetch = FetchType.LAZY)

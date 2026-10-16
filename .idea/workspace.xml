@@ -5,14 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e03fdf07-73d9-48cf-9faf-4ef665572f76" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/mathweb/util/AnswerChecker.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/db/migration/V8__problem_numeric_answers.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/mathweb/dto/response/HintResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/mathweb/dto/response/SolutionResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/db/migration/V12__problem_hints.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mathweb/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mathweb/config/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mathweb/controller/ProblemController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mathweb/controller/ProblemController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/mathweb/dto/request/CreateProblemRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mathweb/dto/request/CreateProblemRequest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/mathweb/dto/request/UpdateProblemRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mathweb/dto/request/UpdateProblemRequest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/mathweb/dto/response/ProblemResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mathweb/dto/response/ProblemResponse.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/mathweb/entity/Problem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mathweb/entity/Problem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mathweb/enums/ProblemType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mathweb/enums/ProblemType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mathweb/entity/ProblemAttempt.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mathweb/entity/ProblemAttempt.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mathweb/service/ProblemService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mathweb/service/ProblemService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/mathweb/service/impl/ProblemServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mathweb/service/impl/ProblemServiceImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

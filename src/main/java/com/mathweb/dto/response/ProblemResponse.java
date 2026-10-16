@@ -30,6 +30,9 @@ public class ProblemResponse {
     private Long mainCategoryId;
     private String mainCategoryName;
     private LocalDateTime retryAvailableAt;
+    private Integer hintCount;      // everyone: how many hints exist
+    private Integer hintsUsed;
+    private List<String> hints;     // staff only (students get revealed hints in the next checkpoint)
 
     // Answer options for MULTIPLE_CHOICE (isCorrect hidden from student)
     private List<AnswerOptionResponse> answerOptions;

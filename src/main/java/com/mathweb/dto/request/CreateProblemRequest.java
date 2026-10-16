@@ -4,6 +4,7 @@ import com.mathweb.enums.DifficultyLevel;
 import com.mathweb.enums.ProblemType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -43,6 +44,8 @@ public class CreateProblemRequest {
         private Boolean isCorrect = false;
         private Integer orderIndex = 0;
     }
+
+    private List<String> hints = new ArrayList<>();
 
     @jakarta.validation.constraints.DecimalMin(value = "0", message = "Tolerance cannot be negative")
     private Double answerTolerance;   // NUMERIC only
