@@ -49,13 +49,4 @@ public class ProblemAttempt extends BaseEntity {
     @Column(name = "last_attempt_at")
     private LocalDateTime lastAttemptAt;
 
-    // ===== HELPERS =====
-
-    public boolean canAttempt() {
-        return !solved && attemptsUsed < problem.getMaxAttempts();
-    }
-
-    public boolean isExhausted() {
-        return !solved && attemptsUsed >= problem.getMaxAttempts();
-    }
 }

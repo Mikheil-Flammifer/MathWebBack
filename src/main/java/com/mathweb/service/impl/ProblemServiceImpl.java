@@ -77,7 +77,7 @@ public class ProblemServiceImpl implements ProblemService {
                         .map(o -> Boolean.TRUE.equals(o.getIsCorrect())).toList());
 
         Problem problem = Problem.builder()
-                .questionText(SanitizationUtil.sanitizeText(request.getQuestionText()))
+                .questionText(SanitizationUtil.sanitizeMathText(request.getQuestionText()))
                 .problemType(request.getProblemType())
                 .difficultyLevel(request.getDifficultyLevel())
                 .correctAnswer(request.getCorrectAnswer())
@@ -142,7 +142,7 @@ public class ProblemServiceImpl implements ProblemService {
                 request.getAnswerOptions().stream()
                         .map(o -> Boolean.TRUE.equals(o.getIsCorrect())).toList());
 
-        problem.setQuestionText(SanitizationUtil.sanitizeText(request.getQuestionText()));
+        problem.setQuestionText(SanitizationUtil.sanitizeMathText(request.getQuestionText()));
         problem.setProblemType(request.getProblemType());
         problem.setDifficultyLevel(request.getDifficultyLevel());
         problem.setCorrectAnswer(request.getCorrectAnswer());
@@ -151,7 +151,6 @@ public class ProblemServiceImpl implements ProblemService {
         problem.setHints(cleanHints(request.getHints()));
         problem.setOrderIndex(request.getOrderIndex());
         problem.setXpReward(request.getXpReward());
-        problem.setMaxAttempts(request.getMaxAttempts() != null ? request.getMaxAttempts() : 3);
         problem.setCategory(resolveCategory(request.getCategoryId()));
 
         // Replace options (orphanRemoval deletes the old rows)
@@ -328,16 +327,16 @@ public class ProblemServiceImpl implements ProblemService {
 
         List<String> all = problem.getHints() == null ? List.of() : problem.getHints();
         int used = attempt.getHintsUsed() == null ? 0 : attempt.getHintsUsed();
-        if (used >= all.size()) {
-            throw new BadRequestException("There are no more hints for this problem");
+
+        if (used < all.size()) {          // reveal the next one only if there is one
+            used++;
+            attempt.setHintsUsed(used);
+            attemptRepository.save(attempt);
         }
 
-        attempt.setHintsUsed(used + 1);
-        attemptRepository.save(attempt);
-
         return HintResponse.builder()
-                .hints(new ArrayList<>(all.subList(0, used + 1)))
-                .hintsUsed(used + 1)
+                .hints(new ArrayList<>(all.subList(0, used)))
+                .hintsUsed(used)
                 .hintCount(all.size())
                 .build();
     }
@@ -496,7 +495,6 @@ public class ProblemServiceImpl implements ProblemService {
                 .problemType(problem.getProblemType())
                 .difficultyLevel(problem.getDifficultyLevel())
                 .orderIndex(problem.getOrderIndex())
-                .maxAttempts(problem.getMaxAttempts())
                 .xpReward(problem.getXpReward())
                 .questId(problem.getQuest().getId())
                 .categoryId(cat != null ? cat.getId() : null)
@@ -551,7 +549,7 @@ public class ProblemServiceImpl implements ProblemService {
         if (raw == null) return new ArrayList<>();
         return raw.stream()
                 .filter(h -> h != null && !h.isBlank())
-                .map(SanitizationUtil::sanitizeText)
+                .map(SanitizationUtil::sanitizeMathText)
                 .collect(java.util.stream.Collectors.toCollection(ArrayList::new));
     }
 

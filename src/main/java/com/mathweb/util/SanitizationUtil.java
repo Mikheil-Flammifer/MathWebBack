@@ -39,4 +39,20 @@ public class SanitizationUtil {
         if (input == null) return null;
         return stripHtml(input).trim();
     }
+
+    private static final java.util.regex.Pattern DANGEROUS_TAGS = java.util.regex.Pattern.compile(
+            "(?is)<!--.*?-->|<\\s*(script|style)\\b[^>]*>.*?<\\s*/\\s*\\1\\s*>"
+                    + "|<\\s*/?\\s*(script|style|iframe|object|embed|link|meta|base|form)\\b[^>]*>");
+
+    // For math content: keeps < and > (inequalities), removes only dangerous HTML tags
+    public static String sanitizeMathText(String input) {
+        if (input == null) return null;
+        String result = input;
+        String previous;
+        do {                       // repeat so nested tricks like <scr<script>ipt> don't survive
+            previous = result;
+            result = DANGEROUS_TAGS.matcher(result).replaceAll("");
+        } while (!result.equals(previous));
+        return result.trim();
+    }
 }

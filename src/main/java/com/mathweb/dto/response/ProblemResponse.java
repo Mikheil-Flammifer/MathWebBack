@@ -22,7 +22,6 @@ public class ProblemResponse {
     private ProblemType problemType;
     private DifficultyLevel difficultyLevel;
     private Integer orderIndex;
-    private Integer maxAttempts;
     private Integer xpReward;
     private Long questId;
     private Long categoryId;

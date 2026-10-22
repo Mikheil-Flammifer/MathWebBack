@@ -50,10 +50,6 @@ public class Problem extends BaseEntity {
     @Builder.Default
     private Integer orderIndex = 0;
 
-    @Column(name = "max_attempts", nullable = false)
-    @Builder.Default
-    private Integer maxAttempts = 3;
-
     @Column(name = "xp_reward")
     @Builder.Default
     private Integer xpReward = 10;

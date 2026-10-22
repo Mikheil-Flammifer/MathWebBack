@@ -41,7 +41,6 @@ public class QuestMapResponse {
         private String mainCategoryName;
         private NodeStatus status;
         private Integer attemptsUsed;
-        private Integer maxAttempts;
         private LocalDateTime retryAvailableAt; // set while cooling down
     }
 

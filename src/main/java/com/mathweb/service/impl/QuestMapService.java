@@ -84,7 +84,6 @@ public class QuestMapService {
                     .mainCategoryName(main != null ? main.getName() : null)
                     .status(statuses.get(p.getId()))
                     .attemptsUsed(effectiveAttemptsUsed(a))
-                    .maxAttempts(p.getMaxAttempts())
                     .retryAvailableAt(retryAvailableAt(a))
                     .build();
         }).toList();

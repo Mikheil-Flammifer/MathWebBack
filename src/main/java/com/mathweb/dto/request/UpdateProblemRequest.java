@@ -31,9 +31,6 @@ public class UpdateProblemRequest {
     private Integer orderIndex = 0;
     private Integer xpReward = 10;
 
-    @Min(1) @Max(10)
-    private Integer maxAttempts = 3;       // to be removed in the cleanup step
-
     private Long categoryId;
 
     @Valid

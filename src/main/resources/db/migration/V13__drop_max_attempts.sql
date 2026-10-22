@@ -1,0 +1,1 @@
+ALTER TABLE problems DROP COLUMN IF EXISTS max_attempts;
