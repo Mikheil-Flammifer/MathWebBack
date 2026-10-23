@@ -38,6 +38,10 @@ public class ProblemResponse {
 
     private Double answerTolerance;   // staff only
 
+    private com.mathweb.enums.EmbedType embedType;
+    private String embedRef;
+    private String embedUrl;      // ready-to-use iframe src, or null
+
     // Only shown after attempts exhausted
     private String explanation;
     private String explanationImagePath;

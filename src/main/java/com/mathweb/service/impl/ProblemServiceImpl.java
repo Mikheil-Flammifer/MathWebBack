@@ -19,6 +19,7 @@ import com.mathweb.util.FileUtil;
 import com.mathweb.util.RoleUtil;
 import com.mathweb.util.SanitizationUtil;
 import com.mathweb.util.AnswerChecker;
+import com.mathweb.util.EmbedUtil;
 import com.mathweb.repository.*;
 import com.mathweb.service.ProblemService;
 import org.slf4j.Logger;
@@ -95,6 +96,7 @@ public class ProblemServiceImpl implements ProblemService {
                 .category(resolveCategory(request.getCategoryId()))
                 .quest(quest)
                 .build();
+        applyEmbed(problem, request.getEmbedUrl());
         problemRepository.save(problem);
 
         if (request.getProblemType() == ProblemType.MULTIPLE_CHOICE) {
@@ -155,6 +157,7 @@ public class ProblemServiceImpl implements ProblemService {
         problem.setAnswerTolerance(request.getAnswerTolerance());
         problem.setExplanation(request.getExplanation());
         problem.setHints(cleanHints(request.getHints()));
+        applyEmbed(problem, request.getEmbedUrl());
         problem.setOrderIndex(request.getOrderIndex());
         problem.setXpReward(request.getXpReward());
         problem.setCategory(resolveCategory(request.getCategoryId()));
@@ -478,9 +481,16 @@ public class ProblemServiceImpl implements ProblemService {
         List<AnswerOption> options = answerOptionRepository
                 .findByProblemIdOrderByOrderIndexAsc(problem.getId());
 
-        boolean solved = attempt != null && attempt.getSolved();
+        boolean solved = attempt != null && Boolean.TRUE.equals(attempt.getSolved());
         boolean staff = RoleUtil.isStaff();
-        boolean reveal = solved || staff;
+        boolean revealed = attempt != null && Boolean.TRUE.equals(attempt.getAnswerRevealed());
+        boolean reveal = solved || staff || revealed;
+
+        List<String> allHints = problem.getHints() == null ? List.of() : problem.getHints();
+        int hintsUsed = attempt != null && attempt.getHintsUsed() != null ? attempt.getHintsUsed() : 0;
+        List<String> visibleHints = staff
+                ? allHints
+                : new ArrayList<>(allHints.subList(0, Math.min(hintsUsed, allHints.size())));
 
         List<AnswerOptionResponse> optionResponses = options.stream()
                 .map(opt -> AnswerOptionResponse.builder()
@@ -513,11 +523,15 @@ public class ProblemServiceImpl implements ProblemService {
                 .explanationImagePath(reveal ? problem.getExplanationImagePath() : null)
                 .correctAnswer(reveal ? problem.getCorrectAnswer() : null)
                 .answerTolerance(staff ? problem.getAnswerTolerance() : null)
-                .hintCount(problem.getHints() == null ? 0 : problem.getHints().size())
-                .hints(staff ? problem.getHints() : null)
+                .hintCount(allHints.size())
+                .hints(visibleHints)
+                .hintsUsed(hintsUsed)
+                .embedType(problem.getEmbedType())
+                .embedRef(problem.getEmbedRef())
+                .embedUrl(EmbedUtil.iframeUrl(problem.getEmbedType(), problem.getEmbedRef()))
                 .attemptsUsed(questMapService.effectiveAttemptsUsed(attempt))
                 .solved(solved)
-                .answerRevealed(false)
+                .answerRevealed(revealed)
                 .retryAvailableAt(questMapService.retryAvailableAt(attempt))
                 .build();
     }
@@ -558,6 +572,19 @@ public class ProblemServiceImpl implements ProblemService {
                 .filter(h -> h != null && !h.isBlank())
                 .map(SanitizationUtil::sanitizeMathText)
                 .collect(java.util.stream.Collectors.toCollection(ArrayList::new));
+    }
+
+    private void applyEmbed(Problem problem, String link) {
+        if (link == null || link.isBlank()) {
+            problem.setEmbedType(null);
+            problem.setEmbedRef(null);
+            return;
+        }
+        EmbedUtil.Embed embed = EmbedUtil.parse(link).orElseThrow(() ->
+                new BadRequestException(
+                        "Paste a Desmos (desmos.com/calculator/...) or GeoGebra (geogebra.org/m/...) link"));
+        problem.setEmbedType(embed.type());
+        problem.setEmbedRef(embed.ref());
     }
 
     private void assertReachable(Problem problem, Long userId) {

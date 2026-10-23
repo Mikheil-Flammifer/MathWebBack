@@ -2,6 +2,7 @@ package com.mathweb.entity;
 
 import com.mathweb.enums.DifficultyLevel;
 import com.mathweb.enums.ProblemType;
+import com.mathweb.enums.EmbedType;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -71,6 +72,13 @@ public class Problem extends BaseEntity {
     @Column(name = "hints", nullable = false, columnDefinition = "jsonb")
     @Builder.Default
     private List<String> hints = new ArrayList<>();
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "embed_type", length = 20)
+    private EmbedType embedType;
+
+    @Column(name = "embed_ref", length = 40)
+    private String embedRef;
 
     // ===== RELATIONS =====
     @ManyToOne(fetch = FetchType.LAZY)

@@ -1,0 +1,3 @@
+ALTER TABLE problems
+    ADD COLUMN IF NOT EXISTS embed_type VARCHAR(20),
+    ADD COLUMN IF NOT EXISTS embed_ref  VARCHAR(40);

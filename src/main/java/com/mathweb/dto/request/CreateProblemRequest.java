@@ -34,6 +34,8 @@ public class CreateProblemRequest {
     private Integer orderIndex = 0;
     private Integer xpReward = 10;
 
+    private String embedUrl;
+
     // For MULTIPLE_CHOICE only
     private List<AnswerOptionRequest> answerOptions = new ArrayList<>();
 

@@ -33,6 +33,8 @@ public class UpdateProblemRequest {
 
     private Long categoryId;
 
+    private String embedUrl;
+
     @Valid
     private List<CreateProblemRequest.AnswerOptionRequest> answerOptions = new ArrayList<>();
 
