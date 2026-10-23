@@ -48,13 +48,18 @@ public class ProblemServiceImpl implements ProblemService {
     private final CategoryRepository categoryRepository;
     private final FileStorageService fileStorageService;
     private final QuestMapService questMapService;
+    private final ActivityRecorder activityRecorder;
 
     public ProblemServiceImpl(ProblemRepository problemRepository,
                               AnswerOptionRepository answerOptionRepository,
                               ProblemAttemptRepository attemptRepository,
                               UserRepository userRepository,
                               QuestRepository questRepository,
-                              UserQuestProgressRepository progressRepository, CategoryRepository categoryRepository, FileStorageService fileStorageService, QuestMapService questMapService) {
+                              UserQuestProgressRepository progressRepository,
+                              CategoryRepository categoryRepository,
+                              FileStorageService fileStorageService,
+
+                              QuestMapService questMapService, ActivityRecorder activityRecorder) {
         this.problemRepository = problemRepository;
         this.answerOptionRepository = answerOptionRepository;
         this.attemptRepository = attemptRepository;
@@ -64,6 +69,7 @@ public class ProblemServiceImpl implements ProblemService {
         this.categoryRepository = categoryRepository;
         this.fileStorageService = fileStorageService;
         this.questMapService = questMapService;
+        this.activityRecorder = activityRecorder;
     }
 
     @Override
@@ -271,6 +277,7 @@ public class ProblemServiceImpl implements ProblemService {
             attempt.setXpEarned(xpEarned);
         }
         attemptRepository.save(attempt);
+        activityRecorder.record(userId);
 
         boolean questCompleted = correct && updateQuestProgress(user, quest, xpEarned);
 

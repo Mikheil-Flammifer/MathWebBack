@@ -23,4 +23,9 @@ public interface ProblemRepository extends JpaRepository<Problem, Long> {
 
     @Query("SELECT p FROM Problem p WHERE p.quest.id = :questId AND p.problemType = :type ORDER BY p.orderIndex ASC")
     List<Problem> findByQuestIdAndType(Long questId, ProblemType type);
+
+    @Query("SELECT p.category.id, COUNT(p) FROM Problem p " +
+            "WHERE p.category IS NOT NULL AND p.quest.published = true " +
+            "GROUP BY p.category.id")
+    List<Object[]> countPublishedByCategory();
 }

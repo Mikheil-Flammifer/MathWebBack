@@ -27,4 +27,8 @@ public interface ProblemAttemptRepository extends JpaRepository<ProblemAttempt, 
     @Query("SELECT pa.problem.id FROM ProblemAttempt pa " +
             "WHERE pa.user.id = :userId AND pa.problem.quest.id = :questId AND pa.solved = true")
     List<Long> findSolvedProblemIds(Long userId, Long questId);
+
+    @Query("SELECT pa FROM ProblemAttempt pa JOIN FETCH pa.problem p " +
+            "WHERE pa.user.id = :userId AND p.category IS NOT NULL AND p.quest.published = true")
+    List<ProblemAttempt> findForProgress(Long userId);
 }
