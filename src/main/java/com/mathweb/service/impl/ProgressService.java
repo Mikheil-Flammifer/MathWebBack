@@ -40,7 +40,8 @@ public class ProgressService {
                     ((Number) row[1]).longValue();
         }
         for (ProblemAttempt a : attemptRepository.findForProgress(userId)) {
-            if (!Boolean.TRUE.equals(a.getSolved())) continue;
+            if (!Boolean.TRUE.equals(a.getSolved())
+                    || Boolean.TRUE.equals(a.getAnswerRevealed())) continue;   // given-up problems don't count as mastered
             long[] s = stats.computeIfAbsent(a.getProblem().getCategory().getId(), k -> new long[3]);
             s[1]++;
             if (isFirstTry(a)) s[2]++;

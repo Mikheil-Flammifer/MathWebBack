@@ -46,6 +46,7 @@ public class ProblemResponse {
     private String explanation;
     private String explanationImagePath;
     private String correctAnswer;
+    private Long correctOptionId;      // MULTIPLE_CHOICE, only when the solution is revealed
 
     // Per-user state
     private Integer attemptsUsed;

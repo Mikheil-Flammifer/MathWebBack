@@ -361,22 +361,37 @@ public class ProblemServiceImpl implements ProblemService {
         assertReachable(problem, userId);
 
         ProblemAttempt attempt = findOrCreateAttempt(user, problem);
-        if (Boolean.TRUE.equals(attempt.getSolved())) {
+        boolean alreadyRevealed = Boolean.TRUE.equals(attempt.getAnswerRevealed());
+        boolean solved = Boolean.TRUE.equals(attempt.getSolved());
+        if (solved && !alreadyRevealed) {
             throw new BadRequestException("You have already solved this problem");
         }
 
         int penalty = 0;
-        if (!Boolean.TRUE.equals(attempt.getAnswerRevealed())) {   // charge only the first time
+        boolean questCompleted = false;
+        if (!solved) {
+            if (!alreadyRevealed) {                    // charge only the first time
+                penalty = applyGiveUpPenalty(user, problem);
+            }
             attempt.setAnswerRevealed(true);
+            attempt.setSolved(true);                   // counts as done for the map
+            attempt.setXpEarned(0);
             attemptRepository.save(attempt);
-            penalty = applyGiveUpPenalty(user, problem);
+            activityRecorder.record(userId);
+            questCompleted = updateQuestProgress(user, problem.getQuest(), 0);
         }
 
+        AnswerOption correctOption = problem.getProblemType() == ProblemType.MULTIPLE_CHOICE
+                ? findCorrectOption(problem) : null;
+
         return SolutionResponse.builder()
-                .correctAnswer(problem.getCorrectAnswer())
+                .correctAnswer(correctOption != null ? correctOption.getOptionText()
+                        : problem.getCorrectAnswer())
+                .correctOptionId(correctOption != null ? correctOption.getId() : null)
                 .explanation(problem.getExplanation())
                 .explanationImagePath(problem.getExplanationImagePath())
                 .xpPenalty(penalty)
+                .questCompleted(questCompleted)
                 .build();
     }
 
@@ -505,6 +520,10 @@ public class ProblemServiceImpl implements ProblemService {
         Category cat = problem.getCategory();
         Category main = (cat != null && cat.getParent() != null) ? cat.getParent() : cat;
 
+        AnswerOption correctOption = (reveal && problem.getProblemType() == ProblemType.MULTIPLE_CHOICE)
+                ? options.stream().filter(o -> Boolean.TRUE.equals(o.getIsCorrect())).findFirst().orElse(null)
+                : null;
+
         return ProblemResponse.builder()
                 .id(problem.getId())
                 .questionText(problem.getQuestionText())
@@ -521,7 +540,10 @@ public class ProblemServiceImpl implements ProblemService {
                 .answerOptions(optionResponses)
                 .explanation(reveal ? problem.getExplanation() : null)
                 .explanationImagePath(reveal ? problem.getExplanationImagePath() : null)
-                .correctAnswer(reveal ? problem.getCorrectAnswer() : null)
+                .correctAnswer(reveal
+                        ? (correctOption != null ? correctOption.getOptionText() : problem.getCorrectAnswer())
+                        : null)
+                .correctOptionId(correctOption != null ? correctOption.getId() : null)
                 .answerTolerance(staff ? problem.getAnswerTolerance() : null)
                 .hintCount(allHints.size())
                 .hints(visibleHints)
@@ -593,6 +615,14 @@ public class ProblemServiceImpl implements ProblemService {
         if (status == NodeStatus.LOCKED) {
             throw new BadRequestException("This problem is locked. Solve a neighbouring problem on the map first.");
         }
+    }
+
+    private AnswerOption findCorrectOption(Problem problem) {
+        return answerOptionRepository.findByProblemIdOrderByOrderIndexAsc(problem.getId())
+                .stream()
+                .filter(o -> Boolean.TRUE.equals(o.getIsCorrect()))
+                .findFirst()
+                .orElse(null);
     }
 
     private int applyGiveUpPenalty(User user, Problem problem) {

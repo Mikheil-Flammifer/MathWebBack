@@ -14,4 +14,6 @@ public class SolutionResponse {
     private String explanation;
     private String explanationImagePath;
     private Integer xpPenalty;
+    private Long correctOptionId;      // MULTIPLE_CHOICE only
+    private Boolean questCompleted;
 }
