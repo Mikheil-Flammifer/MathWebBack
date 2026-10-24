@@ -95,6 +95,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PUT,
                                 "/api/problems/**").hasAnyRole("ADMIN", "TEACHER")
                         .requestMatchers(HttpMethod.DELETE,
+                                "/api/problems/*/image/*").hasAnyRole("ADMIN", "TEACHER")
+                        .requestMatchers(HttpMethod.DELETE,
                                 "/api/problems/**").hasRole("ADMIN")
 
                         // ===== AUTHENTICATED =====

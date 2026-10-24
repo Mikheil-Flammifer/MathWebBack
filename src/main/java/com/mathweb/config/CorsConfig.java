@@ -39,7 +39,7 @@ public class CorsConfig {
                 "X-Requested-With"
         ));
 
-        config.setExposedHeaders(List.of("Authorization"));
+        config.setExposedHeaders(List.of("Authorization", "Retry-After"));
         config.setAllowCredentials(true);
         config.setMaxAge(3600L);
 

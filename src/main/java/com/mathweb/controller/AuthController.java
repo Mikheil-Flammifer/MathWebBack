@@ -4,7 +4,11 @@ import com.mathweb.dto.request.*;
 import com.mathweb.dto.response.ApiResponse;
 import com.mathweb.dto.response.AuthResponse;
 import com.mathweb.dto.response.UserResponse;
+import com.mathweb.exception.BadRequestException;
+import com.mathweb.security.AuthCookieService;
 import com.mathweb.service.AuthService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,9 +19,11 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final AuthService authService;
+    private final AuthCookieService cookieService;
 
-    public AuthController(AuthService authService) {
+    public AuthController(AuthService authService, AuthCookieService cookieService) {
         this.authService = authService;
+        this.cookieService = cookieService;
     }
 
     @PostMapping("/register")
@@ -46,15 +52,31 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<AuthResponse>> login(
-            @Valid @RequestBody LoginRequest request) {
+            @Valid @RequestBody LoginRequest request,
+            HttpServletResponse response) {
         AuthResponse authResponse = authService.login(request);
+        cookieService.write(response, authResponse.getAccessToken(), authResponse.getRefreshToken());
         return ResponseEntity.ok(ApiResponse.success("Login successful", authResponse));
     }
 
     @PostMapping("/refresh")
     public ResponseEntity<ApiResponse<AuthResponse>> refreshToken(
-            @Valid @RequestBody RefreshTokenRequest request) {
-        AuthResponse authResponse = authService.refreshToken(request);
+            @RequestBody(required = false) RefreshTokenRequest body,
+            HttpServletRequest request,
+            HttpServletResponse response) {
+        String token = cookieService.read(request, AuthCookieService.REFRESH).orElse(null);
+        if (token == null && body != null) {
+            token = body.getRefreshToken();
+        }
+        if (token == null || token.isBlank() || token.length() > 2000) {
+            throw new BadRequestException("Refresh token is missing");
+        }
+
+        RefreshTokenRequest refreshRequest = new RefreshTokenRequest();
+        refreshRequest.setRefreshToken(token);
+
+        AuthResponse authResponse = authService.refreshToken(refreshRequest);
+        cookieService.write(response, authResponse.getAccessToken(), authResponse.getRefreshToken());
         return ResponseEntity.ok(ApiResponse.success("Token refreshed", authResponse));
     }
 
@@ -75,12 +97,15 @@ public class AuthController {
 
     @PostMapping("/logout")
     public ResponseEntity<ApiResponse<Void>> logout(
-            @RequestHeader(value = "Authorization", required = false) String authHeader) {
-        String token = null;
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            @RequestHeader(value = "Authorization", required = false) String authHeader,
+            HttpServletRequest request,
+            HttpServletResponse response) {
+        String token = cookieService.read(request, AuthCookieService.ACCESS).orElse(null);
+        if (token == null && authHeader != null && authHeader.startsWith("Bearer ")) {
             token = authHeader.substring(7);
         }
         authService.logout(token);
+        cookieService.clear(response);
         return ResponseEntity.ok(ApiResponse.success("Logged out successfully"));
     }
 }

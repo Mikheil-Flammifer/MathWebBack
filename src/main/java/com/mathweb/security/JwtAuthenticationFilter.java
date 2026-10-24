@@ -25,6 +25,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtTokenProvider jwtTokenProvider;
     private final UserDetailsServiceImpl userDetailsService;
     private final TokenBlacklistService tokenBlacklistService;
+    private final AuthCookieService cookieService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -32,12 +33,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     FilterChain filterChain)
             throws ServletException, IOException {
         try {
-            String jwt = getJwtFromRequest(request);
+            String jwt = resolveUsableToken(request);
 
-            if (StringUtils.hasText(jwt)
-                    && jwtTokenProvider.validateToken(jwt)
-                    && !tokenBlacklistService.isBlacklisted(jwt)) {  // ADD THIS CHECK
-
+            if (jwt != null) {
                 Long userId = jwtTokenProvider.getUserIdFromToken(jwt);
                 UserDetails userDetails = userDetailsService.loadUserById(userId);
 
@@ -57,13 +55,26 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private String getJwtFromRequest(HttpServletRequest request) {
-        String bearerToken = request.getHeader("Authorization");
+    /** Cookie first, then the Authorization header. Returns the first token that is valid and not blacklisted. */
+    private String resolveUsableToken(HttpServletRequest request) {
+        String fromCookie = cookieService.read(request, AuthCookieService.ACCESS).orElse(null);
+        if (isUsable(fromCookie)) return fromCookie;
 
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7);
+        String header = request.getHeader("Authorization");
+        if (StringUtils.hasText(header) && header.startsWith("Bearer ")) {
+            String fromHeader = header.substring(7);
+            if (isUsable(fromHeader)) return fromHeader;
         }
-
         return null;
+    }
+
+    private boolean isUsable(String token) {
+        if (!StringUtils.hasText(token)) return false;
+        try {
+            return jwtTokenProvider.validateToken(token)
+                    && !tokenBlacklistService.isBlacklisted(token);
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

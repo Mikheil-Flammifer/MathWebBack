@@ -75,6 +75,11 @@ app:
   mail-from: ${MAIL_FROM}
   max-comment-depth: 10
   max-problem-attempts: 3
+  cookies:
+    secure: false            # true in production (HTTPS)
+    same-site: Lax
+    access-max-age-seconds: 86400    # must equal the access token lifetime
+    refresh-max-age-seconds: 604800  # must equal the refresh token lifetime
 
 logging:
   level:
