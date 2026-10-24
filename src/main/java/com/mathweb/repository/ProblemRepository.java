@@ -5,6 +5,7 @@ import com.mathweb.enums.DifficultyLevel;
 import com.mathweb.enums.ProblemType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -28,4 +29,13 @@ public interface ProblemRepository extends JpaRepository<Problem, Long> {
             "WHERE p.category IS NOT NULL AND p.quest.published = true " +
             "GROUP BY p.category.id")
     List<Object[]> countPublishedByCategory();
+
+    @Query("""
+       select p from Problem p
+       left join fetch p.category c
+       left join fetch c.parent
+       where p.quest.id = :questId
+       order by p.orderIndex asc
+       """)
+    List<Problem> findByQuestIdWithCategory(@Param("questId") Long questId);
 }

@@ -35,6 +35,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 
@@ -250,7 +251,7 @@ public class ProblemServiceImpl implements ProblemService {
     @Override
     @Transactional(readOnly = true)
     public List<ProblemResponse> getProblemsByQuest(Long questId, Long userId) {
-        List<Problem> problems = problemRepository.findByQuestIdOrderByOrderIndexAsc(questId);
+        List<Problem> problems = problemRepository.findByQuestIdWithCategory(questId);
 
         if (!RoleUtil.isStaff()) {
             Map<Long, NodeStatus> statuses = questMapService.getStatuses(questId, userId);
@@ -258,13 +259,23 @@ public class ProblemServiceImpl implements ProblemService {
                     .filter(p -> statuses.get(p.getId()) != NodeStatus.LOCKED)
                     .toList();
         }
+        if (problems.isEmpty()) return List.of();
 
-        return problems.stream().map(p -> {
-            ProblemAttempt attempt = userId != null
-                    ? attemptRepository.findByUserIdAndProblemId(userId, p.getId()).orElse(null)
-                    : null;
-            return mapToProblemResponse(p, attempt);
-        }).toList();
+        List<Long> ids = problems.stream().map(Problem::getId).toList();
+
+        Map<Long, List<AnswerOption>> optionsByProblem = answerOptionRepository
+                .findByProblemIdInOrderByOrderIndexAsc(ids).stream()
+                .collect(Collectors.groupingBy(o -> o.getProblem().getId()));
+
+        Map<Long, ProblemAttempt> attemptsByProblem = userId == null ? Map.of()
+                : attemptRepository.findByUserIdAndProblemIdIn(userId, ids).stream()
+                .collect(Collectors.toMap(a -> a.getProblem().getId(), a -> a, (a, b) -> a));
+
+        return problems.stream()
+                .map(p -> mapToProblemResponse(p,
+                        attemptsByProblem.get(p.getId()),
+                        optionsByProblem.getOrDefault(p.getId(), List.of())))
+                .toList();
     }
 
     @Override
@@ -528,9 +539,12 @@ public class ProblemServiceImpl implements ProblemService {
     }
 
     private ProblemResponse mapToProblemResponse(Problem problem, ProblemAttempt attempt) {
-        List<AnswerOption> options = answerOptionRepository
-                .findByProblemIdOrderByOrderIndexAsc(problem.getId());
+        return mapToProblemResponse(problem, attempt,
+                answerOptionRepository.findByProblemIdOrderByOrderIndexAsc(problem.getId()));
+    }
 
+    private ProblemResponse mapToProblemResponse(Problem problem, ProblemAttempt attempt,
+                                                 List<AnswerOption> options) {
         boolean solved = attempt != null && Boolean.TRUE.equals(attempt.getSolved());
         boolean staff = RoleUtil.isStaff();
         boolean revealed = attempt != null && Boolean.TRUE.equals(attempt.getAnswerRevealed());
@@ -546,7 +560,7 @@ public class ProblemServiceImpl implements ProblemService {
                 .map(opt -> AnswerOptionResponse.builder()
                         .id(opt.getId())
                         .optionText(opt.getOptionText())
-                        .optionImagePath(opt.getOptionImagePath())
+                        .optionImagePath(fileStorageService.getFileUrl(opt.getOptionImagePath()))
                         .orderIndex(opt.getOrderIndex())
                         .isCorrect(staff ? opt.getIsCorrect() : null)
                         .build())
@@ -562,7 +576,7 @@ public class ProblemServiceImpl implements ProblemService {
         return ProblemResponse.builder()
                 .id(problem.getId())
                 .questionText(problem.getQuestionText())
-                .questionImagePath(problem.getQuestionImagePath())
+                .questionImagePath(fileStorageService.getFileUrl(problem.getQuestionImagePath()))
                 .problemType(problem.getProblemType())
                 .difficultyLevel(problem.getDifficultyLevel())
                 .orderIndex(problem.getOrderIndex())
@@ -574,7 +588,7 @@ public class ProblemServiceImpl implements ProblemService {
                 .mainCategoryName(main != null ? main.getName() : null)
                 .answerOptions(optionResponses)
                 .explanation(reveal ? problem.getExplanation() : null)
-                .explanationImagePath(reveal ? problem.getExplanationImagePath() : null)
+                .explanationImagePath(reveal ? fileStorageService.getFileUrl(problem.getExplanationImagePath()) : null)
                 .correctAnswer(reveal
                         ? (correctOption != null ? correctOption.getOptionText() : problem.getCorrectAnswer())
                         : null)

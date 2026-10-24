@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,6 +15,8 @@ public interface ProblemAttemptRepository extends JpaRepository<ProblemAttempt, 
     Optional<ProblemAttempt> findByUserIdAndProblemId(Long userId, Long problemId);
 
     List<ProblemAttempt> findByUserId(Long userId);
+
+    List<ProblemAttempt> findByUserIdAndProblemIdIn(Long userId, Collection<Long> problemIds);
 
     @Query("SELECT pa FROM ProblemAttempt pa WHERE pa.user.id = :userId AND pa.problem.quest.id = :questId")
     List<ProblemAttempt> findByUserIdAndQuestId(Long userId, Long questId);
