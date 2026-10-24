@@ -1,6 +1,8 @@
 package com.mathweb.dto.request;
 
 import com.mathweb.enums.DifficultyLevel;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -22,10 +24,20 @@ public class CreateQuestRequest {
     @NotNull(message = "Difficulty level is required")
     private DifficultyLevel difficultyLevel;
 
+    @Min(value = -100000, message = "Position is out of range")
+    @Max(value = 100000, message = "Position is out of range")
     private Integer positionX;
+
+    @Min(value = -100000, message = "Position is out of range")
+    @Max(value = 100000, message = "Position is out of range")
     private Integer positionY;
+
+    @NotNull(message = "XP reward is required")
+    @Min(value = 0, message = "XP reward cannot be negative")
+    @Max(value = 10000, message = "XP reward cannot be more than 10000")
     private Integer xpReward = 0;
 
     // IDs of quests that must be completed before this one
+    @Size(max = 50, message = "A quest can have at most 50 prerequisites")
     private List<Long> prerequisiteIds = new ArrayList<>();
 }
