@@ -96,8 +96,10 @@ public class FileStorageServiceImpl implements FileStorageService {
             Files.createDirectories(uploadDir);
 
             // Use FileUtil for unique filename
-            String uniqueFilename = FileUtil.generateUniqueFilename(
-                    file.getOriginalFilename());
+            String ext = "videos".equals(type)
+                    ? FileUtil.videoExtension(file.getContentType())
+                    : FileUtil.imageExtension(file.getContentType());
+            String uniqueFilename = UUID.randomUUID() + "." + ext;
 
             Path targetPath = uploadDir.resolve(uniqueFilename);
             Files.copy(file.getInputStream(), targetPath,

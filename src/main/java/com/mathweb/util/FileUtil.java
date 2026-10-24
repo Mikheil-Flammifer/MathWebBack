@@ -3,6 +3,9 @@ package com.mathweb.util;
 import com.mathweb.exception.FileStorageException;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -14,6 +17,21 @@ public class FileUtil {
 
     private static final Set<String> ALLOWED_IMAGE_TYPES = Set.of(
             "image/jpeg", "image/png", "image/gif", "image/webp"
+    );
+
+    private static final Map<String, String> IMAGE_EXTENSIONS = Map.of(
+            "image/jpeg", "jpg",
+            "image/png", "png",
+            "image/gif", "gif",
+            "image/webp", "webp"
+    );
+
+    private static final Map<String, String> VIDEO_EXTENSIONS = Map.of(
+            "video/mp4", "mp4",
+            "video/webm", "webm",
+            "video/ogg", "ogg",
+            "video/avi", "avi",
+            "video/mkv", "mkv"
     );
 
     private static final long MAX_VIDEO_SIZE = 2L * 1024 * 1024 * 1024; // 2GB
@@ -45,6 +63,34 @@ public class FileUtil {
             throw new FileStorageException(
                     "Invalid image type. Allowed: jpeg, png, gif, webp");
         }
+        try (InputStream in = file.getInputStream()) {
+            byte[] head = in.readNBytes(12);
+            if (!hasImageSignature(file.getContentType(), head)) {
+                throw new FileStorageException("File content does not match an image type");
+            }
+        } catch (IOException e) {
+            throw new FileStorageException("Could not read the image file");
+        }
+    }
+
+    public static String imageExtension(String contentType) {
+        return IMAGE_EXTENSIONS.getOrDefault(contentType, "bin");
+    }
+
+    public static String videoExtension(String contentType) {
+        return VIDEO_EXTENSIONS.getOrDefault(contentType, "bin");
+    }
+
+    private static boolean hasImageSignature(String type, byte[] h) {
+        if (h.length < 12) return false;
+        return switch (type) {
+            case "image/jpeg" -> (h[0] & 0xFF) == 0xFF && (h[1] & 0xFF) == 0xD8 && (h[2] & 0xFF) == 0xFF;
+            case "image/png" -> (h[0] & 0xFF) == 0x89 && h[1] == 'P' && h[2] == 'N' && h[3] == 'G';
+            case "image/gif" -> h[0] == 'G' && h[1] == 'I' && h[2] == 'F' && h[3] == '8';
+            case "image/webp" -> h[0] == 'R' && h[1] == 'I' && h[2] == 'F' && h[3] == 'F'
+                    && h[8] == 'W' && h[9] == 'E' && h[10] == 'B' && h[11] == 'P';
+            default -> false;
+        };
     }
 
     public static String generateUniqueFilename(String originalFilename) {
