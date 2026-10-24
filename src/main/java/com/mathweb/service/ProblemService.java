@@ -17,6 +17,8 @@ public interface ProblemService {
     ProblemResponse uploadQuestionImage(Long problemId, MultipartFile image);
     ProblemResponse uploadExplanationImage(Long problemId, MultipartFile image);
     ProblemResponse updateProblem(Long id, UpdateProblemRequest request);
+    ProblemResponse clearQuestionImage(Long problemId);
+    ProblemResponse clearExplanationImage(Long problemId);
     HintResponse revealHint(Long problemId, Long userId);
     SolutionResponse giveUp(Long problemId, Long userId);
     List<ProblemResponse> getProblemsByQuest(Long questId, Long userId);

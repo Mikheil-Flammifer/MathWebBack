@@ -22,16 +22,20 @@ import com.mathweb.util.AnswerChecker;
 import com.mathweb.util.EmbedUtil;
 import com.mathweb.repository.*;
 import com.mathweb.service.ProblemService;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.transaction.support.TransactionSynchronization;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 
 
 @Service
@@ -183,22 +187,18 @@ public class ProblemServiceImpl implements ProblemService {
 
     @Override
     @Transactional
-    public ProblemResponse uploadQuestionImage(Long problemId,
-                                               MultipartFile image) {
+    public ProblemResponse uploadQuestionImage(Long problemId, MultipartFile image) {
         Problem problem = problemRepository.findById(problemId)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "Problem", problemId));
-
+                .orElseThrow(() -> new ResourceNotFoundException("Problem", problemId));
         FileUtil.validateImage(image);
 
-        // Delete old image if exists
-        if (problem.getQuestionImagePath() != null) {
-            // inject fileStorageService
-        }
+        String oldPath = problem.getQuestionImagePath();
+        String newPath = fileStorageService.storeImage(image);
+        deleteFileOnRollback(newPath);
 
-        String imagePath = fileStorageService.storeImage(image);
-        problem.setQuestionImagePath(imagePath);
+        problem.setQuestionImagePath(newPath);
         problemRepository.save(problem);
+        deleteFileAfterCommit(oldPath);
 
         log.info("Question image uploaded for problem {}", problemId);
         return mapToProblemResponse(problem, null);
@@ -206,19 +206,44 @@ public class ProblemServiceImpl implements ProblemService {
 
     @Override
     @Transactional
-    public ProblemResponse uploadExplanationImage(Long problemId,
-                                                  MultipartFile image) {
+    public ProblemResponse uploadExplanationImage(Long problemId, MultipartFile image) {
         Problem problem = problemRepository.findById(problemId)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "Problem", problemId));
-
+                .orElseThrow(() -> new ResourceNotFoundException("Problem", problemId));
         FileUtil.validateImage(image);
 
-        String imagePath = fileStorageService.storeImage(image);
-        problem.setExplanationImagePath(imagePath);
+        String oldPath = problem.getExplanationImagePath();
+        String newPath = fileStorageService.storeImage(image);
+        deleteFileOnRollback(newPath);
+
+        problem.setExplanationImagePath(newPath);
         problemRepository.save(problem);
+        deleteFileAfterCommit(oldPath);
 
         log.info("Explanation image uploaded for problem {}", problemId);
+        return mapToProblemResponse(problem, null);
+    }
+
+    @Override
+    @Transactional
+    public ProblemResponse clearQuestionImage(Long problemId) {
+        Problem problem = problemRepository.findById(problemId)
+                .orElseThrow(() -> new ResourceNotFoundException("Problem", problemId));
+        String oldPath = problem.getQuestionImagePath();
+        problem.setQuestionImagePath(null);
+        problemRepository.save(problem);
+        deleteFileAfterCommit(oldPath);
+        return mapToProblemResponse(problem, null);
+    }
+
+    @Override
+    @Transactional
+    public ProblemResponse clearExplanationImage(Long problemId) {
+        Problem problem = problemRepository.findById(problemId)
+                .orElseThrow(() -> new ResourceNotFoundException("Problem", problemId));
+        String oldPath = problem.getExplanationImagePath();
+        problem.setExplanationImagePath(null);
+        problemRepository.save(problem);
+        deleteFileAfterCommit(oldPath);
         return mapToProblemResponse(problem, null);
     }
 
@@ -305,8 +330,18 @@ public class ProblemServiceImpl implements ProblemService {
                 .orElseThrow(() -> new ResourceNotFoundException("Problem", id));
         Quest quest = problem.getQuest();
 
+        // collect file paths BEFORE the rows are gone
+        List<String> files = new ArrayList<>();
+        files.add(problem.getQuestionImagePath());
+        files.add(problem.getExplanationImagePath());
+        for (AnswerOption opt : problem.getAnswerOptions()) {
+            files.add(opt.getOptionImagePath());
+        }
+
         problemRepository.delete(problem);   // links are removed by ON DELETE CASCADE
         problemRepository.flush();
+
+        files.forEach(this::deleteFileAfterCommit);
 
         if (Boolean.TRUE.equals(quest.getPublished())) {
             try {
@@ -648,5 +683,33 @@ public class ProblemServiceImpl implements ProblemService {
                         .user(user).problem(problem)
                         .attemptsUsed(0).solved(false).answerRevealed(false).xpEarned(0)
                         .build());
+    }
+
+    /** Deletes a file only if the surrounding transaction commits. */
+    private void deleteFileAfterCommit(String path) {
+        if (path == null || path.isBlank()) return;
+        if (TransactionSynchronizationManager.isSynchronizationActive()) {
+            TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
+                @Override
+                public void afterCommit() {
+                    fileStorageService.deleteFile(path);
+                }
+            });
+        } else {
+            fileStorageService.deleteFile(path);
+        }
+    }
+
+    /** Removes a freshly stored file if the transaction rolls back. */
+    private void deleteFileOnRollback(String path) {
+        if (path == null || !TransactionSynchronizationManager.isSynchronizationActive()) return;
+        TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
+            @Override
+            public void afterCompletion(int status) {
+                if (status != STATUS_COMMITTED) {
+                    fileStorageService.deleteFile(path);
+                }
+            }
+        });
     }
 }

@@ -89,6 +89,20 @@ public class ProblemController {
                 ApiResponse.success("Explanation image uploaded", problem));
     }
 
+    @DeleteMapping("/{id}/image/question")
+    @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER')")
+    public ResponseEntity<ApiResponse<ProblemResponse>> clearQuestionImage(@PathVariable Long id) {
+        return ResponseEntity.ok(ApiResponse.success("Question image removed",
+                problemService.clearQuestionImage(id)));
+    }
+
+    @DeleteMapping("/{id}/image/explanation")
+    @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER')")
+    public ResponseEntity<ApiResponse<ProblemResponse>> clearExplanationImage(@PathVariable Long id) {
+        return ResponseEntity.ok(ApiResponse.success("Explanation image removed",
+                problemService.clearExplanationImage(id)));
+    }
+
     @PostMapping("/{id}/hint")
     public ResponseEntity<ApiResponse<HintResponse>> revealHint(
             @PathVariable Long id,

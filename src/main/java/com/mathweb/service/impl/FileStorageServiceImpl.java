@@ -11,10 +11,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.InvalidPathException;   // add this line
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.UUID;
+
 
 @Service
 public class FileStorageServiceImpl implements FileStorageService {
@@ -26,6 +28,10 @@ public class FileStorageServiceImpl implements FileStorageService {
 
     @Value("${file.upload.images-path}")
     private String imagesPath;
+
+    @Value("${file.upload.base-path}")      // add these two lines
+    private String basePath;
+
 
     @Value("${app.base-url}")
     private String baseUrl;
@@ -42,11 +48,18 @@ public class FileStorageServiceImpl implements FileStorageService {
 
     @Override
     public void deleteFile(String filePath) {
+        if (filePath == null || filePath.isBlank()) return;
         try {
-            Path path = Paths.get(filePath);
-            Files.deleteIfExists(path);
-            log.info("Deleted file: {}", filePath);
-        } catch (IOException e) {
+            Path base = Paths.get(basePath).toAbsolutePath().normalize();
+            Path target = Paths.get(filePath).toAbsolutePath().normalize();
+            if (!target.startsWith(base)) {
+                log.warn("Refused to delete file outside the upload folder: {}", filePath);
+                return;
+            }
+            if (Files.deleteIfExists(target)) {
+                log.info("Deleted file: {}", target);
+            }
+        } catch (IOException | InvalidPathException e) {
             log.error("Could not delete file: {}", filePath, e);
         }
     }
