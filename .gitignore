@@ -46,3 +46,12 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+### for test ###
+auth-test.http
+jar.txt
+jar_old.txt
+login.json
+test-auth.bat
+auth-test.http
+.idea/
