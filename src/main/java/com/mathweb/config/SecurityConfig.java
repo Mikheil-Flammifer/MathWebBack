@@ -4,6 +4,7 @@ import com.mathweb.security.AccessDeniedHandlerImpl;
 import com.mathweb.security.AuthEntryPoint;
 import com.mathweb.security.JwtAuthenticationFilter;
 import com.mathweb.security.UserDetailsServiceImpl;
+import com.mathweb.security.CsrfHeaderFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -104,7 +105,9 @@ public class SecurityConfig {
                 )
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthenticationFilter,
-                        UsernamePasswordAuthenticationFilter.class);
+                        UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new CsrfHeaderFilter(),
+                        JwtAuthenticationFilter.class);
 
         return http.build();
     }
