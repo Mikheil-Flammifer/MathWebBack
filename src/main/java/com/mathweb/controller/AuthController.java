@@ -56,19 +56,15 @@ public class AuthController {
             HttpServletResponse response) {
         AuthResponse authResponse = authService.login(request);
         cookieService.write(response, authResponse.getAccessToken(), authResponse.getRefreshToken());
-        return ResponseEntity.ok(ApiResponse.success("Login successful", authResponse));
+        return ResponseEntity.ok(ApiResponse.success("Login successful", withoutTokens(authResponse)));
     }
 
     @PostMapping("/refresh")
     public ResponseEntity<ApiResponse<AuthResponse>> refreshToken(
-            @RequestBody(required = false) RefreshTokenRequest body,
             HttpServletRequest request,
             HttpServletResponse response) {
         String token = cookieService.read(request, AuthCookieService.REFRESH).orElse(null);
-        if (token == null && body != null) {
-            token = body.getRefreshToken();
-        }
-        if (token == null || token.isBlank() || token.length() > 2000) {
+        if (token == null || token.length() > 2000) {
             throw new BadRequestException("Refresh token is missing");
         }
 
@@ -77,7 +73,7 @@ public class AuthController {
 
         AuthResponse authResponse = authService.refreshToken(refreshRequest);
         cookieService.write(response, authResponse.getAccessToken(), authResponse.getRefreshToken());
-        return ResponseEntity.ok(ApiResponse.success("Token refreshed", authResponse));
+        return ResponseEntity.ok(ApiResponse.success("Token refreshed", withoutTokens(authResponse)));
     }
 
     @PostMapping("/forgot-password")
@@ -97,15 +93,17 @@ public class AuthController {
 
     @PostMapping("/logout")
     public ResponseEntity<ApiResponse<Void>> logout(
-            @RequestHeader(value = "Authorization", required = false) String authHeader,
             HttpServletRequest request,
             HttpServletResponse response) {
-        String token = cookieService.read(request, AuthCookieService.ACCESS).orElse(null);
-        if (token == null && authHeader != null && authHeader.startsWith("Bearer ")) {
-            token = authHeader.substring(7);
-        }
-        authService.logout(token);
+        String access = cookieService.read(request, AuthCookieService.ACCESS).orElse(null);
+        String refresh = cookieService.read(request, AuthCookieService.REFRESH).orElse(null);
+        authService.logout(access);
+        authService.revokeRefreshToken(refresh);
         cookieService.clear(response);
         return ResponseEntity.ok(ApiResponse.success("Logged out successfully"));
+    }
+
+    private AuthResponse withoutTokens(AuthResponse r) {
+        return AuthResponse.builder().user(r.getUser()).build();
     }
 }

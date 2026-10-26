@@ -10,6 +10,7 @@ public interface AuthService {
     void resendOtp(ResendOtpRequest request);
     AuthResponse login(LoginRequest request);
     AuthResponse refreshToken(RefreshTokenRequest request);
+    void revokeRefreshToken(String refreshToken);
     void forgotPassword(ForgotPasswordRequest request);
     void resetPassword(ResetPasswordRequest request);
     void logout(String token);

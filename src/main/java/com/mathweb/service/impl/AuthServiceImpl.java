@@ -265,6 +265,16 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     @Transactional
+    public void revokeRefreshToken(String token) {
+        if (token == null || token.isBlank()) return;
+        refreshTokenRepository.findByToken(token).ifPresent(rt -> {
+            rt.setRevoked(true);
+            refreshTokenRepository.save(rt);
+        });
+    }
+
+    @Override
+    @Transactional
     public void logout(String token) {
         if (token == null || token.isBlank()) return;
 
