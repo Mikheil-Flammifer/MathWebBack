@@ -19,5 +19,6 @@ public interface VideoMapper {
     @Mapping(target = "categoryName", source = "category.name")
     @Mapping(target = "parentCategoryId", source = "category.parent.id")
     @Mapping(target = "parentCategoryName", source = "category.parent.name")
+    @Mapping(target = "streamUrl", ignore = true)
     VideoResponse toResponse(Video video);
 }

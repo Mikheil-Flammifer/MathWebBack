@@ -8,6 +8,8 @@ import com.mathweb.enums.DifficultyLevel;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface VideoService {
+    VideoResponse getVideoById(Long id, Long userId);
+    VideoStream openStream(Long id, Long userId);
     VideoResponse uploadVideo(MultipartFile file, VideoUploadRequest request, Long uploaderId);
     VideoResponse getVideoById(Long id);
     PageResponse<VideoResponse> getAllVideos(int page, int size, DifficultyLevel level);

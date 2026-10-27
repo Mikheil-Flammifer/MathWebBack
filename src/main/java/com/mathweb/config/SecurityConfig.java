@@ -58,21 +58,15 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
 
                         // ===== PUBLIC =====
+                        .requestMatchers("/uploads/videos/**").denyAll()
                         .requestMatchers(
                                 "/api/auth/**",
-                                "/api/videos/public/**",
-                                "/api/stripe/webhook",
-                                "/uploads/**",
-                                "/uploads/videos/**",
-                                "/uploads/images/**",
-                                "/admin/login",
-                                "/admin/verify-otp",
-                                "/admin/resend-otp"
+                                "/api/stripe/webhook", // remove if grep shows no Stripe code
+                                "/uploads/images/**"
                         ).permitAll()
 
-                        // ===== ADMIN ONLY =====
+                        // ===== STAFF / ADMIN =====
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST,
                                 "/api/videos/**").hasAnyRole("ADMIN", "TEACHER")
                         .requestMatchers(HttpMethod.PUT,

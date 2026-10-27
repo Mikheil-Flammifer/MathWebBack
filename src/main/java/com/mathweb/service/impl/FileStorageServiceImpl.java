@@ -8,10 +8,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.InvalidPathException;   // add this line
+
+
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
@@ -75,6 +79,23 @@ public class FileStorageServiceImpl implements FileStorageService {
         String relative = normalized.substring(prevSlash + 1);
 
         return baseUrl + "/uploads/" + relative;
+    }
+
+    @Override
+    public Resource loadAsResource(String filePath) {
+        if (filePath == null || filePath.isBlank()) {
+            throw new FileStorageException("File not found");
+        }
+        try {
+            Path base = Paths.get(basePath).toAbsolutePath().normalize();
+            Path target = Paths.get(filePath).toAbsolutePath().normalize();
+            if (!target.startsWith(base) || !Files.isRegularFile(target)) {
+                throw new FileStorageException("File not found");
+            }
+            return new FileSystemResource(target);
+        } catch (InvalidPathException e) {
+            throw new FileStorageException("File not found");
+        }
     }
 
     // ===== PRIVATE HELPERS =====

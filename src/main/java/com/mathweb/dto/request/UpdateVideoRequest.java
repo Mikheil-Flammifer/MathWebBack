@@ -18,6 +18,8 @@ public class UpdateVideoRequest {
 
     private VideoStatus status;
 
+    private Boolean free;
+
     private Long questId;
 
     private Long categoryId;

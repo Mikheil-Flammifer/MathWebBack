@@ -19,6 +19,8 @@ public class VideoUploadRequest {
     @NotNull(message = "Difficulty level is required")
     private DifficultyLevel difficultyLevel;
 
+    private Boolean free;
+
     private Long questId;  // Optional — attach video to a quest
 
     private Long categoryId;

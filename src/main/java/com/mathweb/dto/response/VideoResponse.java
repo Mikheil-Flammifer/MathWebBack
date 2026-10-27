@@ -18,8 +18,9 @@ public class VideoResponse {
     private Long id;
     private String title;
     private String description;
-    private String filePath;
     private String thumbnailPath;
+    private String streamUrl;      // only set when the caller may watch
+    private boolean free;
     private Long durationSeconds;
     private Long fileSizeBytes;
     private VideoStatus status;

@@ -38,6 +38,10 @@ public class Video extends BaseEntity {
     @Column(name = "mime_type", length = 50)
     private String mimeType;
 
+    @Column(name = "is_free", nullable = false)
+    @Builder.Default
+    private boolean free = false;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false, length = 20)
     @Builder.Default

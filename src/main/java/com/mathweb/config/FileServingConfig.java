@@ -11,16 +11,17 @@ import java.nio.file.Paths;
 @Configuration
 public class FileServingConfig implements WebMvcConfigurer {
 
-    @Value("${file.upload.base-path}")
-    private String uploadBasePath;
+    @Value("${file.upload.images-path}")
+    private String imagesPath;
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        Path uploadPath = Paths.get(uploadBasePath).toAbsolutePath().normalize();
-        String uploadLocation = "file:///" + uploadPath.toString().replace("\\", "/") + "/";
+        Path imagesDir = Paths.get(imagesPath).toAbsolutePath().normalize();
+        String location = "file:///" + imagesDir.toString().replace("\\", "/") + "/";
 
-        registry.addResourceHandler("/uploads/**")
-                .addResourceLocations(uploadLocation)
+        // Images and thumbnails only. Videos are never served as static files.
+        registry.addResourceHandler("/uploads/images/**")
+                .addResourceLocations(location)
                 .setCachePeriod(3600);
     }
 }

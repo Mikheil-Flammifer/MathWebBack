@@ -8,10 +8,10 @@ import com.mathweb.dto.response.VideoResponse;
 import com.mathweb.enums.DifficultyLevel;
 import com.mathweb.security.UserPrincipal;
 import com.mathweb.service.VideoService;
+import com.mathweb.service.VideoStream;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.core.io.Resource;
+import org.springframework.http.*;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -39,10 +39,30 @@ public class VideoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<VideoResponse>> getVideoById(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<VideoResponse>> getVideoById(
+            @PathVariable Long id,
+            @AuthenticationPrincipal UserPrincipal principal) {
+        VideoResponse video = videoService.getVideoById(id, principal.getId());
         videoService.incrementViewCount(id);
-        VideoResponse video = videoService.getVideoById(id);
         return ResponseEntity.ok(ApiResponse.success("Video retrieved", video));
+    }
+
+    @GetMapping("/{id}/stream")
+    public ResponseEntity<Resource> streamVideo(
+            @PathVariable Long id,
+            @AuthenticationPrincipal UserPrincipal principal) {
+        VideoStream stream = videoService.openStream(id, principal.getId());
+
+        MediaType type = MediaType.APPLICATION_OCTET_STREAM;
+        if (stream.mimeType() != null) {
+            try {
+                type = MediaType.parseMediaType(stream.mimeType());
+            } catch (InvalidMediaTypeException ignored) { }
+        }
+        return ResponseEntity.ok()
+                .contentType(type)
+                .header(HttpHeaders.CACHE_CONTROL, "private")
+                .body(stream.resource());
     }
 
     @GetMapping("/search")

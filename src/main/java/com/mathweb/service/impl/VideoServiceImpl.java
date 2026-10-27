@@ -28,6 +28,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import com.mathweb.enums.Role;
+import com.mathweb.service.VideoStream;
+import org.springframework.core.io.Resource;
 
 @Service
 public class VideoServiceImpl implements VideoService {
@@ -81,6 +84,7 @@ public class VideoServiceImpl implements VideoService {
                 .fileSizeBytes(file.getSize())
                 .difficultyLevel(request.getDifficultyLevel())
                 .status(VideoStatus.PUBLISHED)
+                .free(Boolean.TRUE.equals(request.getFree()))
                 .uploadedBy(uploader)
                 .viewCount(0L)
                 .build();
@@ -158,6 +162,7 @@ public class VideoServiceImpl implements VideoService {
         if (request.getDescription() != null) video.setDescription(request.getDescription());
         if (request.getDifficultyLevel() != null) video.setDifficultyLevel(request.getDifficultyLevel());
         if (request.getStatus() != null) video.setStatus(request.getStatus());
+        if (request.getFree() != null) video.setFree(request.getFree());
         if (request.getQuestId() != null) {
             Quest quest = questRepository.findById(request.getQuestId())
                     .orElseThrow(() -> new ResourceNotFoundException("Quest", request.getQuestId()));
@@ -243,6 +248,38 @@ public class VideoServiceImpl implements VideoService {
         videoRepository.incrementViewCount(id);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public VideoResponse getVideoById(Long id, Long userId) {
+        Video video = videoRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Video", id));
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User", userId));
+
+        if (!isStaff(user) && video.getStatus() != VideoStatus.PUBLISHED) {
+            throw new ResourceNotFoundException("Video", id);   // hide drafts from students
+        }
+        return mapToVideoResponse(video, canWatch(video, user));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public VideoStream openStream(Long id, Long userId) {
+        Video video = videoRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Video", id));
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User", userId));
+
+        if (!isStaff(user) && video.getStatus() != VideoStatus.PUBLISHED) {
+            throw new ResourceNotFoundException("Video", id);
+        }
+        if (!canWatch(video, user)) {
+            throw new ForbiddenException("An active subscription is required to watch this video");
+        }
+        Resource resource = fileStorageService.loadAsResource(video.getFilePath());
+        return new VideoStream(resource, video.getMimeType());
+    }
+
     // ===== PRIVATE HELPERS =====
 
     private PageResponse<VideoResponse> mapToPageResponse(Page<Video> page) {
@@ -258,12 +295,26 @@ public class VideoServiceImpl implements VideoService {
     }
 
     private VideoResponse mapToVideoResponse(Video video) {
+        return mapToVideoResponse(video, false);
+    }
+
+    private VideoResponse mapToVideoResponse(Video video, boolean includeStreamUrl) {
         long commentCount = commentRepository.countActiveByVideoId(video.getId());
         VideoResponse response = videoMapper.toResponse(video);
-        response.setFilePath(fileStorageService.getFileUrl(video.getFilePath()));
         response.setThumbnailPath(fileStorageService.getFileUrl(video.getThumbnailPath()));
         response.setCommentCount(commentCount);
+        if (includeStreamUrl) {
+            response.setStreamUrl("/api/videos/" + video.getId() + "/stream");
+        }
         return response;
+    }
+
+    private boolean isStaff(User user) {
+        return user.getRole() == Role.ADMIN || user.getRole() == Role.TEACHER;
+    }
+
+    private boolean canWatch(Video video, User user) {
+        return isStaff(user) || video.isFree() || user.hasActiveSubscription();
     }
 
     private void applyCategory(Video video, Long categoryId) {

@@ -1,2 +1,5 @@
-package com.mathweb.service;public class VideoStream {
-}
+package com.mathweb.service;
+
+import org.springframework.core.io.Resource;
+
+public record VideoStream(Resource resource, String mimeType) {}
