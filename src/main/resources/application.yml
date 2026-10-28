@@ -69,6 +69,9 @@ file:
     videos-path: ${FILE_UPLOAD_PATH}/videos
     images-path: ${FILE_UPLOAD_PATH}/images
 
+paddle:
+  webhook-secret: ${PADDLE_WEBHOOK_SECRET:}
+
 app:
   name: MathWeb
   base-url: ${APP_BASE_URL}

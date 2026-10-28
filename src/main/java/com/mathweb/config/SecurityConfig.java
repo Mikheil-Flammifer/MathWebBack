@@ -61,8 +61,8 @@ public class SecurityConfig {
                         .requestMatchers("/uploads/videos/**").denyAll()
                         .requestMatchers(
                                 "/api/auth/**",
-                                "/api/stripe/webhook", // remove if grep shows no Stripe code
-                                "/uploads/images/**"
+                                "/uploads/images/**",
+                                "/api/paddle/webhook"
                         ).permitAll()
 
                         // ===== STAFF / ADMIN =====
