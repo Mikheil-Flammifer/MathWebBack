@@ -22,7 +22,6 @@
         <java.version>23</java.version>
         <jjwt.version>0.12.5</jjwt.version>
         <mapstruct.version>1.5.5.Final</mapstruct.version>
-        <stripe.version>24.3.0</stripe.version>
     </properties>
 
     <dependencies>
@@ -115,13 +114,6 @@
             <scope>runtime</scope>
         </dependency>
 
-        <!-- ===== STRIPE ===== -->
-        <dependency>
-            <groupId>com.stripe</groupId>
-            <artifactId>stripe-java</artifactId>
-            <version>${stripe.version}</version>
-        </dependency>
-
         <!-- ===== MAPSTRUCT ===== -->
         <dependency>
             <groupId>org.mapstruct</groupId>
@@ -141,13 +133,6 @@
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
             <version>2.15.1</version>
-        </dependency>
-
-        <!-- ===== PAYPAL ===== -->
-        <dependency>
-            <groupId>com.paypal.sdk</groupId>
-            <artifactId>checkout-sdk</artifactId>
-            <version>1.0.5</version>
         </dependency>
 
         <!-- ===== TESTING ===== -->

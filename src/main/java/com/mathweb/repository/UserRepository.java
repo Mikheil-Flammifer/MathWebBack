@@ -23,6 +23,4 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT u FROM User u WHERE u.emailVerified = false AND u.active = true")
     List<User> findUnverifiedUsers();
 
-    @Query("SELECT u FROM User u WHERE u.stripeCustomerId = :stripeCustomerId")
-    Optional<User> findByStripeCustomerId(String stripeCustomerId);
 }

@@ -43,9 +43,6 @@ public class User extends BaseEntity {
     @Column(name = "avatar_url")
     private String avatarUrl;
 
-    @Column(name = "stripe_customer_id", unique = true)
-    private String stripeCustomerId;
-
     // ===== RELATIONS =====
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)

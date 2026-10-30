@@ -23,12 +23,6 @@ public class Subscription extends BaseEntity {
     @Column(name = "status", nullable = false, length = 30)
     private SubscriptionStatus status;
 
-    @Column(name = "stripe_subscription_id", unique = true)
-    private String stripeSubscriptionId;
-
-    @Column(name = "stripe_price_id")
-    private String stripePriceId;
-
     @Column(name = "amount_cents")
     private Integer amountCents;
 

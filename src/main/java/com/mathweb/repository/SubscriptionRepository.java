@@ -16,8 +16,6 @@ public interface SubscriptionRepository extends JpaRepository<Subscription, Long
 
     Optional<Subscription> findByUser(User user);
 
-    Optional<Subscription> findByStripeSubscriptionId(String stripeSubscriptionId);
-
     List<Subscription> findByStatus(SubscriptionStatus status);
 
     @Query("SELECT s FROM Subscription s WHERE s.status = 'ACTIVE' AND s.currentPeriodEnd < :now")
