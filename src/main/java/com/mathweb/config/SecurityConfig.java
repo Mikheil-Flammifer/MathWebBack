@@ -62,7 +62,8 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/api/auth/**",
                                 "/uploads/images/**",
-                                "/api/paddle/webhook"
+                                "/api/paddle/webhook",
+                                "/api/plans"
                         ).permitAll()
 
                         // ===== STAFF / ADMIN =====

@@ -53,16 +53,6 @@ otp:
   expiration-minutes: 10
   length: 6
 
-paypal:
-  client-id: ${PAYPAL_CLIENT_ID}
-  client-secret: ${PAYPAL_CLIENT_SECRET}
-  mode: ${PAYPAL_MODE}
-  subscription:
-    amount: "2.49"
-    currency: USD
-    plan-name: MathWeb Monthly
-    plan-description: Full access to all MathWeb content
-
 file:
   upload:
     base-path: ${FILE_UPLOAD_PATH}
