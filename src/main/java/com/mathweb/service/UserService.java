@@ -12,11 +12,11 @@ public interface UserService {
     UserResponse getUserById(Long id);
     UserResponse getCurrentUser(Long userId);
     PageResponse<UserResponse> getAllUsers(int page, int size);
-    UserResponse updateUserRole(Long userId, Role role);
+    UserResponse updateUserRole(Long actorId, Long userId, Role role);
     UserResponse updateProfile(Long userId, UpdateProfileRequest request);
     UserResponse updateAvatar(Long userId, MultipartFile avatar);
     UserStatsResponse getUserStats(Long userId);
     void changePassword(Long userId, ChangePasswordRequest request);
-    void deactivateUser(Long userId);
+    void deactivateUser(Long actorId, Long userId);
     void activateUser(Long userId);
 }

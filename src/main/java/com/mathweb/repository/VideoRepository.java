@@ -45,4 +45,5 @@ public interface VideoRepository extends JpaRepository<Video, Long> {
 
     @Query("SELECT COUNT(v) FROM Video v WHERE v.uploadedBy.id = :userId")
     long countByUploadedById(Long userId);
+    long countByQuestIdAndStatus(Long questId, VideoStatus status);
 }

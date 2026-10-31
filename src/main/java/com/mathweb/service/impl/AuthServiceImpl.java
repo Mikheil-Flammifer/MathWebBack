@@ -29,9 +29,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
 
 @Service
 public class AuthServiceImpl implements AuthService {
+    private static final int MAX_OTP_ATTEMPTS = 5;
 
     private static final Logger log = LoggerFactory.getLogger(AuthServiceImpl.class);
 
@@ -104,35 +107,22 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    @Transactional
+    @Transactional(noRollbackFor = OtpException.class)
     public void verifyOtp(VerifyOtpRequest request) {
-        User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        String email = request.getEmail().trim().toLowerCase();
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new OtpException("Invalid or expired code"));
 
-        OtpCode otpCode = otpCodeRepository
-                .findByUserAndCodeAndUsedFalse(user, request.getCode())
-                .orElseThrow(() -> new OtpException("Invalid OTP code"));
+        OtpCode otpCode = checkCode(user, "EMAIL_VERIFICATION", request.getCode());
 
-        if (!otpCode.isValid()) {
-            throw new OtpException("OTP code has expired");
-        }
-
-        if (!otpCode.getPurpose().equals(request.getPurpose())) {
-            throw new OtpException("Invalid OTP purpose");
-        }
-
-        // Mark OTP as used
         otpCode.setUsed(true);
         otpCodeRepository.save(otpCode);
 
-        // Verify email if that was the purpose
-        if ("EMAIL_VERIFICATION".equals(request.getPurpose())) {
-            user.setEmailVerified(true);
-            userRepository.save(user);
-            emailService.sendWelcomeEmail(user.getEmail(), user.getFirstName());
-        }
+        user.setEmailVerified(true);
+        userRepository.save(user);
+        emailService.sendWelcomeEmail(user.getEmail(), user.getFirstName());
 
-        log.info("OTP verified for user: {}", user.getEmail());
+        log.info("Email verified for user {}", user.getId());
     }
 
     @Override
@@ -204,6 +194,10 @@ public class AuthServiceImpl implements AuthService {
         }
 
         User user = storedToken.getUser();
+        if (!Boolean.TRUE.equals(user.getActive()) || !Boolean.TRUE.equals(user.getEmailVerified())) {
+            throw new BadRequestException("Account is not active");
+        }
+
         UserPrincipal userPrincipal = UserPrincipal.fromUser(user);
 
         String newAccessToken = jwtTokenProvider.generateAccessToken(userPrincipal);
@@ -225,42 +219,35 @@ public class AuthServiceImpl implements AuthService {
     @Override
     @Transactional
     public void forgotPassword(ForgotPasswordRequest request) {
-        User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        String email = request.getEmail().trim().toLowerCase();
+        rateLimitService.checkOtpRate(email);
 
-        otpCodeRepository.invalidateAllByUserAndPurpose(user, "PASSWORD_RESET");
-
-        String otp = OtpUtil.generateOtp();
-        saveOtp(user, otp, "PASSWORD_RESET");
-        emailService.sendOtpEmail(user.getEmail(), user.getFirstName(), otp, "PASSWORD_RESET");
-
-        log.info("Password reset OTP sent for: {}", user.getEmail());
+        userRepository.findByEmail(email).ifPresent(user -> {
+            otpCodeRepository.invalidateAllByUserAndPurpose(user, "PASSWORD_RESET");
+            String otp = OtpUtil.generateOtp();
+            saveOtp(user, otp, "PASSWORD_RESET");
+            emailService.sendOtpEmail(user.getEmail(), user.getFirstName(), otp, "PASSWORD_RESET");
+            log.info("Password reset OTP sent for user {}", user.getId());
+        });
     }
 
     @Override
-    @Transactional
+    @Transactional(noRollbackFor = OtpException.class)
     public void resetPassword(ResetPasswordRequest request) {
-        User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        String email = request.getEmail().trim().toLowerCase();
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new OtpException("Invalid or expired code"));
 
-        OtpCode otpCode = otpCodeRepository
-                .findByUserAndCodeAndUsedFalse(user, request.getCode())
-                .orElseThrow(() -> new OtpException("Invalid OTP code"));
-
-        if (!otpCode.isValid()) {
-            throw new OtpException("OTP code has expired");
-        }
+        OtpCode otpCode = checkCode(user, "PASSWORD_RESET", request.getCode());
 
         otpCode.setUsed(true);
         otpCodeRepository.save(otpCode);
 
         user.setPasswordHash(passwordEncoder.encode(request.getNewPassword()));
         userRepository.save(user);
-
-        // Revoke all refresh tokens on password reset
         refreshTokenRepository.revokeAllByUser(user);
 
-        log.info("Password reset for: {}", user.getEmail());
+        log.info("Password reset for user {}", user.getId());
     }
 
     @Override
@@ -337,6 +324,33 @@ public class AuthServiceImpl implements AuthService {
                 .build();
 
         refreshTokenRepository.save(refreshToken);
+    }
+
+    /** Checks the newest unused code for this purpose; counts failures and burns the code after 5. */
+    private OtpCode checkCode(User user, String purpose, String submitted) {
+        OtpCode otp = otpCodeRepository
+                .findTopByUserAndPurposeAndUsedFalseOrderByCreatedAtDesc(user, purpose)
+                .orElseThrow(() -> new OtpException("Invalid or expired code"));
+
+        if (otp.isExpired() || otp.getAttempts() >= MAX_OTP_ATTEMPTS) {
+            otp.setUsed(true);
+            otpCodeRepository.save(otp);
+            throw new OtpException("Invalid or expired code");
+        }
+
+        boolean match = submitted != null && MessageDigest.isEqual(
+                otp.getCode().getBytes(StandardCharsets.UTF_8),
+                submitted.getBytes(StandardCharsets.UTF_8));
+
+        if (!match) {
+            otp.setAttempts(otp.getAttempts() + 1);
+            if (otp.getAttempts() >= MAX_OTP_ATTEMPTS) {
+                otp.setUsed(true);
+            }
+            otpCodeRepository.save(otp);
+            throw new OtpException("Invalid or expired code");
+        }
+        return otp;
     }
 
     private UserResponse mapToUserResponse(User user) {

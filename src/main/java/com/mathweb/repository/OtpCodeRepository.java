@@ -19,6 +19,9 @@ public interface OtpCodeRepository extends JpaRepository<OtpCode, Long> {
     Optional<OtpCode> findTopByUserAndPurposeOrderByCreatedAtDesc(
             User user, String purpose);
 
+    Optional<OtpCode> findTopByUserAndPurposeAndUsedFalseOrderByCreatedAtDesc(
+            User user, String purpose);
+
     @Modifying
     @Transactional
     @Query("UPDATE OtpCode o SET o.used = true " +

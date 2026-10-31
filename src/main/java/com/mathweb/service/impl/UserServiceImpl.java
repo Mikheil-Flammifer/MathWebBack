@@ -14,6 +14,7 @@ import com.mathweb.repository.CommentRepository;
 import com.mathweb.repository.ProblemAttemptRepository;
 import com.mathweb.repository.UserQuestProgressRepository;
 import com.mathweb.repository.UserRepository;
+import com.mathweb.repository.RefreshTokenRepository;
 import com.mathweb.service.FileStorageService;
 import com.mathweb.service.UserService;
 import com.mathweb.util.FileUtil;
@@ -40,6 +41,7 @@ public class UserServiceImpl implements UserService {
     private final ProblemAttemptRepository problemAttemptRepository;
     private final UserQuestProgressRepository questProgressRepository;
     private final CommentRepository commentRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     public UserServiceImpl(UserRepository userRepository,
                            UserMapper userMapper,
@@ -47,7 +49,7 @@ public class UserServiceImpl implements UserService {
                            PasswordEncoder passwordEncoder,
                            ProblemAttemptRepository problemAttemptRepository,
                            UserQuestProgressRepository questProgressRepository,
-                           CommentRepository commentRepository) {
+                           CommentRepository commentRepository, RefreshTokenRepository refreshTokenRepository) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.fileStorageService = fileStorageService;
@@ -55,6 +57,7 @@ public class UserServiceImpl implements UserService {
         this.problemAttemptRepository = problemAttemptRepository;
         this.questProgressRepository = questProgressRepository;
         this.commentRepository = commentRepository;
+        this.refreshTokenRepository = refreshTokenRepository;
     }
 
     @Override
@@ -92,14 +95,24 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserResponse updateUserRole(Long userId, Role role) {
+    public UserResponse updateUserRole(Long actorId, Long userId, Role role) {
+        if (actorId.equals(userId)) {
+            throw new BadRequestException("You cannot change your own role");
+        }
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User", userId));
+
+        if (user.getRole() == Role.ADMIN && role != Role.ADMIN
+                && userRepository.countByRoleAndActiveTrue(Role.ADMIN) <= 1) {
+            throw new BadRequestException("Cannot remove the last active admin");
+        }
+
         user.setRole(role);
         userRepository.save(user);
-        log.info("User {} role updated to {}", userId, role);
+        log.info("User {} role updated to {} by {}", userId, role, actorId);
         return mapToUserResponse(user);
     }
+
 
     @Override
     @Transactional
@@ -199,17 +212,28 @@ public class UserServiceImpl implements UserService {
         user.setPasswordHash(
                 passwordEncoder.encode(request.getNewPassword()));
         userRepository.save(user);
+        refreshTokenRepository.revokeAllByUser(user);
         log.info("Password changed for user {}", userId);
     }
 
     @Override
     @Transactional
-    public void deactivateUser(Long userId) {
+    public void deactivateUser(Long actorId, Long userId) {
+        if (actorId.equals(userId)) {
+            throw new BadRequestException("You cannot deactivate your own account");
+        }
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User", userId));
+
+        if (user.getRole() == Role.ADMIN
+                && userRepository.countByRoleAndActiveTrue(Role.ADMIN) <= 1) {
+            throw new BadRequestException("Cannot deactivate the last active admin");
+        }
+
         user.setActive(false);
+        refreshTokenRepository.revokeAllByUser(user);
         userRepository.save(user);
-        log.info("User {} deactivated", userId);
+        log.info("User {} deactivated by {}", userId, actorId);
     }
 
     @Override

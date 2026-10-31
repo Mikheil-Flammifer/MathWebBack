@@ -7,11 +7,13 @@ import com.mathweb.dto.response.QuestResponse;
 import com.mathweb.entity.Quest;
 import com.mathweb.entity.UserQuestProgress;
 import com.mathweb.enums.QuestStatus;
+import com.mathweb.enums.VideoStatus;
 import com.mathweb.exception.ResourceNotFoundException;
 import com.mathweb.repository.ProblemRepository;
 import com.mathweb.repository.QuestRepository;
 import com.mathweb.repository.UserQuestProgressRepository;
 import com.mathweb.repository.VideoRepository;
+import com.mathweb.util.RoleUtil;
 import com.mathweb.service.QuestService;
 import com.mathweb.service.impl.QuestMapService;
 import org.slf4j.Logger;
@@ -181,7 +183,7 @@ public class QuestServiceImpl implements QuestService {
 
     private QuestResponse mapToQuestResponse(Quest quest, UserQuestProgress progress) {
         int totalProblems = problemRepository.countByQuestId(quest.getId());
-        int totalVideos = (int) videoRepository.countByUploadedById(quest.getId());
+        int totalVideos = (int) videoRepository.countByQuestIdAndStatus(quest.getId(), VideoStatus.PUBLISHED);
 
         QuestResponse response = QuestResponse.builder()
                 .id(quest.getId())

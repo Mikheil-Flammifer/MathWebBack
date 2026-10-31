@@ -32,6 +32,10 @@ public class OtpCode extends BaseEntity {
     @Builder.Default
     private String purpose = "EMAIL_VERIFICATION";
 
+    @Column(name = "attempts", nullable = false)
+    @Builder.Default
+    private Integer attempts = 0;
+
     // ===== HELPERS =====
 
     public boolean isExpired() {
