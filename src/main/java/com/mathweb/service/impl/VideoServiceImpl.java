@@ -366,6 +366,11 @@ public class VideoServiceImpl implements VideoService {
         VideoResponse response = videoMapper.toResponse(video);
         response.setThumbnailPath(fileStorageService.getFileUrl(video.getThumbnailPath()));
         response.setCommentCount(commentCount);
+        if (response.getUploadedBy() != null) {
+            // getFileUrl accepts a stored path or an existing URL and returns a URL either way
+            response.getUploadedBy().setAvatarUrl(
+                    fileStorageService.getFileUrl(response.getUploadedBy().getAvatarUrl()));
+        }
         if (includeStreamUrl) {
             response.setStreamUrl("/api/videos/" + video.getId() + "/stream");
         }

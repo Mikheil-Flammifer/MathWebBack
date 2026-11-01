@@ -32,7 +32,7 @@ public class VideoResponse {
     private String categoryName;
     private Long parentCategoryId;
     private String parentCategoryName;
-    private UserResponse uploadedBy;
+    private UploaderResponse uploadedBy;
     private long commentCount;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

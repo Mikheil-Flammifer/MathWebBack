@@ -11,8 +11,11 @@ import java.util.UUID;
 
 public class FileUtil {
 
+    // Only formats a browser can actually play. Browsers label avi and mkv as
+    // video/x-msvideo and video/x-matroska anyway, so the old video/avi and
+    // video/mkv entries never matched a real upload.
     private static final Set<String> ALLOWED_VIDEO_TYPES = Set.of(
-            "video/mp4", "video/webm", "video/ogg", "video/avi", "video/mkv"
+            "video/mp4", "video/webm", "video/ogg"
     );
 
     private static final Set<String> ALLOWED_IMAGE_TYPES = Set.of(
@@ -29,9 +32,7 @@ public class FileUtil {
     private static final Map<String, String> VIDEO_EXTENSIONS = Map.of(
             "video/mp4", "mp4",
             "video/webm", "webm",
-            "video/ogg", "ogg",
-            "video/avi", "avi",
-            "video/mkv", "mkv"
+            "video/ogg", "ogg"
     );
 
     private static final long MAX_VIDEO_SIZE = 2L * 1024 * 1024 * 1024; // 2GB
@@ -46,9 +47,21 @@ public class FileUtil {
         if (file.getSize() > MAX_VIDEO_SIZE) {
             throw new FileStorageException("Video file exceeds 2GB limit");
         }
-        if (!ALLOWED_VIDEO_TYPES.contains(file.getContentType())) {
+        String type = file.getContentType();
+        // Set.of(...).contains(null) throws NullPointerException, so check null first.
+        if (type == null || !ALLOWED_VIDEO_TYPES.contains(type)) {
             throw new FileStorageException(
-                    "Invalid video type. Allowed: mp4, webm, ogg, avi, mkv");
+                    "Invalid video type. Allowed: mp4, webm, ogg");
+        }
+        // The content type is chosen by the client, so also check the file's own header.
+        // This stops text/playlist files from being stored as "video" and then parsed by ffmpeg.
+        try (InputStream in = file.getInputStream()) {
+            byte[] head = in.readNBytes(12);
+            if (!hasVideoSignature(type, head)) {
+                throw new FileStorageException("File content does not match a video type");
+            }
+        } catch (IOException e) {
+            throw new FileStorageException("Could not read the video file");
         }
     }
 
@@ -59,13 +72,14 @@ public class FileUtil {
         if (file.getSize() > MAX_IMAGE_SIZE) {
             throw new FileStorageException("Image file exceeds 10MB limit");
         }
-        if (!ALLOWED_IMAGE_TYPES.contains(file.getContentType())) {
+        String type = file.getContentType();
+        if (type == null || !ALLOWED_IMAGE_TYPES.contains(type)) {
             throw new FileStorageException(
                     "Invalid image type. Allowed: jpeg, png, gif, webp");
         }
         try (InputStream in = file.getInputStream()) {
             byte[] head = in.readNBytes(12);
-            if (!hasImageSignature(file.getContentType(), head)) {
+            if (!hasImageSignature(type, head)) {
                 throw new FileStorageException("File content does not match an image type");
             }
         } catch (IOException e) {
@@ -74,11 +88,25 @@ public class FileUtil {
     }
 
     public static String imageExtension(String contentType) {
-        return IMAGE_EXTENSIONS.getOrDefault(contentType, "bin");
+        return contentType == null ? "bin" : IMAGE_EXTENSIONS.getOrDefault(contentType, "bin");
     }
 
     public static String videoExtension(String contentType) {
-        return VIDEO_EXTENSIONS.getOrDefault(contentType, "bin");
+        return contentType == null ? "bin" : VIDEO_EXTENSIONS.getOrDefault(contentType, "bin");
+    }
+
+    private static boolean hasVideoSignature(String type, byte[] h) {
+        if (h.length < 12) return false;
+        return switch (type) {
+            // MP4: size (4 bytes) then "ftyp"
+            case "video/mp4" -> h[4] == 'f' && h[5] == 't' && h[6] == 'y' && h[7] == 'p';
+            // WebM: EBML header 1A 45 DF A3
+            case "video/webm" -> (h[0] & 0xFF) == 0x1A && (h[1] & 0xFF) == 0x45
+                    && (h[2] & 0xFF) == 0xDF && (h[3] & 0xFF) == 0xA3;
+            // Ogg: "OggS"
+            case "video/ogg" -> h[0] == 'O' && h[1] == 'g' && h[2] == 'g' && h[3] == 'S';
+            default -> false;
+        };
     }
 
     private static boolean hasImageSignature(String type, byte[] h) {

@@ -6,21 +6,18 @@ import com.mathweb.util.FileUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
-import java.nio.file.InvalidPathException;   // add this line
-
-
+import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.UUID;
-
 
 @Service
 public class FileStorageServiceImpl implements FileStorageService {
@@ -33,9 +30,8 @@ public class FileStorageServiceImpl implements FileStorageService {
     @Value("${file.upload.images-path}")
     private String imagesPath;
 
-    @Value("${file.upload.base-path}")      // add these two lines
+    @Value("${file.upload.base-path}")
     private String basePath;
-
 
     @Value("${app.base-url}")
     private String baseUrl;
@@ -105,26 +101,27 @@ public class FileStorageServiceImpl implements FileStorageService {
             throw new FileStorageException("File is empty or null");
         }
 
-        // Validate based on type
         if ("videos".equals(type)) {
             FileUtil.validateVideo(file);
         } else {
             FileUtil.validateImage(file);
         }
 
+        Path targetPath = null;
         try {
             Path uploadDir = Paths.get(storagePath);
             Files.createDirectories(uploadDir);
 
-            // Use FileUtil for unique filename
+            // Extension comes from the validated content type, never from the client's file name.
             String ext = "videos".equals(type)
                     ? FileUtil.videoExtension(file.getContentType())
                     : FileUtil.imageExtension(file.getContentType());
             String uniqueFilename = UUID.randomUUID() + "." + ext;
 
-            Path targetPath = uploadDir.resolve(uniqueFilename);
-            Files.copy(file.getInputStream(), targetPath,
-                    StandardCopyOption.REPLACE_EXISTING);
+            targetPath = uploadDir.resolve(uniqueFilename);
+            try (InputStream in = file.getInputStream()) {
+                Files.copy(in, targetPath);   // fails if the name already exists
+            }
 
             String storedPath = storagePath + "/" + uniqueFilename;
             log.info("Stored {} file: {} ({})",
@@ -134,13 +131,17 @@ public class FileStorageServiceImpl implements FileStorageService {
             return storedPath;
 
         } catch (IOException e) {
-            throw new FileStorageException(
-                    "Failed to store file: " + e.getMessage());
+            // Remove a half-written file (disk full, client aborted, and so on).
+            if (targetPath != null) {
+                try {
+                    Files.deleteIfExists(targetPath);
+                } catch (IOException ignored) {
+                    // nothing more we can do
+                }
+            }
+            // Details stay in the log: IOException messages contain server paths.
+            log.error("Failed to store {} file", type, e);
+            throw new FileStorageException("Failed to store file");
         }
-    }
-
-    private String getExtension(String filename) {
-        if (filename == null || !filename.contains(".")) return "bin";
-        return filename.substring(filename.lastIndexOf(".") + 1).toLowerCase();
     }
 }
