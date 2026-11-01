@@ -116,6 +116,12 @@ public class GlobalExceptionHandler {
                 .body(ApiResponse.error("This operation conflicts with existing data"));
     }
 
+    @ExceptionHandler(CategoryConflictException.class)
+    public ResponseEntity<ApiResponse<Void>> handleCategoryConflict(CategoryConflictException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(ApiResponse.error(ex.getMessage()));
+    }
+
     // ===== BAD REQUESTS (client errors, not 500) =====
 
     @ExceptionHandler(HttpMessageNotReadableException.class)

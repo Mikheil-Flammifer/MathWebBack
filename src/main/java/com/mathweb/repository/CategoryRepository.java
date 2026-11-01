@@ -23,4 +23,15 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
 
     // For the admin delete rule: a category with children can't be deleted
     boolean existsByParentId(Long parentId);
+
+    long countByParentId(Long parentId);
+
+    // Sibling name checks (case-insensitive). The IdNot variants are for updates.
+    boolean existsByParentIsNullAndNameIgnoreCase(String name);
+
+    boolean existsByParentIsNullAndNameIgnoreCaseAndIdNot(String name, Long id);
+
+    boolean existsByParentIdAndNameIgnoreCase(Long parentId, String name);
+
+    boolean existsByParentIdAndNameIgnoreCaseAndIdNot(Long parentId, String name, Long id);
 }
