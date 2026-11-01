@@ -43,7 +43,25 @@ public interface VideoRepository extends JpaRepository<Video, Long> {
                              @Param("level") DifficultyLevel level,
                              Pageable pageable);
 
+    /**
+     * Staff listing: every status. status == null means all statuses,
+     * uploaderId == null means all uploaders. keyword must never be null
+     * (pass "" for no filter), because a null string parameter inside
+     * lower(concat(...)) breaks on PostgreSQL with Hibernate 6.
+     */
+    @Query("""
+       select v from Video v
+       where (:status is null or v.status = :status)
+         and (:uploaderId is null or v.uploadedBy.id = :uploaderId)
+         and lower(v.title) like lower(concat('%', :keyword, '%'))
+       """)
+    Page<Video> findForStaff(@Param("status") VideoStatus status,
+                             @Param("uploaderId") Long uploaderId,
+                             @Param("keyword") String keyword,
+                             Pageable pageable);
+
     @Query("SELECT COUNT(v) FROM Video v WHERE v.uploadedBy.id = :userId")
     long countByUploadedById(Long userId);
+
     long countByQuestIdAndStatus(Long questId, VideoStatus status);
 }

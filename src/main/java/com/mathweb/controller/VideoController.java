@@ -6,12 +6,14 @@ import com.mathweb.dto.response.ApiResponse;
 import com.mathweb.dto.response.PageResponse;
 import com.mathweb.dto.response.VideoResponse;
 import com.mathweb.enums.DifficultyLevel;
+import com.mathweb.enums.VideoStatus;
 import com.mathweb.security.UserPrincipal;
 import com.mathweb.service.VideoService;
 import com.mathweb.service.VideoStream;
 import jakarta.validation.Valid;
 import org.springframework.core.io.Resource;
 import org.springframework.http.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,6 +37,24 @@ public class VideoController {
             @RequestParam(defaultValue = "newest") String sort) {
         PageResponse<VideoResponse> videos =
                 videoService.getAllVideos(page, size, level, categoryId, sort);
+        return ResponseEntity.ok(ApiResponse.success("Videos retrieved", videos));
+    }
+
+    /**
+     * Staff listing with every status (draft, published, archived).
+     * status is optional (all statuses when absent); mine=true limits to the caller's uploads.
+     */
+    @GetMapping("/admin")
+    @PreAuthorize("hasAnyRole('ADMIN','TEACHER')")
+    public ResponseEntity<ApiResponse<PageResponse<VideoResponse>>> getVideosForStaff(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size,
+            @RequestParam(required = false) VideoStatus status,
+            @RequestParam(required = false) String keyword,
+            @RequestParam(defaultValue = "false") boolean mine,
+            @AuthenticationPrincipal UserPrincipal principal) {
+        PageResponse<VideoResponse> videos = videoService.getVideosForStaff(
+                page, size, status, keyword, mine, principal.getId());
         return ResponseEntity.ok(ApiResponse.success("Videos retrieved", videos));
     }
 
@@ -75,6 +95,7 @@ public class VideoController {
     }
 
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasAnyRole('ADMIN','TEACHER')")
     public ResponseEntity<ApiResponse<VideoResponse>> uploadVideo(
             @RequestPart("file") MultipartFile file,
             @RequestPart("data") @Valid VideoUploadRequest request,
@@ -86,6 +107,7 @@ public class VideoController {
 
     @PostMapping(value = "/{id}/thumbnail",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasAnyRole('ADMIN','TEACHER')")
     public ResponseEntity<ApiResponse<VideoResponse>> uploadThumbnail(
             @PathVariable Long id,
             @RequestPart("file") MultipartFile thumbnail,
@@ -97,6 +119,7 @@ public class VideoController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','TEACHER')")
     public ResponseEntity<ApiResponse<VideoResponse>> updateVideo(
             @PathVariable Long id,
             @Valid @RequestBody UpdateVideoRequest request,
@@ -106,6 +129,7 @@ public class VideoController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','TEACHER')")
     public ResponseEntity<ApiResponse<Void>> deleteVideo(
             @PathVariable Long id,
             @AuthenticationPrincipal UserPrincipal principal) {

@@ -20,6 +20,10 @@ public class UpdateVideoRequest {
 
     private Boolean free;
 
+    private Boolean clearQuest;
+
+    private Boolean clearCategory;
+
     private Long questId;
 
     private Long categoryId;

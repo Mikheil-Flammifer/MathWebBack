@@ -5,6 +5,7 @@ import com.mathweb.dto.request.VideoUploadRequest;
 import com.mathweb.dto.response.PageResponse;
 import com.mathweb.dto.response.VideoResponse;
 import com.mathweb.enums.DifficultyLevel;
+import com.mathweb.enums.VideoStatus;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface VideoService {
@@ -19,4 +20,8 @@ public interface VideoService {
     PageResponse<VideoResponse> getAllVideos(int page, int size, DifficultyLevel level, Long categoryId, String sort);
     void deleteVideo(Long id, Long userId);
     void incrementViewCount(Long id);
+
+    /** Staff listing across every status. status == null means all; mine limits to the caller's uploads. */
+    PageResponse<VideoResponse> getVideosForStaff(int page, int size, VideoStatus status,
+                                                  String keyword, boolean mine, Long userId);
 }
