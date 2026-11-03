@@ -4,8 +4,10 @@ import com.mathweb.dto.request.CreateQuestRequest;
 import com.mathweb.dto.request.SaveQuestMapRequest;
 import com.mathweb.dto.request.UpdateQuestRequest;
 import com.mathweb.dto.response.ApiResponse;
+import com.mathweb.dto.response.PageResponse;
 import com.mathweb.dto.response.QuestMapResponse;
 import com.mathweb.dto.response.QuestResponse;
+import com.mathweb.enums.DifficultyLevel;
 import com.mathweb.security.UserPrincipal;
 import com.mathweb.service.QuestService;
 import com.mathweb.service.impl.QuestMapService;
@@ -32,17 +34,26 @@ public class QuestController {
 
     @GetMapping("/admin")
     @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER')")
-    public ResponseEntity<ApiResponse<List<QuestResponse>>> getAllQuestsForAdmin() {
+    public ResponseEntity<ApiResponse<PageResponse<QuestResponse>>> getAllQuestsForAdmin(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "12") int size,
+            @RequestParam(required = false) DifficultyLevel level,
+            @RequestParam(required = false) Boolean published,
+            @RequestParam(required = false) String keyword) {
         return ResponseEntity.ok(ApiResponse.success("Quests retrieved",
-                questService.getAllQuestsForAdmin()));
+                questService.getAllQuestsForAdmin(page, size, level, published, keyword)));
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<QuestResponse>>> getAllQuests(
-            @AuthenticationPrincipal UserPrincipal principal) {
+    public ResponseEntity<ApiResponse<PageResponse<QuestResponse>>> getAllQuests(
+            @AuthenticationPrincipal UserPrincipal principal,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "12") int size,
+            @RequestParam(required = false) DifficultyLevel level,
+            @RequestParam(required = false) String keyword) {
         Long userId = principal != null ? principal.getId() : null;
-        List<QuestResponse> quests = questService.getAllQuests(userId);
-        return ResponseEntity.ok(ApiResponse.success("Quests retrieved", quests));
+        return ResponseEntity.ok(ApiResponse.success("Quests retrieved",
+                questService.getAllQuests(userId, page, size, level, keyword)));
     }
 
     @GetMapping("/{id}")

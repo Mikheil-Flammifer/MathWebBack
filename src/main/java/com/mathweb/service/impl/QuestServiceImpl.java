@@ -4,6 +4,12 @@ import com.mathweb.dto.request.CreateQuestRequest;
 import com.mathweb.dto.request.UpdateQuestRequest;
 import com.mathweb.dto.response.QuestProgressResponse;
 import com.mathweb.dto.response.QuestResponse;
+import com.mathweb.dto.response.PageResponse;
+import com.mathweb.enums.DifficultyLevel;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import java.util.function.Function;
 import com.mathweb.entity.Quest;
 import com.mathweb.entity.UserQuestProgress;
 import com.mathweb.enums.QuestStatus;
@@ -28,6 +34,8 @@ import java.util.Optional;
 public class QuestServiceImpl implements QuestService {
 
     private static final Logger log = LoggerFactory.getLogger(QuestServiceImpl.class);
+    private static final int MAX_PAGE_SIZE = 20;
+    private static final int MAX_KEYWORD_LENGTH = 100;
 
     private final QuestMapService questMapService;
     private final QuestRepository questRepository;
@@ -48,10 +56,13 @@ public class QuestServiceImpl implements QuestService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<QuestResponse> getAllQuestsForAdmin() {
-        return questRepository.findAllByOrderByDifficultyLevelAscIdAsc().stream()
-                .map(q -> mapToQuestResponse(q, null))   // per-user fields stay null
-                .toList();
+    public PageResponse<QuestResponse> getAllQuestsForAdmin(int page, int size,
+                                                            DifficultyLevel level,
+                                                            Boolean published,
+                                                            String keyword) {
+        Page<Quest> questPage = questRepository.findForAdmin(
+                published, level, normalizeKeyword(keyword), pageRequest(page, size));
+        return mapToPageResponse(questPage, quest -> mapToQuestResponse(quest, null));
     }
 
     @Override
@@ -94,30 +105,29 @@ public class QuestServiceImpl implements QuestService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<QuestResponse> getAllQuests(Long userId) {
-        List<Quest> quests = questRepository.findByPublishedTrueOrderByDifficultyLevelAsc();
+    public PageResponse<QuestResponse> getAllQuests(Long userId, int page, int size,
+                                                    DifficultyLevel level, String keyword) {
+        Page<Quest> questPage = questRepository.findPublishedFiltered(
+                level, normalizeKeyword(keyword), pageRequest(page, size));
 
         List<Long> completedIds = userId != null
                 ? progressRepository.findCompletedQuestIdsByUserId(userId)
                 : List.of();
 
-        return quests.stream()
-                .map(quest -> {
-                    Optional<UserQuestProgress> progress = userId != null
-                            ? progressRepository.findByUserIdAndQuestId(userId, quest.getId())
-                            : Optional.empty();
+        return mapToPageResponse(questPage, quest -> {
+            UserQuestProgress progress = userId != null
+                    ? progressRepository.findByUserIdAndQuestId(userId, quest.getId()).orElse(null)
+                    : null;
 
-                    QuestResponse response = mapToQuestResponse(quest, progress.orElse(null));
+            QuestResponse response = mapToQuestResponse(quest, progress);
 
-                    // Determine if quest is unlocked for this user
-                    if (userId != null && response.getUserStatus() == null) {
-                        boolean unlocked = quest.isUnlocked(completedIds);
-                        response.setUserStatus(unlocked ? QuestStatus.AVAILABLE : QuestStatus.LOCKED);
-                    }
-
-                    return response;
-                })
-                .toList();
+            // Determine if quest is unlocked for this user
+            if (userId != null && response.getUserStatus() == null) {
+                response.setUserStatus(quest.isUnlocked(completedIds)
+                        ? QuestStatus.AVAILABLE : QuestStatus.LOCKED);
+            }
+            return response;
+        });
     }
 
     @Override
@@ -211,5 +221,32 @@ public class QuestServiceImpl implements QuestService {
         }
 
         return response;
+    }
+
+    private PageRequest pageRequest(int page, int size) {
+        int safePage = Math.max(page, 0);
+        int safeSize = Math.min(Math.max(size, 1), MAX_PAGE_SIZE);
+        // Same order as the old list: difficulty, then id (stable for paging)
+        return PageRequest.of(safePage, safeSize,
+                Sort.by("difficultyLevel").ascending().and(Sort.by("id").ascending()));
+    }
+
+    private String normalizeKeyword(String keyword) {
+        if (keyword == null) return "";
+        String k = keyword.trim();
+        return k.length() > MAX_KEYWORD_LENGTH ? k.substring(0, MAX_KEYWORD_LENGTH) : k;
+    }
+
+    private PageResponse<QuestResponse> mapToPageResponse(Page<Quest> page,
+                                                          Function<Quest, QuestResponse> mapper) {
+        return PageResponse.<QuestResponse>builder()
+                .content(page.getContent().stream().map(mapper).toList())
+                .page(page.getNumber())
+                .size(page.getSize())
+                .totalElements(page.getTotalElements())
+                .totalPages(page.getTotalPages())
+                .first(page.isFirst())
+                .last(page.isLast())
+                .build();
     }
 }
