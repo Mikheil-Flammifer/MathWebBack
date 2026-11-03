@@ -43,6 +43,8 @@ spring:
 
 server:
   port: 8080
+  tomcat:
+    max-swallow-size: 3GB
 
 jwt:
   secret: ${JWT_SECRET}
