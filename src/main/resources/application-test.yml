@@ -1,3 +1,4 @@
+
 spring:
   datasource:
     url: jdbc:h2:mem:testdb
@@ -8,6 +9,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create-drop
+    show-sql: false
     properties:
       hibernate:
         dialect: org.hibernate.dialect.H2Dialect
@@ -19,14 +21,11 @@ spring:
     host: localhost
     port: 25
 
-jwt:
-  secret: dGVzdFNlY3JldEtleUZvclRlc3RpbmdQdXJwb3Nlc09ubHkxMjM0NTY=
-  access-token-expiration: 86400000
-  refresh-token-expiration: 604800000
+  cache:
+    type: simple
 
-otp:
-  expiration-minutes: 10
-  length: 6
+jwt:
+  secret: ${JWT_SECRET_TEST}
 
 file:
   upload:
@@ -35,8 +34,13 @@ file:
     images-path: ./test-uploads/images
 
 app:
-  name: MathWeb Test
   base-url: http://localhost:8080
   mail-from: test@test.com
-  max-comment-depth: 10
-  max-problem-attempts: 3
+
+  cookies:
+    secure: false
+
+logging:
+  level:
+    com.mathweb: WARN
+    org.springframework.security: WARN
