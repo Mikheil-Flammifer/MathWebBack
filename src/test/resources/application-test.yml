@@ -1,0 +1,44 @@
+# Used by integration tests (*IT) via @ActiveProfiles("test").
+# The datasource comes from Testcontainers (@ServiceConnection), so no URL is set here.
+# This file lives in src/test/resources so it is NOT packaged into the production jar.
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: validate      # Flyway builds the schema; Hibernate only checks it matches
+    show-sql: false
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+  mail:
+    host: localhost
+    port: 25
+
+  cache:
+    type: simple
+
+jwt:
+  # Test-only value (not a real secret). Plain letters/digits, 64 chars, so it is long
+  # enough for HS256 whether it is read as raw text or as Base64.
+  secret: abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ01
+
+file:
+  upload:
+    base-path: ./target/test-uploads
+    videos-path: ./target/test-uploads/videos
+    images-path: ./target/test-uploads/images
+
+app:
+  base-url: http://localhost:8080
+  frontend-url: http://localhost:3000
+  mail-from: test@test.com
+
+  cookies:
+    secure: false
+
+logging:
+  level:
+    com.mathweb: WARN
+    org.springframework.security: WARN
