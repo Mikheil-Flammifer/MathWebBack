@@ -1,5 +1,6 @@
 package com.mathweb.util;
 
+import java.util.Locale;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -7,10 +8,10 @@ import java.time.temporal.ChronoUnit;
 public class DateUtil {
 
     private static final DateTimeFormatter DISPLAY_FORMAT =
-            DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm");
+            DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm", Locale.ENGLISH);
 
     private static final DateTimeFormatter DATE_ONLY =
-            DateTimeFormatter.ofPattern("dd MMM yyyy");
+            DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.ENGLISH);
 
     private DateUtil() {}
 
