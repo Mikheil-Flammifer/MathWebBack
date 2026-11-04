@@ -1,6 +1,7 @@
 package com.mathweb.entity;
 
 import com.mathweb.enums.Role;
+import org.hibernate.Hibernate;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -76,5 +77,18 @@ public class User extends BaseEntity {
 
     public boolean hasActiveSubscription() {
         return subscription != null && subscription.isCurrentlyActive();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        User other = (User) o;
+        return getId() != null && getId().equals(other.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Hibernate.getClass(this).hashCode();
     }
 }

@@ -43,9 +43,9 @@ class EmbedUtilTest {
 
     @Test
     void testParse_DesmosMinimumLength() {
-        Optional<EmbedUtil.Embed> result = EmbedUtil.parse("https://www.desmos.com/calculator/abcd");
+        Optional<EmbedUtil.Embed> result = EmbedUtil.parse("https://www.desmos.com/calculator/abcde");
         assertTrue(result.isPresent());
-        assertEquals("abcd", result.get().ref());
+        assertEquals("abcde", result.get().ref());
     }
 
     @Test

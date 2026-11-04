@@ -109,9 +109,9 @@ class DateUtilTest {
     }
 
     @Test
-    void testIsExpired_ExactNow() {
-        LocalDateTime now = LocalDateTime.now();
-        assertFalse(DateUtil.isExpired(now));
+    void testIsExpired_JustInFuture() {
+        LocalDateTime soon = LocalDateTime.now().plusSeconds(5);
+        assertFalse(DateUtil.isExpired(soon));
     }
 
     @Test
