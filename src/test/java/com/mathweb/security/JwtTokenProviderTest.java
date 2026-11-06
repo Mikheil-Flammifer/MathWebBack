@@ -115,13 +115,18 @@ class JwtTokenProviderTest {
                 .active(true)
                 .build();
 
+        long before = System.currentTimeMillis();
         String token = jwtTokenProvider.generateAccessToken(userPrincipal);
+        long after = System.currentTimeMillis();
         Date expiration = jwtTokenProvider.getExpirationFromToken(token);
 
         assertNotNull(expiration);
-        long now = System.currentTimeMillis();
-        long expectedExpiration = now + accessTokenExpiration;
-        assertTrue(Math.abs(expiration.getTime() - expectedExpiration) < 1000);
+        // The JWT "exp" claim has whole-second precision: the library rounds it DOWN by up to
+        // 999 ms. So the real value lies in [before + ttl - 999, after + ttl].
+        assertTrue(expiration.getTime() >= before + accessTokenExpiration - 1000,
+                "expiration is too early: " + expiration.getTime());
+        assertTrue(expiration.getTime() <= after + accessTokenExpiration,
+                "expiration is too late: " + expiration.getTime());
     }
 
     @Test

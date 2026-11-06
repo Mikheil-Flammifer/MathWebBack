@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
+import java.util.UUID;
 
 @Slf4j
 @Component
@@ -46,6 +47,9 @@ public class JwtTokenProvider {
         Date expiryDate = new Date(now.getTime() + expiration);
 
         return Jwts.builder()
+                // Unique id: JWT timestamps have 1 second resolution, so without a jti two tokens
+                // issued for the same user within the same second would be identical.
+                .id(UUID.randomUUID().toString())
                 .subject(subject)
                 .claim("email", email)
                 .issuedAt(now)
