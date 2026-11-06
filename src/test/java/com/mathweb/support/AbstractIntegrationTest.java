@@ -11,7 +11,8 @@ import org.springframework.test.web.servlet.MockMvc;
 /**
  * Base class for integration tests (class names end in IT).
  * Boots the full application against a real PostgreSQL with all Flyway migrations applied,
- * using src/test/resources/application-test.yml.
+ * using src/test/resources/application-test.yml. E-mail sending is replaced by a mock
+ * (MockEmailConfig), so no SMTP server is needed.
  *
  * Keep the annotations on this class identical for all subclasses: Spring reuses one
  * application context for the whole test run only while the configuration is the same.
@@ -19,7 +20,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-@Import(TestcontainersConfig.class)
+@Import({TestcontainersConfig.class, MockEmailConfig.class})
 public abstract class AbstractIntegrationTest {
 
     @Autowired

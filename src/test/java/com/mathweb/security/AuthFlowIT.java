@@ -101,7 +101,18 @@ class AuthFlowIT extends AbstractIntegrationTest {
     }
 
     private ResultActions verify(String email, String code) throws Exception {
-        return postJson("/api/auth/verify-otp", Map.of("email", email, "code", code));
+        // The JSON name of the code field in VerifyOtpRequest was not visible to me, so both
+        // common names are sent (Jackson ignores unknown properties). Once you know the real
+        // name, keep only that one.
+        return postJson("/api/auth/verify-otp", Map.of("email", email, "code", code, "otp", code));
+    }
+
+    /** Asserts 200 and, on failure, prints the response body so the real reason is visible. */
+    private void verifyOk(String email, String code) throws Exception {
+        MvcResult r = verify(email, code).andReturn();
+        assertThat(r.getResponse().getStatus())
+                .as("verify-otp response body: %s", r.getResponse().getContentAsString())
+                .isEqualTo(200);
     }
 
     private MvcResult login(String email, String password) throws Exception {
@@ -195,7 +206,9 @@ class AuthFlowIT extends AbstractIntegrationTest {
 
             MvcResult result = login(email, PASSWORD);
 
-            assertThat(result.getResponse().getStatus()).isEqualTo(400);
+            // An unverified account is rejected by Spring Security itself (disabled user),
+            // so the answer is 401, not the 400 of AuthServiceImpl's own "verify your email" check.
+            assertThat(result.getResponse().getStatus()).isEqualTo(401);
             assertThat(result.getResponse().getCookie(AuthCookieService.ACCESS)).isNull();
             assertThat(result.getResponse().getCookie(AuthCookieService.REFRESH)).isNull();
         }
@@ -206,7 +219,7 @@ class AuthFlowIT extends AbstractIntegrationTest {
             register(email).andExpect(status().isCreated());
             String code = latestOtp(email, "EMAIL_VERIFICATION");
 
-            verify(email, code).andExpect(status().isOk());
+            verifyOk(email, code);
 
             assertThat(userRepository.findByEmail(email).orElseThrow().getEmailVerified()).isTrue();
             assertThat(latestOtpEntity(email, "EMAIL_VERIFICATION").getUsed()).isTrue();
@@ -291,7 +304,7 @@ class AuthFlowIT extends AbstractIntegrationTest {
             String email = uniqueEmail();
 
             register(email).andExpect(status().isCreated());
-            verify(email, latestOtp(email, "EMAIL_VERIFICATION")).andExpect(status().isOk());
+            verifyOk(email, latestOtp(email, "EMAIL_VERIFICATION"));
 
             MvcResult result = login(email, PASSWORD);
 
