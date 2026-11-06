@@ -1,0 +1,12 @@
+package com.mathweb.enums;
+
+public enum NotificationType {
+    SYSTEM,
+    COMMENT_REPLY,
+    NEW_VIDEO,
+    QUEST_COMPLETED,
+    QUEST_UNLOCKED,
+    SUBSCRIPTION_ACTIVATED,
+    SUBSCRIPTION_EXPIRING,
+    SUBSCRIPTION_EXPIRED
+}

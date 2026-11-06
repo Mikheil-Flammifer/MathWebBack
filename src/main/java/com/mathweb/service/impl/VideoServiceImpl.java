@@ -11,6 +11,7 @@ import com.mathweb.entity.Video;
 import com.mathweb.enums.DifficultyLevel;
 import com.mathweb.enums.Role;
 import com.mathweb.enums.VideoStatus;
+import com.mathweb.event.VideoPublishedEvent;
 import com.mathweb.exception.ForbiddenException;
 import com.mathweb.exception.ResourceNotFoundException;
 import com.mathweb.mapper.VideoMapper;
@@ -21,6 +22,7 @@ import com.mathweb.service.VideoStream;
 import com.mathweb.util.FileUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -45,6 +47,7 @@ public class VideoServiceImpl implements VideoService {
     private final CategoryRepository categoryRepository;
     private final VideoMapper videoMapper;
     private final VideoMetadataService videoMetadataService;
+    private final ApplicationEventPublisher events;
 
     public VideoServiceImpl(VideoRepository videoRepository,
                             UserRepository userRepository,
@@ -53,7 +56,7 @@ public class VideoServiceImpl implements VideoService {
                             FileStorageService fileStorageService,
                             CategoryRepository categoryRepository,
                             VideoMapper videoMapper,
-                            VideoMetadataService videoMetadataService) {
+                            VideoMetadataService videoMetadataService, ApplicationEventPublisher events) {
         this.videoRepository = videoRepository;
         this.userRepository = userRepository;
         this.questRepository = questRepository;
@@ -62,6 +65,7 @@ public class VideoServiceImpl implements VideoService {
         this.categoryRepository = categoryRepository;
         this.videoMapper = videoMapper;
         this.videoMetadataService = videoMetadataService;
+        this.events = events;
     }
 
     // ===== UPLOAD =====
@@ -106,6 +110,7 @@ public class VideoServiceImpl implements VideoService {
             video.setDurationSeconds(videoMetadataService.extractDuration(filePath));
 
             videoRepository.saveAndFlush(video);
+            events.publishEvent(new VideoPublishedEvent(video.getId(), video.getTitle()));
             log.info("Video uploaded: {} by user {}", video.getTitle(), uploaderId);
             return mapToVideoResponse(video);
         } catch (RuntimeException e) {
@@ -196,6 +201,7 @@ public class VideoServiceImpl implements VideoService {
         Video video = videoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Video", id));
         assertCanModify(video, userId);
+        VideoStatus before = video.getStatus();
 
         if (request.getTitle() != null) video.setTitle(request.getTitle());
         if (request.getDescription() != null) video.setDescription(request.getDescription());
@@ -221,6 +227,9 @@ public class VideoServiceImpl implements VideoService {
         }
 
         videoRepository.save(video);
+        if (before != VideoStatus.PUBLISHED && video.getStatus() == VideoStatus.PUBLISHED) {
+            events.publishEvent(new VideoPublishedEvent(video.getId(), video.getTitle()));
+        }
         return mapToVideoResponse(video);
     }
 

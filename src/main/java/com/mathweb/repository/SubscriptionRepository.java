@@ -21,5 +21,9 @@ public interface SubscriptionRepository extends JpaRepository<Subscription, Long
     @Query("SELECT s FROM Subscription s WHERE s.status = 'ACTIVE' AND s.currentPeriodEnd < :now")
     List<Subscription> findExpiredActiveSubscriptions(LocalDateTime now);
 
+    @Query("SELECT s FROM Subscription s WHERE s.status = 'ACTIVE' " +
+            "AND s.currentPeriodEnd BETWEEN :from AND :to")
+    List<Subscription> findActiveEndingBetween(LocalDateTime from, LocalDateTime to);
+
     boolean existsByUserAndStatus(User user, SubscriptionStatus status);
 }
