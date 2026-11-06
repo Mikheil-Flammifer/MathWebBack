@@ -10,11 +10,13 @@ import com.mathweb.dto.response.HintResponse;
 import com.mathweb.dto.response.SolutionResponse;
 import com.mathweb.entity.*;
 import com.mathweb.enums.NodeStatus;
+import com.mathweb.enums.NotificationType;
 import com.mathweb.enums.ProblemType;
 import com.mathweb.enums.QuestStatus;
 import com.mathweb.exception.BadRequestException;
 import com.mathweb.exception.ResourceNotFoundException;
 import com.mathweb.service.FileStorageService;
+import com.mathweb.service.NotificationService;
 import com.mathweb.util.FileUtil;
 import com.mathweb.util.RoleUtil;
 import com.mathweb.util.SanitizationUtil;
@@ -55,6 +57,7 @@ public class ProblemServiceImpl implements ProblemService {
     private final FileStorageService fileStorageService;
     private final QuestMapService questMapService;
     private final ActivityRecorder activityRecorder;
+    private final NotificationService notificationService;
 
     public ProblemServiceImpl(ProblemRepository problemRepository,
                               AnswerOptionRepository answerOptionRepository,
@@ -65,7 +68,7 @@ public class ProblemServiceImpl implements ProblemService {
                               CategoryRepository categoryRepository,
                               FileStorageService fileStorageService,
 
-                              QuestMapService questMapService, ActivityRecorder activityRecorder) {
+                              QuestMapService questMapService, ActivityRecorder activityRecorder, NotificationService notificationService) {
         this.problemRepository = problemRepository;
         this.answerOptionRepository = answerOptionRepository;
         this.attemptRepository = attemptRepository;
@@ -76,6 +79,7 @@ public class ProblemServiceImpl implements ProblemService {
         this.fileStorageService = fileStorageService;
         this.questMapService = questMapService;
         this.activityRecorder = activityRecorder;
+        this.notificationService = notificationService;
     }
 
     @Override
@@ -513,7 +517,12 @@ public class ProblemServiceImpl implements ProblemService {
 
         if (questCompleted) {
             unlockDependents(user, quest);
+            notificationService.notify(user.getId(), NotificationType.QUEST_COMPLETED,
+                    "Quest completed!",
+                    "You finished \"" + quest.getTitle() + "\".",
+                    "/quests/" + quest.getId());
         }
+
         return questCompleted;
     }
 
@@ -535,6 +544,11 @@ public class ProblemServiceImpl implements ProblemService {
                     .totalProblems(problemRepository.countByQuestId(dependent.getId()))
                     .xpEarned(0)
                     .build());
+
+            notificationService.notify(user.getId(), NotificationType.QUEST_UNLOCKED,
+                    "New quest unlocked",
+                    "\"" + dependent.getTitle() + "\" is now available.",
+                    "/quests/" + dependent.getId());
         }
     }
 

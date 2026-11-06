@@ -4,6 +4,7 @@ import com.mathweb.entity.Payment;
 import com.mathweb.entity.Plan;
 import com.mathweb.entity.Subscription;
 import com.mathweb.entity.User;
+import com.mathweb.enums.NotificationType;
 import com.mathweb.enums.PaymentStatus;
 import com.mathweb.enums.SubscriptionStatus;
 import com.mathweb.exception.ResourceNotFoundException;
@@ -11,6 +12,7 @@ import com.mathweb.repository.PaymentRepository;
 import com.mathweb.repository.PlanRepository;
 import com.mathweb.repository.SubscriptionRepository;
 import com.mathweb.repository.UserRepository;
+import com.mathweb.util.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -28,15 +30,17 @@ public class AccessGrantService {
     private final PlanRepository planRepository;
     private final PaymentRepository paymentRepository;
     private final SubscriptionRepository subscriptionRepository;
+    private final NotificationService notificationService;
 
     public AccessGrantService(UserRepository userRepository,
                               PlanRepository planRepository,
                               PaymentRepository paymentRepository,
-                              SubscriptionRepository subscriptionRepository) {
+                              SubscriptionRepository subscriptionRepository, NotificationService notificationService) {
         this.userRepository = userRepository;
         this.planRepository = planRepository;
         this.paymentRepository = paymentRepository;
         this.subscriptionRepository = subscriptionRepository;
+        this.notificationService = notificationService;
     }
 
     /**
@@ -91,6 +95,11 @@ public class AccessGrantService {
         sub.setCurrency(currency.toUpperCase(Locale.ROOT));
         sub.setCancelledAt(null);
         subscriptionRepository.save(sub);
+
+        notificationService.notify(userId, NotificationType.SUBSCRIPTION_ACTIVATED,
+                "Access activated",
+                plan.getName() + " is active until " + DateUtil.formatDate(sub.getCurrentPeriodEnd()),
+                "/subscription");
 
         log.info("Access granted: user {} plan {} until {}", userId, plan.getCode(), sub.getCurrentPeriodEnd());
         return true;

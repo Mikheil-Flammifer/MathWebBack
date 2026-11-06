@@ -4,6 +4,7 @@ import com.mathweb.entity.User;
 import com.mathweb.enums.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -25,4 +26,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT u FROM User u WHERE u.emailVerified = false AND u.active = true")
     List<User> findUnverifiedUsers();
 
+    @Query("SELECT u.id FROM User u WHERE u.role = :role AND u.active = true AND u.emailVerified = true")
+    List<Long> findActiveVerifiedIdsByRole(@Param("role") Role role);
 }

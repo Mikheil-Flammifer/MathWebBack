@@ -1,9 +1,12 @@
 package com.mathweb.service.impl;
 
+import com.mathweb.enums.NotificationType;
 import com.mathweb.repository.OtpCodeRepository;
 import com.mathweb.repository.RefreshTokenRepository;
 import com.mathweb.repository.SubscriptionRepository;
 import com.mathweb.enums.SubscriptionStatus;
+import com.mathweb.service.NotificationService;
+import com.mathweb.util.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -24,17 +27,19 @@ public class ScheduledTaskService {
     private final SubscriptionRepository subscriptionRepository;
     private final TokenBlacklistService tokenBlacklistService;
     private final RateLimitService rateLimitService;
+    private final NotificationService notificationService;
 
     public ScheduledTaskService(OtpCodeRepository otpCodeRepository,
                                 RefreshTokenRepository refreshTokenRepository,
                                 SubscriptionRepository subscriptionRepository,
                                 TokenBlacklistService tokenBlacklistService,
-                                RateLimitService rateLimitService) {
+                                RateLimitService rateLimitService, NotificationService notificationService) {
         this.otpCodeRepository = otpCodeRepository;
         this.refreshTokenRepository = refreshTokenRepository;
         this.subscriptionRepository = subscriptionRepository;
         this.tokenBlacklistService = tokenBlacklistService;
         this.rateLimitService = rateLimitService;
+        this.notificationService = notificationService;
     }
 
     // ===== RUNS EVERY HOUR =====
@@ -74,6 +79,12 @@ public class ScheduledTaskService {
         expired.forEach(sub -> {
             sub.setStatus(SubscriptionStatus.EXPIRED);
             subscriptionRepository.save(sub);
+            notificationService.notifyOnce(sub.getUser().getId(),
+                    NotificationType.SUBSCRIPTION_EXPIRED,
+                    "Your access has expired",
+                    "Renew your plan to keep watching videos and solving quests.",
+                    "/subscription",
+                    "SUB_EXPIRED:" + sub.getCurrentPeriodEnd().toLocalDate());
             log.info("Marked subscription as expired for user: {}",
                     sub.getUser().getEmail());
         });
@@ -109,5 +120,27 @@ public class ScheduledTaskService {
     public void cleanupBlacklistedTokens() {
         log.info("Cleaning up blacklisted tokens...");
         tokenBlacklistService.removeExpiredTokens();
+    }
+
+    // Daily at 09:00: remind users whose access ends within 3 days
+    @Scheduled(cron = "0 0 9 * * *")
+    @Transactional
+    public void notifyExpiringSubscriptions() {
+        LocalDateTime now = LocalDateTime.now();
+        subscriptionRepository.findActiveEndingBetween(now, now.plusDays(3)).forEach(sub ->
+                notificationService.notifyOnce(sub.getUser().getId(),
+                        NotificationType.SUBSCRIPTION_EXPIRING,
+                        "Your access ends soon",
+                        "Your plan ends on " + DateUtil.formatDate(sub.getCurrentPeriodEnd()) + ".",
+                        "/subscription",
+                        "SUB_EXPIRING:" + sub.getCurrentPeriodEnd().toLocalDate()));
+    }
+
+    // Daily at 03:30: delete notifications older than 90 days
+    @Scheduled(cron = "0 30 3 * * *")
+    @Transactional
+    public void purgeOldNotifications() {
+        int n = notificationService.purgeOlderThan(90);
+        log.info("Deleted {} old notifications", n);
     }
 }

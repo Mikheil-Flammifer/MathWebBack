@@ -8,10 +8,12 @@ import com.mathweb.entity.Comment;
 import com.mathweb.entity.CommentVote;
 import com.mathweb.entity.User;
 import com.mathweb.entity.Video;
+import com.mathweb.enums.NotificationType;
 import com.mathweb.exception.BadRequestException;
 import com.mathweb.exception.ForbiddenException;
 import com.mathweb.exception.ResourceNotFoundException;
 import com.mathweb.repository.CommentVoteRepository;
+import com.mathweb.service.NotificationService;
 import com.mathweb.util.SanitizationUtil;
 import com.mathweb.mapper.CommentMapper;
 import com.mathweb.repository.CommentRepository;
@@ -38,6 +40,7 @@ public class CommentServiceImpl implements CommentService {
     private final VideoRepository videoRepository;
     private final CommentVoteRepository voteRepository;
     private final CommentMapper commentMapper;
+    private final NotificationService notificationService;
 
     @Value("${app.max-comment-depth}")
     private int maxCommentDepth;
@@ -45,12 +48,13 @@ public class CommentServiceImpl implements CommentService {
     public CommentServiceImpl(CommentRepository commentRepository,
                               UserRepository userRepository,
                               VideoRepository videoRepository, CommentVoteRepository commentVoteRepository,
-                              CommentMapper commentMapper) {
+                              CommentMapper commentMapper, NotificationService notificationService) {
         this.commentRepository = commentRepository;
         this.userRepository = userRepository;
         this.videoRepository = videoRepository;
         this.voteRepository = commentVoteRepository;
         this.commentMapper = commentMapper;
+        this.notificationService = notificationService;
     }
 
     @Override
@@ -87,6 +91,17 @@ public class CommentServiceImpl implements CommentService {
         }
 
         commentRepository.save(comment);
+
+        if (comment.getParent() != null
+                && !comment.getParent().getUser().getId().equals(userId)) {
+            String text = comment.getContent();
+            notificationService.notify(comment.getParent().getUser().getId(),
+                    NotificationType.COMMENT_REPLY,
+                    user.getFirstName() + " replied to your comment",
+                    text.length() > 120 ? text.substring(0, 120) + "…" : text,
+                    "/videos/" + video.getId());
+        }
+
         return mapToCommentResponse(comment, Collections.emptyMap(), Collections.emptyMap());
     }
 
