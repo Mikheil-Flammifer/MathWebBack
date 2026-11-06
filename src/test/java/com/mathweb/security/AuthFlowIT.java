@@ -101,10 +101,10 @@ class AuthFlowIT extends AbstractIntegrationTest {
     }
 
     private ResultActions verify(String email, String code) throws Exception {
-        // The JSON name of the code field in VerifyOtpRequest was not visible to me, so both
-        // common names are sent (Jackson ignores unknown properties). Once you know the real
-        // name, keep only that one.
-        return postJson("/api/auth/verify-otp", Map.of("email", email, "code", code, "otp", code));
+        // VerifyOtpRequest requires "purpose" (@NotBlank), even though AuthServiceImpl.verifyOtp
+        // always checks EMAIL_VERIFICATION codes.
+        return postJson("/api/auth/verify-otp", Map.of(
+                "email", email, "code", code, "purpose", "EMAIL_VERIFICATION"));
     }
 
     /** Asserts 200 and, on failure, prints the response body so the real reason is visible. */
