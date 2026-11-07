@@ -1,18 +1,17 @@
-package com.mathweb.service;
+package com.mathweb.service.impl;
 
 import com.mathweb.entity.Payment;
 import com.mathweb.entity.Plan;
 import com.mathweb.entity.Subscription;
 import com.mathweb.entity.User;
-import com.mathweb.enums.NotificationType;
 import com.mathweb.enums.PaymentStatus;
 import com.mathweb.enums.SubscriptionStatus;
+import com.mathweb.exception.BadRequestException;
 import com.mathweb.exception.ResourceNotFoundException;
 import com.mathweb.repository.PaymentRepository;
 import com.mathweb.repository.PlanRepository;
 import com.mathweb.repository.SubscriptionRepository;
 import com.mathweb.repository.UserRepository;
-import com.mathweb.util.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -30,17 +29,15 @@ public class AccessGrantService {
     private final PlanRepository planRepository;
     private final PaymentRepository paymentRepository;
     private final SubscriptionRepository subscriptionRepository;
-    private final NotificationService notificationService;
 
     public AccessGrantService(UserRepository userRepository,
                               PlanRepository planRepository,
                               PaymentRepository paymentRepository,
-                              SubscriptionRepository subscriptionRepository, NotificationService notificationService) {
+                              SubscriptionRepository subscriptionRepository) {
         this.userRepository = userRepository;
         this.planRepository = planRepository;
         this.paymentRepository = paymentRepository;
         this.subscriptionRepository = subscriptionRepository;
-        this.notificationService = notificationService;
     }
 
     /**
@@ -80,28 +77,72 @@ public class AccessGrantService {
         Subscription sub = subscriptionRepository.findByUser(user)
                 .orElseGet(() -> Subscription.builder().user(user).build());
 
-        // Still active: add days after the current end, so early renewals lose nothing.
-        // Expired or new: start from now.
+        extend(sub, plan.getDurationDays(), now);
+        sub.setAmountCents(amountCents);
+        sub.setCurrency(currency.toUpperCase(Locale.ROOT));
+        subscriptionRepository.save(sub);
+
+        log.info("Access granted: user {} plan {} until {}", userId, plan.getCode(), sub.getCurrentPeriodEnd());
+        return true;
+    }
+
+    /**
+     * Admin gift: adds days without a payment. Returns the saved subscription.
+     * The caller is responsible for writing the audit row.
+     */
+    @Transactional
+    public Subscription grantFreeDays(Long userId, int days) {
+        if (days <= 0) {
+            throw new BadRequestException("Days must be at least 1");
+        }
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User", userId));
+
+        Subscription sub = subscriptionRepository.findByUser(user)
+                .orElseGet(() -> Subscription.builder().user(user).build());
+
+        extend(sub, days, LocalDateTime.now());
+        if (sub.getAmountCents() == null) {
+            sub.setAmountCents(0);   // never overwrite what a real payment recorded
+        }
+        sub = subscriptionRepository.save(sub);
+
+        log.info("Free access granted: user {} +{} days, until {}", userId, days, sub.getCurrentPeriodEnd());
+        return sub;
+    }
+
+    /** Ends running access now. Returns the saved subscription. */
+    @Transactional
+    public Subscription revoke(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User", userId));
+        Subscription sub = subscriptionRepository.findByUser(user)
+                .orElseThrow(() -> new BadRequestException("This user has no active access"));
+        if (!sub.isCurrentlyActive()) {
+            throw new BadRequestException("This user has no active access");
+        }
+
+        LocalDateTime now = LocalDateTime.now();
+        sub.setStatus(SubscriptionStatus.CANCELLED);
+        sub.setCancelledAt(now);
+        sub.setCurrentPeriodEnd(now);
+        sub = subscriptionRepository.save(sub);
+
+        log.info("Access revoked: user {}", userId);
+        return sub;
+    }
+
+    // Still active: add days after the current end, so early renewals lose nothing.
+    // Expired or new: start from now.
+    private void extend(Subscription sub, int days, LocalDateTime now) {
         LocalDateTime base = now;
         if (sub.isCurrentlyActive()) {
             base = sub.getCurrentPeriodEnd();
         } else {
             sub.setCurrentPeriodStart(now);
         }
-
         sub.setStatus(SubscriptionStatus.ACTIVE);
-        sub.setCurrentPeriodEnd(base.plusDays(plan.getDurationDays()));
-        sub.setAmountCents(amountCents);
-        sub.setCurrency(currency.toUpperCase(Locale.ROOT));
+        sub.setCurrentPeriodEnd(base.plusDays(days));
         sub.setCancelledAt(null);
-        subscriptionRepository.save(sub);
-
-        notificationService.notify(userId, NotificationType.SUBSCRIPTION_ACTIVATED,
-                "Access activated",
-                plan.getName() + " is active until " + DateUtil.formatDate(sub.getCurrentPeriodEnd()),
-                "/subscription");
-
-        log.info("Access granted: user {} plan {} until {}", userId, plan.getCode(), sub.getCurrentPeriodEnd());
-        return true;
     }
 }

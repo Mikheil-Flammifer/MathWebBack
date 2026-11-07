@@ -6,7 +6,7 @@ import com.mathweb.entity.Plan;
 import com.mathweb.exception.ResourceNotFoundException;
 import com.mathweb.repository.PlanRepository;
 import com.mathweb.security.PaddleSignatureVerifier;
-import com.mathweb.service.AccessGrantService;
+import com.mathweb.service.impl.AccessGrantService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;

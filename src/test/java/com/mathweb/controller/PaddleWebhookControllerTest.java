@@ -7,7 +7,7 @@ import com.mathweb.entity.Plan;
 import com.mathweb.exception.ResourceNotFoundException;
 import com.mathweb.repository.PlanRepository;
 import com.mathweb.security.PaddleSignatureVerifier;
-import com.mathweb.service.AccessGrantService;
+import com.mathweb.service.impl.AccessGrantService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
