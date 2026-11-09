@@ -1,3 +1,4 @@
+
 name: CI
 
 on:
@@ -16,9 +17,11 @@ env:
 jobs:
   test:
     name: Build & test
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+
     permissions:
       contents: read
+
     steps:
       - uses: actions/checkout@v4
 
@@ -29,12 +32,32 @@ jobs:
           java-version: ${{ env.JAVA_VERSION }}
           cache: maven
 
-      # `verify` runs unit tests (surefire) AND *IT tests (failsafe).
-      # Testcontainers starts its own PostgreSQL; Docker is preinstalled on the runner.
+      # Check runner OS and initialize Docker for Testcontainers
+      - name: Start and verify Docker
+        run: |
+          cat /etc/os-release
+          sudo systemctl start docker
+          sudo systemctl is-active docker
+          docker version
+          docker info
+          ls -l /var/run/docker.sock
+
+      # Unit tests (Surefire) + integration tests (Failsafe)
       - name: Build and test
         run: mvn -B verify
         env:
           SPRING_PROFILES_ACTIVE: test
+
+      # Preserve reports even when tests fail
+      - name: Upload Maven test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: maven-test-reports
+          path: |
+            target/failsafe-reports/**
+            target/surefire-reports/**
+          if-no-files-found: warn
 
       - name: Upload coverage report
         if: always()
@@ -49,10 +72,12 @@ jobs:
     needs: test
     # Only on merge/push to main, never on pull requests
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+
     permissions:
       contents: read
       packages: write
+
     steps:
       - uses: actions/checkout@v4
 
@@ -86,4 +111,4 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-  # Phase 2 (when you have a VPS): a `deploy` job goes here, after `docker`.
+# Phase 2: Add deployment after configuring your VPS.
