@@ -258,6 +258,11 @@ public class ProblemServiceImpl implements ProblemService {
         List<Problem> problems = problemRepository.findByQuestIdWithCategory(questId);
 
         if (!RoleUtil.isStaff()) {
+            Quest quest = questRepository.findById(questId)
+                    .orElseThrow(() -> new ResourceNotFoundException("Quest", questId));
+            if (!Boolean.TRUE.equals(quest.getPublished())) {
+                throw new ResourceNotFoundException("Quest", questId);
+            }
             Map<Long, NodeStatus> statuses = questMapService.getStatuses(questId, userId);
             problems = problems.stream()
                     .filter(p -> statuses.get(p.getId()) != NodeStatus.LOCKED)
@@ -291,11 +296,8 @@ public class ProblemServiceImpl implements ProblemService {
                 .orElseThrow(() -> new ResourceNotFoundException("User", userId));
         Quest quest = problem.getQuest();
 
-        // Map rule: the node must be reachable (also covers quest-level prerequisites)
-        NodeStatus nodeStatus = questMapService.getStatuses(quest.getId(), userId).get(problem.getId());
-        if (nodeStatus == NodeStatus.LOCKED) {
-            throw new BadRequestException("This problem is locked. Solve a neighbouring problem on the map first.");
-        }
+        // Draft quests are hidden from students; the node must be reachable on the map
+        assertReachable(problem, userId);
 
         ProblemAttempt attempt = attemptRepository
                 .findByUserIdAndProblemId(userId, problem.getId())
@@ -673,8 +675,12 @@ public class ProblemServiceImpl implements ProblemService {
     }
 
     private void assertReachable(Problem problem, Long userId) {
+        Quest quest = problem.getQuest();
+        if (!RoleUtil.isStaff() && !Boolean.TRUE.equals(quest.getPublished())) {
+            throw new ResourceNotFoundException("Problem", problem.getId());
+        }
         NodeStatus status = questMapService
-                .getStatuses(problem.getQuest().getId(), userId).get(problem.getId());
+                .getStatuses(quest.getId(), userId).get(problem.getId());
         if (status == NodeStatus.LOCKED) {
             throw new BadRequestException("This problem is locked. Solve a neighbouring problem on the map first.");
         }

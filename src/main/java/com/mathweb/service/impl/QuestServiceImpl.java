@@ -96,6 +96,11 @@ public class QuestServiceImpl implements QuestService {
         Quest quest = questRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Quest", id));
 
+        // Drafts are invisible to students: same answer as "does not exist"
+        if (!Boolean.TRUE.equals(quest.getPublished()) && !RoleUtil.isStaff()) {
+            throw new ResourceNotFoundException("Quest", id);
+        }
+
         UserQuestProgress progress = userId != null
                 ? progressRepository.findByUserIdAndQuestId(userId, id).orElse(null)
                 : null;
