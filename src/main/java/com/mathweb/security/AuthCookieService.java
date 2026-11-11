@@ -20,7 +20,7 @@ public class AuthCookieService {
     private static final String ACCESS_PATH = "/";
     private static final String REFRESH_PATH = "/api/auth";
 
-    @Value("${app.cookies.secure:false}")
+    @Value("${app.cookies.secure:true}")
     private boolean secure;
 
     @Value("${app.cookies.same-site:Lax}")

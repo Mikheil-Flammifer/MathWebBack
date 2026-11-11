@@ -1,6 +1,7 @@
-# Environment variables - NEVER commit this
+# secrets and local config
 .env
 .env.*
+*.env
 !.env.example
 
 
@@ -18,8 +19,9 @@ target/
 *.iml
 *.ipr
 
-# Uploads folder
+# uploaded files
 uploads/
+target/test-uploads/
 
 # Logs
 *.log
