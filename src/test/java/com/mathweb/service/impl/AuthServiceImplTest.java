@@ -17,6 +17,7 @@ import com.mathweb.repository.UserRepository;
 import com.mathweb.security.JwtTokenProvider;
 import com.mathweb.security.UserPrincipal;
 import com.mathweb.service.EmailService;
+import com.mathweb.service.FileStorageService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -58,6 +59,9 @@ class AuthServiceImplTest {
 
     @Mock
     private AuthenticationManager authenticationManager;
+
+    @Mock
+    private FileStorageService fileStorageService;
 
     @Mock
     private EmailService emailService;

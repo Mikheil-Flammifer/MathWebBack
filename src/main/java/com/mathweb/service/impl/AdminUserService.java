@@ -13,6 +13,7 @@ import com.mathweb.exception.ResourceNotFoundException;
 import com.mathweb.repository.AccessGrantRepository;
 import com.mathweb.repository.UserRepository;
 import com.mathweb.service.impl.AccessGrantService;
+import com.mathweb.service.FileStorageService;
 import com.mathweb.util.PageUtil;
 import com.mathweb.util.SanitizationUtil;
 import org.slf4j.Logger;
@@ -43,13 +44,16 @@ public class AdminUserService {
     private final UserRepository userRepository;
     private final AccessGrantRepository accessGrantRepository;
     private final AccessGrantService accessGrantService;
+    private final FileStorageService fileStorageService;
 
     public AdminUserService(UserRepository userRepository,
                             AccessGrantRepository accessGrantRepository,
-                            AccessGrantService accessGrantService) {
+                            AccessGrantService accessGrantService,
+                            FileStorageService fileStorageService) {
         this.userRepository = userRepository;
         this.accessGrantRepository = accessGrantRepository;
         this.accessGrantService = accessGrantService;
+        this.fileStorageService = fileStorageService;
     }
 
     // ===== READ =====
@@ -159,7 +163,7 @@ public class AdminUserService {
                 .role(u.getRole())
                 .emailVerified(u.getEmailVerified())
                 .active(u.getActive())
-                .avatarUrl(u.getAvatarUrl())
+                .avatarUrl(fileStorageService.getFileUrl(u.getAvatarUrl()))
                 .createdAt(u.getCreatedAt())
                 .hasActiveAccess(sub != null && sub.isCurrentlyActive())
                 .subscriptionStatus(sub != null ? sub.getStatus() : null)

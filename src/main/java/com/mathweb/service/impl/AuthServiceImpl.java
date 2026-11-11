@@ -17,6 +17,7 @@ import com.mathweb.security.JwtTokenProvider;
 import com.mathweb.security.UserPrincipal;
 import com.mathweb.service.AuthService;
 import com.mathweb.service.EmailService;
+import com.mathweb.service.FileStorageService;
 import com.mathweb.util.OtpUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,6 +48,7 @@ public class AuthServiceImpl implements AuthService {
     private final EmailService emailService;
     private final TokenBlacklistService tokenBlacklistService;
     private final RateLimitService rateLimitService;
+    private final FileStorageService fileStorageService;
 
 
     @Value("${otp.expiration-minutes}")
@@ -63,7 +65,8 @@ public class AuthServiceImpl implements AuthService {
                            AuthenticationManager authenticationManager,
                            EmailService emailService,
                            TokenBlacklistService tokenBlacklistService,
-                           RateLimitService rateLimitService) {
+                           RateLimitService rateLimitService,
+                           FileStorageService fileStorageService) {
         this.userRepository = userRepository;
         this.otpCodeRepository = otpCodeRepository;
         this.refreshTokenRepository = refreshTokenRepository;
@@ -73,6 +76,7 @@ public class AuthServiceImpl implements AuthService {
         this.emailService = emailService;
         this.tokenBlacklistService = tokenBlacklistService;
         this.rateLimitService = rateLimitService;
+        this.fileStorageService = fileStorageService;
     }
 
     @Override
@@ -362,7 +366,7 @@ public class AuthServiceImpl implements AuthService {
                 .role(user.getRole())
                 .emailVerified(user.getEmailVerified())
                 .active(user.getActive())
-                .avatarUrl(user.getAvatarUrl())
+                .avatarUrl(fileStorageService.getFileUrl(user.getAvatarUrl()))
                 .hasActiveSubscription(user.hasActiveSubscription())
                 .createdAt(user.getCreatedAt())
                 .build();
