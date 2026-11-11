@@ -12,6 +12,7 @@ import com.mathweb.enums.Role;
 import com.mathweb.enums.SubscriptionStatus;
 import com.mathweb.exception.BadRequestException;
 import com.mathweb.exception.ResourceNotFoundException;
+import com.mathweb.service.FileStorageService;
 import com.mathweb.repository.AccessGrantRepository;
 import com.mathweb.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,6 +39,8 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.lenient;
 
 /** Unit tests for {@link AdminUserService}. */
 @ExtendWith(MockitoExtension.class)
@@ -49,6 +52,7 @@ class AdminUserServiceTest {
     @Mock private UserRepository userRepository;
     @Mock private AccessGrantRepository accessGrantRepository;
     @Mock private AccessGrantService accessGrantService;
+    @Mock private FileStorageService fileStorageService;
 
     @InjectMocks private AdminUserService service;
 
@@ -59,6 +63,8 @@ class AdminUserServiceTest {
         user = User.builder().firstName("Ada").lastName("Lovelace").email("ada@example.com")
                 .role(Role.STUDENT).build();
         user.setId(USER_ID);
+        lenient().when(fileStorageService.getFileUrl(any()))
+            .thenAnswer(inv -> inv.getArgument(0));
     }
 
     private Subscription activeSub() {
