@@ -19,6 +19,7 @@ import com.mathweb.service.AuthService;
 import com.mathweb.service.EmailService;
 import com.mathweb.service.FileStorageService;
 import com.mathweb.util.OtpUtil;
+import com.mathweb.util.SanitizationUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -88,9 +89,15 @@ public class AuthServiceImpl implements AuthService {
             throw new BadRequestException("Email is already registered");
         }
 
+        String firstName = SanitizationUtil.sanitizeText(request.getFirstName());
+        String lastName = SanitizationUtil.sanitizeText(request.getLastName());
+        if (firstName.length() < 2 || lastName.length() < 2) {
+            throw new BadRequestException("First and last name must be at least 2 characters");
+        }
+
         User user = User.builder()
-                .firstName(request.getFirstName())
-                .lastName(request.getLastName())
+                .firstName(firstName)
+                .lastName(lastName)
                 .email(request.getEmail().toLowerCase())
                 .passwordHash(passwordEncoder.encode(request.getPassword()))
                 .role(Role.STUDENT)

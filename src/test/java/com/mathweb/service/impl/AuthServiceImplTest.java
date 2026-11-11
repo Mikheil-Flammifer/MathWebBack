@@ -112,6 +112,26 @@ class AuthServiceImplTest {
     // --------------------------------------------------
     // REGISTER
     // --------------------------------------------------
+        
+    @Test
+    void register_cleansControlCharactersFromNames() {
+        RegisterRequest request = new RegisterRequest();
+        request.setFirstName("  Jo\u0001hn  ");
+        request.setLastName("Doe");
+        request.setEmail("john@example.com");
+        request.setPassword("password123");
+
+        when(userRepository.existsByEmail("john@example.com")).thenReturn(false);
+        when(passwordEncoder.encode("password123")).thenReturn("encoded-password");
+        when(userRepository.save(any(User.class))).thenAnswer(inv -> inv.getArgument(0));
+
+        authService.register(request);
+
+        ArgumentCaptor<User> captor = ArgumentCaptor.forClass(User.class);
+        verify(userRepository).save(captor.capture());
+        assertThat(captor.getValue().getFirstName()).isEqualTo("John");
+    }
+
 
     @Test
     void register_createsUserAndSendsVerificationOtp() {

@@ -1,9 +1,11 @@
 package com.mathweb.service.impl;
 
 import com.mathweb.service.EmailService;
+import com.mathweb.util.SanitizationUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
@@ -54,64 +56,65 @@ public class EmailServiceImpl implements EmailService {
     @Async
     @Override
     public void sendWelcomeEmail(String toEmail, String firstName) {
-        String subject = "Welcome to " + appName + "!";
-        String body = """
-                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-                    <h2 style="color: #4F46E5;">Welcome to %s, %s! 🎉</h2>
-                    <p>Your email has been verified successfully.</p>
-                    <p>You can now log in and start your math learning journey!</p>
-                    <p>To unlock all features, consider subscribing for just <strong>$2.49/month</strong>.</p>
-                    <br/>
-                    <p>Happy learning!</p>
-                    <p><strong>The %s Team</strong></p>
-                </div>
-                """.formatted(appName, firstName, appName);
-
-        sendHtmlEmail(toEmail, subject, body);
+        sendHtmlEmail(toEmail, "Welcome to " + appName + "!", welcomeBody(firstName));
     }
 
     @Async
     @Override
     public void sendSubscriptionConfirmationEmail(String toEmail, String firstName) {
-        String subject = appName + " - Subscription Activated!";
-        String body = """
-                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-                    <h2 style="color: #4F46E5;">Subscription Activated, %s! 🚀</h2>
-                    <p>Your subscription to %s has been activated successfully.</p>
-                    <p>You now have full access to all videos, quests, and problems.</p>
-                    <p>Amount: <strong>$2.49/month</strong></p>
-                    <br/>
-                    <p>Start learning today!</p>
-                    <p><strong>The %s Team</strong></p>
-                </div>
-                """.formatted(firstName, appName, appName);
-
-        sendHtmlEmail(toEmail, subject, body);
+        sendHtmlEmail(toEmail, appName + " - Access Activated!", subscriptionConfirmationBody(firstName));
     }
 
     @Async
     @Override
     public void sendSubscriptionCancelledEmail(String toEmail, String firstName) {
-        String subject = appName + " - Subscription Cancelled";
-        String body = """
+        sendHtmlEmail(toEmail, appName + " - Subscription Cancelled", subscriptionCancelledBody(firstName));
+    }
+
+    // ===== BODIES (package-private so tests can call them) =====
+
+    String welcomeBody(String firstName) {
+        return """
+                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                    <h2 style="color: #4F46E5;">Welcome to %s, %s! 🎉</h2>
+                    <p>Your email has been verified successfully.</p>
+                    <p>You can now log in and start your math learning journey!</p>
+                    <p>To unlock all videos, choose a 30-day or 90-day pass in your account.</p>
+                    <br/>
+                    <p>Happy learning!</p>
+                    <p><strong>The %s Team</strong></p>
+                </div>
+                """.formatted(appName, escape(firstName), appName);
+    }
+
+    String subscriptionConfirmationBody(String firstName) {
+        return """
+                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                    <h2 style="color: #4F46E5;">Access Activated, %s! 🚀</h2>
+                    <p>Your access to %s has been activated successfully.</p>
+                    <p>You now have full access to all videos, quests, and problems.</p>
+                    <br/>
+                    <p>Start learning today!</p>
+                    <p><strong>The %s Team</strong></p>
+                </div>
+                """.formatted(escape(firstName), appName, appName);
+    }
+
+    String subscriptionCancelledBody(String firstName) {
+        return """
                 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
                     <h2 style="color: #4F46E5;">Subscription Cancelled</h2>
                     <p>Hi %s,</p>
-                    <p>Your subscription to %s has been cancelled.</p>
-                    <p>You will continue to have access until the end of your current billing period.</p>
+                    <p>Your access to %s has been cancelled.</p>
                     <p>We hope to see you back soon!</p>
                     <br/>
                     <p><strong>The %s Team</strong></p>
                 </div>
-                """.formatted(firstName, appName, appName);
-
-        sendHtmlEmail(toEmail, subject, body);
+                """.formatted(escape(firstName), appName, appName);
     }
 
-    // ===== PRIVATE HELPERS =====
-
-    private String buildOtpEmailBody(String firstName, String otp,
-                                     String purpose, String note) {
+    String buildOtpEmailBody(String firstName, String otp,
+                             String purpose, String note) {
         return """
                 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
                     <h2 style="color: #4F46E5;">%s</h2>
@@ -126,7 +129,15 @@ public class EmailServiceImpl implements EmailService {
                     <br/>
                     <p><strong>The %s Team</strong></p>
                 </div>
-                """.formatted(appName, firstName, purpose, otp, note, appName);
+                """.formatted(appName, escape(firstName), purpose, otp, note, appName);
+    }
+
+    // ===== PRIVATE HELPERS =====
+
+    /** User text must never reach an HTML body unescaped. */
+    private static String escape(String text) {
+        String safe = SanitizationUtil.escapeHtml(text);
+        return safe == null ? "" : safe;
     }
 
     private void sendHtmlEmail(String toEmail, String subject, String body) {
@@ -139,7 +150,7 @@ public class EmailServiceImpl implements EmailService {
             helper.setText(body, true);
             mailSender.send(message);
             log.info("Email sent to: {}", toEmail);
-        } catch (MessagingException e) {
+        } catch (MessagingException | MailException e) {
             log.error("Failed to send email to {}: {}", toEmail, e.getMessage());
         }
     }
