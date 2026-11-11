@@ -12,6 +12,12 @@ import org.springframework.data.domain.Sort;
 import java.util.function.Function;
 import com.mathweb.entity.Quest;
 import com.mathweb.entity.UserQuestProgress;
+import com.mathweb.entity.AnswerOption;
+import com.mathweb.entity.Problem;
+import com.mathweb.service.FileStorageService;
+import org.springframework.transaction.support.TransactionSynchronization;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
+import java.util.ArrayList;
 import com.mathweb.enums.QuestStatus;
 import com.mathweb.enums.VideoStatus;
 import com.mathweb.exception.ResourceNotFoundException;
@@ -42,16 +48,19 @@ public class QuestServiceImpl implements QuestService {
     private final UserQuestProgressRepository progressRepository;
     private final ProblemRepository problemRepository;
     private final VideoRepository videoRepository;
+    private final FileStorageService fileStorageService;
 
     public QuestServiceImpl(QuestMapService questMapService, QuestRepository questRepository,
                             UserQuestProgressRepository progressRepository,
                             ProblemRepository problemRepository,
-                            VideoRepository videoRepository) {
+                            VideoRepository videoRepository,
+                            FileStorageService fileStorageService) {
         this.questMapService = questMapService;
         this.questRepository = questRepository;
         this.progressRepository = progressRepository;
         this.problemRepository = problemRepository;
         this.videoRepository = videoRepository;
+        this.fileStorageService = fileStorageService;
     }
 
     @Override
@@ -174,12 +183,28 @@ public class QuestServiceImpl implements QuestService {
         }
         return false;
     }
+
     @Override
     @Transactional
     public void deleteQuest(Long id) {
         Quest quest = questRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Quest", id));
-        questRepository.delete(quest);
+
+        // Collect file paths BEFORE the rows are gone
+        List<String> files = new ArrayList<>();
+        for (Problem p : quest.getProblems()) {
+            files.add(p.getQuestionImagePath());
+            files.add(p.getExplanationImagePath());
+            for (AnswerOption o : p.getAnswerOptions()) {
+                files.add(o.getOptionImagePath());
+            }
+        }
+
+        // Videos survive: they just lose their quest link
+        videoRepository.detachFromQuest(id);
+
+        questRepository.delete(quest);   // problems, attempts and progress go with it
+        deleteFilesAfterCommit(files);
         log.info("Quest deleted: {}", id);
     }
 
@@ -253,5 +278,22 @@ public class QuestServiceImpl implements QuestService {
                 .first(page.isFirst())
                 .last(page.isLast())
                 .build();
+    }
+
+    /** Removes files only if the surrounding transaction commits. */
+    private void deleteFilesAfterCommit(List<String> paths) {
+        List<String> files = paths.stream().filter(p -> p != null && !p.isBlank()).toList();
+        if (files.isEmpty()) return;
+        Runnable cleanup = () -> files.forEach(fileStorageService::deleteFile);
+        if (TransactionSynchronizationManager.isSynchronizationActive()) {
+            TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
+                @Override
+                public void afterCommit() {
+                    cleanup.run();
+                }
+            });
+        } else {
+            cleanup.run();
+        }
     }
 }

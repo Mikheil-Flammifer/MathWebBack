@@ -66,10 +66,6 @@ public class Quest extends BaseEntity {
 
     @OneToMany(mappedBy = "quest", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
-    private List<Video> videos = new ArrayList<>();
-
-    @OneToMany(mappedBy = "quest", cascade = CascadeType.ALL, orphanRemoval = true)
-    @Builder.Default
     private List<UserQuestProgress> userProgresses = new ArrayList<>();
 
     // ===== HELPERS =====

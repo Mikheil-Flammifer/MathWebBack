@@ -2,6 +2,9 @@ package com.mathweb.service.impl;
 
 import com.mathweb.entity.Quest;
 import com.mathweb.exception.ResourceNotFoundException;
+import com.mathweb.entity.AnswerOption;
+import com.mathweb.entity.Problem;
+import com.mathweb.service.FileStorageService;
 import com.mathweb.repository.ProblemRepository;
 import com.mathweb.repository.QuestRepository;
 import com.mathweb.repository.UserQuestProgressRepository;
@@ -20,6 +23,10 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
+import org.mockito.InOrder;
+import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.verify;
+
 
 @ExtendWith(MockitoExtension.class)
 class QuestServiceImplDraftTest {
@@ -29,6 +36,7 @@ class QuestServiceImplDraftTest {
     @Mock private UserQuestProgressRepository progressRepository;
     @Mock private ProblemRepository problemRepository;
     @Mock private VideoRepository videoRepository;
+    @Mock private FileStorageService fileStorageService;
 
     @InjectMocks private QuestServiceImpl service;
 
@@ -72,5 +80,26 @@ class QuestServiceImplDraftTest {
         quest(false);
 
         assertThat(service.getQuestById(5L, 1L).getPublished()).isFalse();
+    }
+ 
+    @Test
+    void deleteQuest_keepsVideos_andRemovesProblemImages() {
+        Quest q = quest(true);
+        Problem p = Problem.builder()
+                .questionImagePath("/up/images/q.png")
+                .explanationImagePath("/up/images/e.png")
+                .build();
+        p.getAnswerOptions().add(AnswerOption.builder()
+                .optionText("a").isCorrect(true).optionImagePath("/up/images/o.png").build());
+        q.getProblems().add(p);
+
+        service.deleteQuest(5L);
+
+        InOrder order = inOrder(videoRepository, questRepository);
+        order.verify(videoRepository).detachFromQuest(5L);
+        order.verify(questRepository).delete(q);
+        verify(fileStorageService).deleteFile("/up/images/q.png");
+        verify(fileStorageService).deleteFile("/up/images/e.png");
+        verify(fileStorageService).deleteFile("/up/images/o.png");
     }
 }

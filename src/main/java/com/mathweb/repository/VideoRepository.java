@@ -30,6 +30,10 @@ public interface VideoRepository extends JpaRepository<Video, Long> {
     @Query("UPDATE Video v SET v.viewCount = v.viewCount + 1 WHERE v.id = :id")
     void incrementViewCount(Long id);
 
+    @Modifying(flushAutomatically = true)
+    @Query("UPDATE Video v SET v.quest = null WHERE v.quest.id = :questId")
+    void detachFromQuest(@Param("questId") Long questId);
+
     @Query("""
        select v from Video v
        left join v.category c
