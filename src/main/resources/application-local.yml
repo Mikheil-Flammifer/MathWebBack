@@ -47,6 +47,9 @@ app:
   cookies:
     secure: false
 
+cors:
+  allowed-origins: http://localhost:3000,http://localhost:5173
+
 logging:
   level:
     com.mathweb: DEBUG

@@ -13,40 +13,34 @@ import java.util.List;
 @Configuration
 public class CorsConfig {
 
-    @Value("${app.base-url}")
-    private String baseUrl;
+    @Value("${app.cors.allowed-origins}")
+    private List<String> allowedOrigins;
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
+        // Origins have no trailing slash; clean up what a human typed in the env file.
+        List<String> origins = allowedOrigins.stream()
+                .map(String::trim)
+                .map(o -> o.endsWith("/") ? o.substring(0, o.length() - 1) : o)
+                .filter(o -> !o.isEmpty())
+                .distinct()
+                .toList();
+        if (origins.isEmpty() || origins.contains("*")) {
+            throw new IllegalStateException(
+                    "app.cors.allowed-origins must list explicit origins (credentials are enabled)");
+        }
+
         CorsConfiguration config = new CorsConfiguration();
-
-        config.setAllowedOrigins(List.of(
-                "http://localhost:3000",
-                "http://localhost:5173",
-                baseUrl
-        ));
-
-        config.setAllowedMethods(List.of(
-                "GET", "POST", "PUT",
-                "DELETE", "PATCH", "OPTIONS"
-        ));
-
+        config.setAllowedOrigins(origins);
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         config.setAllowedHeaders(List.of(
-                "Authorization",
-                "Content-Type",
-                "Accept",
-                "Origin",
-                "X-Requested-With"
-        ));
-
+                "Authorization", "Content-Type", "Accept", "Origin", "X-Requested-With"));
         config.setExposedHeaders(List.of("Authorization", "Retry-After"));
         config.setAllowCredentials(true);
         config.setMaxAge(3600L);
 
-        UrlBasedCorsConfigurationSource source =
-                new UrlBasedCorsConfigurationSource();
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
-
         return source;
     }
 

@@ -48,7 +48,8 @@ paddle:
 app:
   base-url: ${APP_BASE_URL}
   mail-from: ${MAIL_FROM}
-
+  cors:
+    allowed-origins: ${FRONTEND_URL}
   cookies:
     secure: true
 
