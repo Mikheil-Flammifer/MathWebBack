@@ -35,6 +35,10 @@ app:
   frontend-url: http://localhost:3000
   mail-from: test@test.com
 
+  cors:
+    allowed-origins: http://localhost:3000,http://localhost:5173
+
+
   cookies:
     secure: false
 
