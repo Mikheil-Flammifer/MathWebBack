@@ -85,12 +85,14 @@ class AccessGrantConcurrencyIntegrationTest extends AbstractPostgresIntegrationT
                 within(1, ChronoUnit.MILLIS));
     }
 
-    // TODO: adjust to the required fields of your User entity.
+
     private User createUser() {
         return userRepository.saveAndFlush(
                 User.builder()
                         .email("it-" + UUID.randomUUID() + "@example.test")
-                        // add the other non-null fields here
+                        .firstName("Test")
+                        .lastName("User")
+                        .passwordHash("not-used")
                         .build());
     }
 }
