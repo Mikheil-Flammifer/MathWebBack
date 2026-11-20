@@ -3,6 +3,7 @@ package com.mathweb.integration;
 import com.mathweb.entity.Plan;
 import com.mathweb.entity.Subscription;
 import com.mathweb.entity.User;
+import com.mathweb.enums.Role;
 import com.mathweb.repository.PlanRepository;
 import com.mathweb.repository.SubscriptionRepository;
 import com.mathweb.repository.UserRepository;
@@ -93,6 +94,7 @@ class AccessGrantConcurrencyIntegrationTest extends AbstractPostgresIntegrationT
                         .firstName("Test")
                         .lastName("User")
                         .passwordHash("not-used")
+                        .role(Role.STUDENT)   // use your real enum and value
                         .build());
     }
 }
