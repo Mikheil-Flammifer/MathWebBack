@@ -4,14 +4,15 @@ import com.mathweb.entity.Payment;
 import com.mathweb.entity.Plan;
 import com.mathweb.entity.Subscription;
 import com.mathweb.entity.User;
-import com.mathweb.enums.PaymentStatus;
 import com.mathweb.enums.SubscriptionStatus;
 import com.mathweb.exception.BadRequestException;
+import com.mathweb.exception.PaymentIdentityConflictException;
 import com.mathweb.exception.ResourceNotFoundException;
 import com.mathweb.repository.PaymentRepository;
 import com.mathweb.repository.PlanRepository;
 import com.mathweb.repository.SubscriptionRepository;
 import com.mathweb.repository.UserRepository;
+import com.mathweb.service.impl.AccessGrantService.GrantResult;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -22,17 +23,18 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.within;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
-import java.time.temporal.ChronoUnit;
 
 /** Unit tests for {@link AccessGrantService}. */
 @ExtendWith(MockitoExtension.class)
@@ -62,57 +64,105 @@ class AccessGrantServiceTest {
                 .currentPeriodEnd(end).amountCents(999).build();
     }
 
+    private Payment existingPayment(User owner, int amountCents, String currency) {
+        return Payment.builder()
+                .user(owner)
+                .plan(plan)
+                .provider("paddle")
+                .providerTransactionId("txn_1")
+                .amountCents(amountCents)
+                .currency(currency)
+                .build();
+    }
+
+    private void stubInsert(String txnId, int result) {
+        when(paymentRepository.insertIfAbsent(
+                eq(1L), eq(2L), eq("paddle"), eq(txnId),
+                anyInt(), any(), any(LocalDateTime.class)))
+                .thenReturn(result);
+    }
+
     @Nested
     class GrantAccess {
 
         @Test
-        void returnsFalse_andDoesNothing_whenTransactionAlreadyProcessed() {
-            when(paymentRepository.existsByProviderTransactionId("txn_1")).thenReturn(true);
+        void returnsAlreadyProcessed_whenIdenticalPaymentExists() {
+            when(userRepository.findByIdForUpdate(1L)).thenReturn(Optional.of(user));
+            when(planRepository.findById(2L)).thenReturn(Optional.of(plan));
+            stubInsert("txn_1", 0);
+            when(paymentRepository.findByProviderTransactionId("txn_1"))
+                    .thenReturn(Optional.of(existingPayment(user, 999, "USD")));
 
-            boolean granted = service.grantAccess(1L, 2L, "paddle", "txn_1", 999, "usd");
+            GrantResult result = service.grantAccess(1L, 2L, "paddle", "txn_1", 999, "usd");
 
-            assertThat(granted).isFalse();
-            verify(paymentRepository, never()).saveAndFlush(any());
+            assertThat(result).isEqualTo(GrantResult.ALREADY_PROCESSED);
+            verify(subscriptionRepository, never()).save(any());
+        }
+
+        @Test
+        void throwsIdentityConflict_whenExistingPaymentHasDifferentAmount() {
+            when(userRepository.findByIdForUpdate(1L)).thenReturn(Optional.of(user));
+            when(planRepository.findById(2L)).thenReturn(Optional.of(plan));
+            stubInsert("txn_1", 0);
+            when(paymentRepository.findByProviderTransactionId("txn_1"))
+                    .thenReturn(Optional.of(existingPayment(user, 500, "USD")));
+
+            assertThatThrownBy(() -> service.grantAccess(1L, 2L, "paddle", "txn_1", 999, "usd"))
+                    .isInstanceOf(PaymentIdentityConflictException.class);
+            verify(subscriptionRepository, never()).save(any());
+        }
+
+        @Test
+        void throwsIdentityConflict_whenExistingPaymentBelongsToDifferentUser() {
+            User other = User.builder().email("other@example.com").build();
+            other.setId(99L);
+
+            when(userRepository.findByIdForUpdate(1L)).thenReturn(Optional.of(user));
+            when(planRepository.findById(2L)).thenReturn(Optional.of(plan));
+            stubInsert("txn_1", 0);
+            when(paymentRepository.findByProviderTransactionId("txn_1"))
+                    .thenReturn(Optional.of(existingPayment(other, 999, "USD")));
+
+            assertThatThrownBy(() -> service.grantAccess(1L, 2L, "paddle", "txn_1", 999, "usd"))
+                    .isInstanceOf(PaymentIdentityConflictException.class);
             verify(subscriptionRepository, never()).save(any());
         }
 
         @Test
         void throwsNotFound_whenUserMissing() {
-            when(paymentRepository.existsByProviderTransactionId("txn_1")).thenReturn(false);
-            when(userRepository.findById(1L)).thenReturn(Optional.empty());
+            when(userRepository.findByIdForUpdate(1L)).thenReturn(Optional.empty());
 
             assertThatThrownBy(() -> service.grantAccess(1L, 2L, "paddle", "txn_1", 999, "usd"))
                     .isInstanceOf(ResourceNotFoundException.class);
+            verify(paymentRepository, never())
+                    .insertIfAbsent(any(), any(), any(), any(), anyInt(), any(), any());
         }
 
         @Test
         void throwsNotFound_whenPlanMissing() {
-            when(paymentRepository.existsByProviderTransactionId("txn_1")).thenReturn(false);
-            when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+            when(userRepository.findByIdForUpdate(1L)).thenReturn(Optional.of(user));
             when(planRepository.findById(2L)).thenReturn(Optional.empty());
 
             assertThatThrownBy(() -> service.grantAccess(1L, 2L, "paddle", "txn_1", 999, "usd"))
                     .isInstanceOf(ResourceNotFoundException.class);
-            verify(paymentRepository, never()).saveAndFlush(any());
+            verify(paymentRepository, never())
+                    .insertIfAbsent(any(), any(), any(), any(), anyInt(), any(), any());
         }
 
         @Test
-        void savesCompletedPayment_withUppercasedCurrency_andCreatesSubscription() {
-            when(paymentRepository.existsByProviderTransactionId("txn_1")).thenReturn(false);
-            when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        void insertsPayment_withUppercasedCurrency_andCreatesSubscription() {
+            when(userRepository.findByIdForUpdate(1L)).thenReturn(Optional.of(user));
             when(planRepository.findById(2L)).thenReturn(Optional.of(plan));
+            stubInsert("txn_1", 1);
             when(subscriptionRepository.findByUser(user)).thenReturn(Optional.empty());
 
-            boolean granted = service.grantAccess(1L, 2L, "paddle", "txn_1", 999, "usd");
+            GrantResult result = service.grantAccess(1L, 2L, "paddle", "txn_1", 999, "usd");
 
-            assertThat(granted).isTrue();
+            assertThat(result).isEqualTo(GrantResult.GRANTED);
 
-            ArgumentCaptor<Payment> payment = ArgumentCaptor.forClass(Payment.class);
-            verify(paymentRepository).saveAndFlush(payment.capture());
-            assertThat(payment.getValue().getStatus()).isEqualTo(PaymentStatus.COMPLETED);
-            assertThat(payment.getValue().getCurrency()).isEqualTo("USD");
-            assertThat(payment.getValue().getProviderTransactionId()).isEqualTo("txn_1");
-            assertThat(payment.getValue().getAmountCents()).isEqualTo(999);
+            verify(paymentRepository).insertIfAbsent(
+                    eq(1L), eq(2L), eq("paddle"), eq("txn_1"),
+                    eq(999), eq("USD"), any(LocalDateTime.class));
 
             ArgumentCaptor<Subscription> sub = ArgumentCaptor.forClass(Subscription.class);
             verify(subscriptionRepository).save(sub.capture());
@@ -127,9 +177,9 @@ class AccessGrantServiceTest {
         void extendsFromCurrentEnd_whenSubscriptionStillActive() {
             LocalDateTime end = LocalDateTime.now().plusDays(10);
             Subscription existing = activeSub(end);
-            when(paymentRepository.existsByProviderTransactionId("txn_2")).thenReturn(false);
-            when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+            when(userRepository.findByIdForUpdate(1L)).thenReturn(Optional.of(user));
             when(planRepository.findById(2L)).thenReturn(Optional.of(plan));
+            stubInsert("txn_2", 1);
             when(subscriptionRepository.findByUser(user)).thenReturn(Optional.of(existing));
 
             service.grantAccess(1L, 2L, "paddle", "txn_2", 999, "eur");
@@ -140,9 +190,9 @@ class AccessGrantServiceTest {
         @Test
         void restartsFromNow_whenSubscriptionExpired() {
             Subscription expired = activeSub(LocalDateTime.now().minusDays(3));
-            when(paymentRepository.existsByProviderTransactionId("txn_3")).thenReturn(false);
-            when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+            when(userRepository.findByIdForUpdate(1L)).thenReturn(Optional.of(user));
             when(planRepository.findById(2L)).thenReturn(Optional.of(plan));
+            stubInsert("txn_3", 1);
             when(subscriptionRepository.findByUser(user)).thenReturn(Optional.of(expired));
 
             service.grantAccess(1L, 2L, "paddle", "txn_3", 999, "usd");
@@ -168,7 +218,7 @@ class AccessGrantServiceTest {
 
         @Test
         void throwsNotFound_whenUserMissing() {
-            when(userRepository.findById(1L)).thenReturn(Optional.empty());
+            when(userRepository.findByIdForUpdate(1L)).thenReturn(Optional.empty());
 
             assertThatThrownBy(() -> service.grantFreeDays(1L, 7))
                     .isInstanceOf(ResourceNotFoundException.class);
@@ -176,7 +226,7 @@ class AccessGrantServiceTest {
 
         @Test
         void createsSubscription_withZeroAmount_forNewUser() {
-            when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+            when(userRepository.findByIdForUpdate(1L)).thenReturn(Optional.of(user));
             when(subscriptionRepository.findByUser(user)).thenReturn(Optional.empty());
             when(subscriptionRepository.save(any(Subscription.class))).thenAnswer(i -> i.getArgument(0));
 
@@ -192,7 +242,7 @@ class AccessGrantServiceTest {
         void keepsRecordedAmount_andExtendsActiveSubscription() {
             LocalDateTime end = LocalDateTime.now().plusDays(5);
             Subscription existing = activeSub(end);
-            when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+            when(userRepository.findByIdForUpdate(1L)).thenReturn(Optional.of(user));
             when(subscriptionRepository.findByUser(user)).thenReturn(Optional.of(existing));
             when(subscriptionRepository.save(any(Subscription.class))).thenAnswer(i -> i.getArgument(0));
 
@@ -208,7 +258,7 @@ class AccessGrantServiceTest {
 
         @Test
         void throwsNotFound_whenUserMissing() {
-            when(userRepository.findById(1L)).thenReturn(Optional.empty());
+            when(userRepository.findByIdForUpdate(1L)).thenReturn(Optional.empty());
 
             assertThatThrownBy(() -> service.revoke(1L))
                     .isInstanceOf(ResourceNotFoundException.class);
@@ -216,7 +266,7 @@ class AccessGrantServiceTest {
 
         @Test
         void throwsBadRequest_whenNoSubscription() {
-            when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+            when(userRepository.findByIdForUpdate(1L)).thenReturn(Optional.of(user));
             when(subscriptionRepository.findByUser(user)).thenReturn(Optional.empty());
 
             assertThatThrownBy(() -> service.revoke(1L))
@@ -227,7 +277,7 @@ class AccessGrantServiceTest {
         @Test
         void throwsBadRequest_whenSubscriptionNotActive() {
             Subscription expired = activeSub(LocalDateTime.now().minusDays(1));
-            when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+            when(userRepository.findByIdForUpdate(1L)).thenReturn(Optional.of(user));
             when(subscriptionRepository.findByUser(user)).thenReturn(Optional.of(expired));
 
             assertThatThrownBy(() -> service.revoke(1L))
@@ -239,7 +289,7 @@ class AccessGrantServiceTest {
         @Test
         void cancelsActiveSubscription_andEndsItNow() {
             Subscription active = activeSub(LocalDateTime.now().plusDays(20));
-            when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+            when(userRepository.findByIdForUpdate(1L)).thenReturn(Optional.of(user));
             when(subscriptionRepository.findByUser(user)).thenReturn(Optional.of(active));
             when(subscriptionRepository.save(any(Subscription.class))).thenAnswer(i -> i.getArgument(0));
 

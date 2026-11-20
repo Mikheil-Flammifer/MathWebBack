@@ -91,4 +91,5 @@ public class User extends BaseEntity {
     public int hashCode() {
         return Hibernate.getClass(this).hashCode();
     }
+
 }

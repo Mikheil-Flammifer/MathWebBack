@@ -55,6 +55,12 @@ public class PaddleCheckoutOrder {
     @Column(name = "failure_reason")
     private String failureReason;
 
+    @Column(name = "actual_subtotal_cents")
+    private Long actualSubtotalCents;
+
+    @Column(name = "actual_total_cents")
+    private Long actualTotalCents;
+
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;
 

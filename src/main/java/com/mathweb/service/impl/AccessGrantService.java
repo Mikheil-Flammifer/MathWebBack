@@ -4,9 +4,9 @@ import com.mathweb.entity.Payment;
 import com.mathweb.entity.Plan;
 import com.mathweb.entity.Subscription;
 import com.mathweb.entity.User;
-import com.mathweb.enums.PaymentStatus;
 import com.mathweb.enums.SubscriptionStatus;
 import com.mathweb.exception.BadRequestException;
+import com.mathweb.exception.PaymentIdentityConflictException;
 import com.mathweb.exception.ResourceNotFoundException;
 import com.mathweb.repository.PaymentRepository;
 import com.mathweb.repository.PlanRepository;
@@ -22,6 +22,8 @@ import java.util.Locale;
 
 @Service
 public class AccessGrantService {
+
+    public enum GrantResult { GRANTED, ALREADY_PROCESSED }
 
     private static final Logger log = LoggerFactory.getLogger(AccessGrantService.class);
 
@@ -42,48 +44,61 @@ public class AccessGrantService {
 
     /**
      * Records a verified payment and extends the user's access.
-     * Call this ONLY after the provider's signature and payment status were verified.
+     * Call this ONLY after the payment was validated against its checkout order.
      *
-     * @return true if access was granted, false if this transaction was already processed
+     * @return GRANTED, or ALREADY_PROCESSED if an identical payment exists
+     * @throws PaymentIdentityConflictException if the transaction ID exists
+     *         with different provider, user, plan, currency or amount
      */
     @Transactional
-    public boolean grantAccess(Long userId, Long planId, String provider,
-                               String transactionId, int amountCents, String currency) {
+    public GrantResult grantAccess(Long userId, Long planId, String provider,
+                                   String transactionId, int amountCents, String currency) {
 
-        if (paymentRepository.existsByProviderTransactionId(transactionId)) {
-            log.info("Payment {} already processed, ignoring", transactionId);
-            return false;
-        }
+        String cur = currency.toUpperCase(Locale.ROOT);
 
-        User user = userRepository.findById(userId)
+        // Serializes all access changes for this user, even if no subscription row exists yet.
+        User user = userRepository.findByIdForUpdate(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User", userId));
         Plan plan = planRepository.findById(planId)
                 .orElseThrow(() -> new ResourceNotFoundException("Plan", planId));
 
         LocalDateTime now = LocalDateTime.now();
 
-        // Unique constraint on provider_transaction_id is the final guard against double processing
-        paymentRepository.saveAndFlush(Payment.builder()
-                .user(user)
-                .plan(plan)
-                .provider(provider)
-                .providerTransactionId(transactionId)
-                .amountCents(amountCents)
-                .currency(currency.toUpperCase(Locale.ROOT))
-                .status(PaymentStatus.COMPLETED)
-                .paidAt(now)
-                .build());
+        int inserted = paymentRepository.insertIfAbsent(
+                userId, planId, provider, transactionId, amountCents, cur, now);
+
+        if (inserted == 0) {
+            Payment existing = paymentRepository.findByProviderTransactionId(transactionId)
+                    .orElseThrow(() -> new IllegalStateException(
+                            "Payment vanished after conflict: " + transactionId));
+
+            boolean same = existing.getProvider().equals(provider)
+                    && existing.getUser().getId().equals(userId)
+                    && existing.getPlan().getId().equals(planId)
+                    && existing.getCurrency().equalsIgnoreCase(cur)
+                    && existing.getAmountCents() == amountCents;
+
+            if (!same) {
+                throw new PaymentIdentityConflictException(
+                        "Transaction " + transactionId
+                                + " already exists with different details");
+            }
+
+            log.info("Payment {} already processed, ignoring", transactionId);
+            return GrantResult.ALREADY_PROCESSED;
+        }
 
         Subscription sub = subscriptionRepository.findByUser(user)
                 .orElseGet(() -> Subscription.builder().user(user).build());
 
         extend(sub, plan.getDurationDays(), now);
         sub.setAmountCents(amountCents);
-        sub.setCurrency(currency.toUpperCase(Locale.ROOT));
+        sub.setCurrency(cur);
         subscriptionRepository.save(sub);
 
-        log.info("Access granted: user {} plan {} until {}", userId, plan.getCode(), sub.getCurrentPeriodEnd());
-        return true;
+        log.info("Access granted: user {} plan {} until {}",
+                userId, plan.getCode(), sub.getCurrentPeriodEnd());
+        return GrantResult.GRANTED;
     }
 
     /**
@@ -95,7 +110,7 @@ public class AccessGrantService {
         if (days <= 0) {
             throw new BadRequestException("Days must be at least 1");
         }
-        User user = userRepository.findById(userId)
+        User user = userRepository.findByIdForUpdate(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User", userId));
 
         Subscription sub = subscriptionRepository.findByUser(user)
@@ -107,14 +122,15 @@ public class AccessGrantService {
         }
         sub = subscriptionRepository.save(sub);
 
-        log.info("Free access granted: user {} +{} days, until {}", userId, days, sub.getCurrentPeriodEnd());
+        log.info("Free access granted: user {} +{} days, until {}",
+                userId, days, sub.getCurrentPeriodEnd());
         return sub;
     }
 
     /** Ends running access now. Returns the saved subscription. */
     @Transactional
     public Subscription revoke(Long userId) {
-        User user = userRepository.findById(userId)
+        User user = userRepository.findByIdForUpdate(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User", userId));
         Subscription sub = subscriptionRepository.findByUser(user)
                 .orElseThrow(() -> new BadRequestException("This user has no active access"));

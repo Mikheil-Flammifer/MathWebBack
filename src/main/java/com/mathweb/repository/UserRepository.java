@@ -2,7 +2,9 @@ package com.mathweb.repository;
 
 import com.mathweb.entity.User;
 import com.mathweb.enums.Role;
+import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.domain.Page;
@@ -32,6 +34,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("SELECT u.id FROM User u WHERE u.role = :role AND u.active = true AND u.emailVerified = true")
     List<Long> findActiveVerifiedIdsByRole(@Param("role") Role role);
+
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query("select u from User u where u.id = :id")
+    Optional<User> findByIdForUpdate(@Param("id") Long id);
 
     @Query(value = """
            select u from User u

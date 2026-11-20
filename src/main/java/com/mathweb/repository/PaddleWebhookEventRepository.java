@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.Instant;
+import java.util.List;
 
 @Repository
 public interface PaddleWebhookEventRepository
@@ -48,4 +49,26 @@ public interface PaddleWebhookEventRepository
             @Param("occurredAt") Instant occurredAt,
             @Param("payload") String payload
     );
+
+    @Query(value = """
+        UPDATE paddle_webhook_events
+           SET status = 'PROCESSING',
+               processing_owner = :owner,
+               processing_started_at = NOW(),
+               processing_lease_until = NOW() + (:leaseSeconds * INTERVAL '1 second'),
+               attempt_count = attempt_count + 1,
+               updated_at = NOW()
+         WHERE id IN (
+               SELECT id FROM paddle_webhook_events
+                WHERE (status IN ('RECEIVED', 'RETRY') AND next_attempt_at <= NOW())
+                   OR (status = 'PROCESSING' AND processing_lease_until < NOW())
+                ORDER BY occurred_at
+                LIMIT :batchSize
+                FOR UPDATE SKIP LOCKED
+         )
+        RETURNING id
+        """, nativeQuery = true)
+    List<Long> claimBatch(@Param("owner") String owner,
+                          @Param("leaseSeconds") int leaseSeconds,
+                          @Param("batchSize") int batchSize);
 }
