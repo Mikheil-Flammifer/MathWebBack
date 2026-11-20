@@ -44,6 +44,10 @@ file:
 
 paddle:
   webhook-secret: ${PADDLE_WEBHOOK_SECRET}
+  api-key: ${PADDLE_API_KEY}
+  api-base-url: ${PADDLE_API_BASE_URL:https://api.paddle.com}
+  checkout-url: ${PADDLE_CHECKOUT_URL}
+  checkout-order-ttl: ${PADDLE_CHECKOUT_ORDER_TTL:PT24H}
 
 app:
   base-url: ${APP_BASE_URL}

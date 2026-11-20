@@ -12,5 +12,9 @@ public interface PlanRepository extends JpaRepository<Plan, Long> {
 
     List<Plan> findByActiveTrueOrderByDurationDaysAsc();
 
-    Optional<Plan> findByPaddlePriceIdAndActiveTrue(String paddlePriceId);
+    Optional<Plan> findByPaddlePriceIdAndActiveTrue(
+            String paddlePriceId
+    );
+
+    Optional<Plan> findByCodeAndActiveTrue(String code);
 }

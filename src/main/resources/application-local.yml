@@ -39,6 +39,13 @@ file:
     videos-path: ${FILE_UPLOAD_PATH:./uploads}/videos
     images-path: ${FILE_UPLOAD_PATH:./uploads}/images
 
+paddle:
+  webhook-secret: ${PADDLE_WEBHOOK_SECRET:}
+  api-key: ${PADDLE_API_KEY}
+  api-base-url: ${PADDLE_API_BASE_URL:https://sandbox-api.paddle.com}
+  checkout-url: ${PADDLE_CHECKOUT_URL}
+  checkout-order-ttl: ${PADDLE_CHECKOUT_ORDER_TTL:PT24H}
+
 app:
   base-url: ${APP_BASE_URL}
   frontend-url: ${FRONTEND_URL}

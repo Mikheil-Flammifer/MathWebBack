@@ -30,6 +30,14 @@ file:
     videos-path: ./target/test-uploads/videos
     images-path: ./target/test-uploads/images
 
+
+paddle:
+  webhook-secret: test-webhook-secret
+  api-key: pdl_sdbx_apikey_test
+  api-base-url: https://sandbox-api.paddle.com
+  checkout-url: https://example.test/checkout
+  checkout-order-ttl: PT24H
+
 app:
   base-url: http://localhost:8080
   frontend-url: http://localhost:3000
