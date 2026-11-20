@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1.7
-ARG JAVA_VERSION=23
+ARG JAVA_VERSION=21
 
 # ---------- Stage 1: build ----------
 FROM maven:3.9-eclipse-temurin-${JAVA_VERSION} AS build

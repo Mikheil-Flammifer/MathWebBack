@@ -19,9 +19,11 @@
     <description>Math learning platform with videos, quizzes and subscriptions</description>
 
     <properties>
-        <java.version>23</java.version>
+        <java.version>21</java.version>
         <jjwt.version>0.12.5</jjwt.version>
         <mapstruct.version>1.5.5.Final</mapstruct.version>
+
+        <postgresql.version>42.7.12</postgresql.version>
     </properties>
 
     <dependencies>
