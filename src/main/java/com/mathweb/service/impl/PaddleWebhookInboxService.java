@@ -49,4 +49,12 @@ public class PaddleWebhookInboxService {
         log.info("Stored Paddle event {} of type {}", eventId, eventType);
         return true;
     }
+
+    /** @return true when inserted, false when the event already existed */
+    @Transactional
+    public boolean storeReconciled(String eventId, String eventType,
+                                   Instant occurredAt, String rawPayload) {
+        return eventRepository.insertReconciledIfAbsent(
+                eventId, eventType, occurredAt, rawPayload) == 1;
+    }
 }

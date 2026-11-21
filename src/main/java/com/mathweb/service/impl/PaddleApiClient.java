@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestClientResponseException;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import java.util.List;
 import java.util.Map;
@@ -188,5 +189,32 @@ public class PaddleApiClient {
             String transactionId,
             String checkoutUrl
     ) {
+    }
+
+    /** One page of events, newest first. {@code after} is the last event ID of the previous page. */
+    public JsonNode listEvents(String after, int perPage) {
+        try {
+            JsonNode body = (after == null || after.isBlank())
+                    ? restClient.get()
+                    .uri("/events?order_by={o}&per_page={p}", "id[DESC]", perPage)
+                    .retrieve().body(JsonNode.class)
+                    : restClient.get()
+                    .uri("/events?order_by={o}&per_page={p}&after={a}",
+                            "id[DESC]", perPage, after)
+                    .retrieve().body(JsonNode.class);
+
+            if (body == null || !body.path("data").isArray()) {
+                throw new PaymentProviderException("Paddle returned an invalid events response");
+            }
+            return body;
+        } catch (RestClientResponseException exception) {
+            log.error("Paddle rejected events request: status={}", exception.getStatusCode());
+            throw new PaymentProviderException(
+                    "The payment provider could not list events", exception);
+        } catch (RestClientException exception) {
+            log.error("Paddle events request failed", exception);
+            throw new PaymentProviderException(
+                    "The payment provider is temporarily unavailable", exception);
+        }
     }
 }

@@ -65,7 +65,10 @@ public class PaddleTransactionValidator {
 
         // Line items (source of truth for money)
         JsonNode details = data.get("details");
-        JsonNode lineItems = details == null ? null : details.get("line_items");
+        if (details == null || !details.isObject()) {
+            return Result.reject("Missing transaction details");
+        }
+        JsonNode lineItems = details.get("line_items");
         if (lineItems == null || !lineItems.isArray() || lineItems.size() != 1) {
             return Result.reject("Expected exactly one line item");
         }
@@ -96,20 +99,25 @@ public class PaddleTransactionValidator {
         }
 
         // Amounts (Paddle sends minor units as strings)
-        JsonNode lineTotals = line.get("totals");
-        JsonNode txnTotals = details.get("totals");
-        Long lineSubtotal = amount(lineTotals, "subtotal");
-        Long lineDiscount = amount(lineTotals, "discount");
-        Long txnDiscount = amount(txnTotals, "discount");
-        Long actualTotal = amount(txnTotals, "grand_total");
+        Long lineSubtotalBoxed = amount(line.get("totals"), "subtotal");
+        Long lineDiscountBoxed = amount(line.get("totals"), "discount");
+        Long txnDiscountBoxed = amount(details.get("totals"), "discount");
+        Long actualTotalBoxed = amount(details.get("totals"), "grand_total");
 
-        if (lineSubtotal == null || lineDiscount == null
-                || txnDiscount == null || actualTotal == null) {
+        if (lineSubtotalBoxed == null || lineDiscountBoxed == null
+                || txnDiscountBoxed == null || actualTotalBoxed == null) {
             return Result.reject("Missing or invalid totals");
         }
 
+        // Primitives from here on: never compare boxed Long values with == or !=.
+        long lineSubtotal = lineSubtotalBoxed;
+        long lineDiscount = lineDiscountBoxed;
+        long txnDiscount = txnDiscountBoxed;
+        long actualTotal = actualTotalBoxed;
+        long expectedSubtotal = order.getExpectedSubtotalCents();
+
         // Compare subtotal (tax-exclusive) to the expected price, never grand_total
-        if (lineSubtotal != order.getExpectedSubtotalCents()
+        if (lineSubtotal != expectedSubtotal
                 || lineSubtotal != plan.getPriceCents()) {
             return Result.reject("Subtotal mismatch");
         }

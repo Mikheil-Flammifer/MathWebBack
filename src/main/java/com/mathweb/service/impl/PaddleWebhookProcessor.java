@@ -5,11 +5,12 @@ import com.mathweb.entity.PaddleCheckoutOrder;
 import com.mathweb.entity.PaddleWebhookEvent;
 import com.mathweb.enums.PaddleCheckoutOrderStatus;
 import com.mathweb.enums.PaddleWebhookEventStatus;
+import com.mathweb.exception.PaymentIdentityConflictException;
 import com.mathweb.repository.PaddleCheckoutOrderRepository;
 import com.mathweb.repository.PaddleWebhookEventRepository;
-import com.mathweb.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -20,6 +21,16 @@ import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
+
+/**
+ * Processes Paddle webhook events stored in the inbox.
+ *
+ * ACCESS POLICY: access is sold as a one-time pass with no renewal.
+ * Paid access is never revoked automatically. Refunds, credits and
+ * chargebacks (adjustment.* events) do NOT end access; it runs until it
+ * expires. Such events are kept in the inbox as IGNORED, with a note, for
+ * manual bookkeeping. To change this policy, handle adjustment.* here.
+ */
 @Component
 public class PaddleWebhookProcessor {
 
@@ -36,32 +47,46 @@ public class PaddleWebhookProcessor {
             Duration.ofHours(2)
     };
 
-    private final String owner = "paddle-processor-" + UUID.randomUUID();
+    private final String owner;
 
     private final PaddleWebhookEventRepository eventRepository;
     private final PaddleCheckoutOrderRepository orderRepository;
-    private final UserRepository userRepository;
     private final PaddleTransactionValidator validator;
     private final AccessGrantService accessGrantService;
     private final TransactionTemplate tx;
 
+    @Autowired
     public PaddleWebhookProcessor(
             PaddleWebhookEventRepository eventRepository,
             PaddleCheckoutOrderRepository orderRepository,
-            UserRepository userRepository,
             PaddleTransactionValidator validator,
             AccessGrantService accessGrantService,
             PlatformTransactionManager transactionManager
     ) {
+        this(eventRepository, orderRepository, validator, accessGrantService,
+                transactionManager, "paddle-processor-" + UUID.randomUUID());
+    }
+
+    // Package-private so tests can pick a known owner.
+    PaddleWebhookProcessor(
+            PaddleWebhookEventRepository eventRepository,
+            PaddleCheckoutOrderRepository orderRepository,
+            PaddleTransactionValidator validator,
+            AccessGrantService accessGrantService,
+            PlatformTransactionManager transactionManager,
+            String owner
+    ) {
         this.eventRepository = eventRepository;
         this.orderRepository = orderRepository;
-        this.userRepository = userRepository;
         this.validator = validator;
         this.accessGrantService = accessGrantService;
         this.tx = new TransactionTemplate(transactionManager);
+        this.owner = owner;
     }
 
-    @Scheduled(fixedDelayString = "${paddle.processor.poll-ms:5000}")
+    @Scheduled(
+            initialDelayString = "${paddle.processor.initial-delay-ms:5000}",
+            fixedDelayString = "${paddle.processor.poll-ms:5000}")
     public void poll() {
         List<Long> ids = tx.execute(status ->
                 eventRepository.claimBatch(
@@ -78,6 +103,10 @@ public class PaddleWebhookProcessor {
     private void processOne(Long eventId) {
         try {
             tx.executeWithoutResult(status -> handle(eventId));
+        } catch (PaymentIdentityConflictException exception) {
+            log.error("SECURITY ALERT: payment identity conflict for event row {}",
+                    eventId, exception);
+            deadLetter(eventId, exception.getMessage());
         } catch (RuntimeException exception) {
             log.error("Paddle event row {} failed", eventId, exception);
             recordFailure(eventId, exception);
@@ -94,9 +123,19 @@ public class PaddleWebhookProcessor {
             return;
         }
 
-        if (!"transaction.completed".equals(event.getEventType())) {
+        String type = event.getEventType();
+
+        if (type.startsWith("adjustment.")) {
+            log.warn("Paddle adjustment event {} ({}) recorded; access not revoked by policy",
+                    event.getEventId(), type);
             finish(event, PaddleWebhookEventStatus.IGNORED,
-                    "Event type not handled: " + event.getEventType());
+                    "Adjustment recorded, access not revoked by policy");
+            return;
+        }
+
+        if (!"transaction.completed".equals(type)) {
+            finish(event, PaddleWebhookEventStatus.IGNORED,
+                    "Event type not handled: " + type);
             return;
         }
 
@@ -127,20 +166,16 @@ public class PaddleWebhookProcessor {
 
         if (!result.valid()) {
             // Money may have been taken, so keep the order untouched for manual review.
-            log.error("Paddle transaction {} rejected: {}",
+            log.error("SECURITY ALERT: Paddle transaction {} rejected: {}",
                     txnId, result.reason());
             finish(event, PaddleWebhookEventStatus.DEAD_LETTER,
                     result.reason());
             return;
         }
 
-        Long userId = order.getUser().getId();
-        userRepository.findByIdForUpdate(userId)
-                .orElseThrow(() -> new IllegalStateException(
-                        "User missing for order " + order.getId()));
-
+        // grantAccess locks the user itself.
         accessGrantService.grantAccess(
-                userId,
+                order.getUser().getId(),
                 order.getPlan().getId(),
                 "PADDLE",
                 txnId,
@@ -156,6 +191,17 @@ public class PaddleWebhookProcessor {
         orderRepository.save(order);
 
         finish(event, PaddleWebhookEventStatus.PROCESSED, null);
+    }
+
+    private void deadLetter(Long eventId, String error) {
+        try {
+            tx.executeWithoutResult(status -> eventRepository.findById(eventId)
+                    .filter(this::ownsLease)
+                    .ifPresent(e -> finish(e,
+                            PaddleWebhookEventStatus.DEAD_LETTER, error)));
+        } catch (RuntimeException failure) {
+            log.error("Could not dead-letter event {}", eventId, failure);
+        }
     }
 
     private void recordFailure(Long eventId, RuntimeException exception) {
