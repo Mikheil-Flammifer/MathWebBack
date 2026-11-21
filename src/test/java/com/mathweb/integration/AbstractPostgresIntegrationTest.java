@@ -22,5 +22,11 @@ public abstract class AbstractPostgresIntegrationTest {
         registry.add("spring.datasource.username", POSTGRES::getUsername);
         registry.add("spring.datasource.password", POSTGRES::getPassword);
         registry.add("spring.flyway.enabled", () -> "true");
+
+        // No context may run the background processor against the shared database
+        // while tests are asserting on inbox rows.
+        registry.add("paddle.processor.poll-ms", () -> "3600000");
+        registry.add("paddle.reconciliation.initial-delay-ms", () -> "3600000");
+        registry.add("paddle.reconciliation.poll-ms", () -> "3600000");
     }
 }
