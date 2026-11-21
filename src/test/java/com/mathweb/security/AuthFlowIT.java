@@ -8,6 +8,7 @@ import com.mathweb.repository.OtpCodeRepository;
 import com.mathweb.repository.RefreshTokenRepository;
 import com.mathweb.repository.UserRepository;
 import com.mathweb.support.AbstractIntegrationTest;
+import com.mathweb.util.TokenHashUtil;
 import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -342,8 +343,16 @@ class AuthFlowIT extends AbstractIntegrationTest {
             String second = cookie(login(email, PASSWORD), AuthCookieService.REFRESH).getValue();
 
             assertThat(second).isNotEqualTo(first);
-            assertThat(refreshTokenRepository.findByToken(first)).isEmpty();
-            assertThat(refreshTokenRepository.findByToken(second)).isPresent();
+            RefreshToken firstStored = refreshTokenRepository.findByToken(
+                    TokenHashUtil.sha256(first)
+            ).orElseThrow();
+
+            RefreshToken secondStored = refreshTokenRepository.findByToken(
+                    TokenHashUtil.sha256(second)
+            ).orElseThrow();
+
+            assertThat(firstStored.getRevoked()).isTrue();
+            assertThat(secondStored.isValid()).isTrue();
         }
 
         @Test
@@ -419,8 +428,15 @@ class AuthFlowIT extends AbstractIntegrationTest {
             assertThat(newRefresh.getValue()).isNotEqualTo(oldRefresh.getValue());
             assertThat(newAccess.getValue()).isNotEqualTo(oldAccess.getValue());
 
-            assertThat(refreshTokenRepository.findByToken(oldRefresh.getValue())).isEmpty();
-            RefreshToken stored = refreshTokenRepository.findByToken(newRefresh.getValue()).orElseThrow();
+            RefreshToken oldStored = refreshTokenRepository.findByToken(
+                    TokenHashUtil.sha256(oldRefresh.getValue())
+            ).orElseThrow();
+
+            RefreshToken stored = refreshTokenRepository.findByToken(
+                    TokenHashUtil.sha256(newRefresh.getValue())
+            ).orElseThrow();
+
+            assertThat(oldStored.getRevoked()).isTrue();
             assertThat(stored.isValid()).isTrue();
 
             assertNot401(probe(newAccess));
@@ -467,7 +483,8 @@ class AuthFlowIT extends AbstractIntegrationTest {
                     .andExpect(status().isForbidden());
 
             RefreshToken stored = refreshTokenRepository.findByUser(user).orElseThrow();
-            assertThat(stored.getToken()).isEqualTo(refresh.getValue());
+            assertThat(stored.getToken())
+                    .isEqualTo(TokenHashUtil.sha256(refresh.getValue()));
             assertThat(stored.isValid()).isTrue();
         }
 
@@ -602,8 +619,9 @@ class AuthFlowIT extends AbstractIntegrationTest {
             assertThat(login(email, NEW_PASSWORD).getResponse().getStatus()).isEqualTo(200);
 
             // The refresh token from before the reset was revoked
-            assertThat(refreshTokenRepository.findByToken(oldRefresh.getValue())
-                    .map(RefreshToken::isValid).orElse(false)).isFalse();
+            assertThat(refreshTokenRepository.findByToken(
+                    TokenHashUtil.sha256(oldRefresh.getValue())
+            ).map(RefreshToken::isValid).orElse(false)).isFalse();
         }
 
         @Test
