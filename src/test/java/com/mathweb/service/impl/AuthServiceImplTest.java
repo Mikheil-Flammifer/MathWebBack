@@ -30,10 +30,13 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.util.ReflectionTestUtils;
+import com.mathweb.util.TokenHashUtil;
 
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Optional;
+import java.time.Instant;
+
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
@@ -393,8 +396,6 @@ class AuthServiceImplTest {
                 .thenReturn("refresh-token");
 
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
-        when(refreshTokenRepository.findByUser(user))
-                .thenReturn(Optional.empty());
 
         AuthResponse result = authService.login(request);
 
@@ -407,7 +408,7 @@ class AuthServiceImplTest {
         verify(rateLimitService).resetLoginRate("john@example.com");
 
         verify(refreshTokenRepository).save(argThat(token ->
-                token.getToken().equals("refresh-token")
+                token.getToken().equals(TokenHashUtil.sha256("refresh-token"))
                         && token.getUser().equals(user)
                         && !token.getRevoked()
                         && token.getExpiresAt().isAfter(LocalDateTime.now())
@@ -446,7 +447,7 @@ class AuthServiceImplTest {
     void refreshToken_replacesOldTokenAndReturnsNewTokens() {
         RefreshToken oldToken = RefreshToken.builder()
                 .user(user)
-                .token("old-refresh-token")
+                .token(TokenHashUtil.sha256("old-refresh-token"))
                 .expiresAt(LocalDateTime.now().plusDays(1))
                 .revoked(false)
                 .build();
@@ -454,7 +455,9 @@ class AuthServiceImplTest {
         RefreshTokenRequest request = new RefreshTokenRequest();
         request.setRefreshToken("old-refresh-token");
 
-        when(refreshTokenRepository.findByToken("old-refresh-token"))
+        when(refreshTokenRepository.findByTokenForUpdate(
+                TokenHashUtil.sha256("old-refresh-token")
+        ))
                 .thenReturn(Optional.of(oldToken));
 
         when(jwtTokenProvider.generateAccessToken(any(UserPrincipal.class)))
@@ -464,8 +467,6 @@ class AuthServiceImplTest {
                 .thenReturn("new-refresh-token");
 
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
-        when(refreshTokenRepository.findByUser(user))
-                .thenReturn(Optional.empty());
 
         AuthResponse result = authService.refreshToken(request);
 
@@ -475,7 +476,7 @@ class AuthServiceImplTest {
 
         verify(refreshTokenRepository).save(oldToken);
         verify(refreshTokenRepository).save(argThat(token ->
-                token.getToken().equals("new-refresh-token")
+                token.getToken().equals(TokenHashUtil.sha256("new-refresh-token"))
                         && !token.getRevoked()
         ));
     }
@@ -485,7 +486,9 @@ class AuthServiceImplTest {
         RefreshTokenRequest request = new RefreshTokenRequest();
         request.setRefreshToken("unknown-token");
 
-        when(refreshTokenRepository.findByToken("unknown-token"))
+        when(refreshTokenRepository.findByTokenForUpdate(
+                TokenHashUtil.sha256("unknown-token")
+        ))
                 .thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> authService.refreshToken(request))
@@ -501,7 +504,7 @@ class AuthServiceImplTest {
 
         RefreshToken storedToken = RefreshToken.builder()
                 .user(user)
-                .token("old-refresh-token")
+                .token(TokenHashUtil.sha256("old-refresh-token"))
                 .expiresAt(LocalDateTime.now().plusDays(1))
                 .revoked(false)
                 .build();
@@ -509,7 +512,9 @@ class AuthServiceImplTest {
         RefreshTokenRequest request = new RefreshTokenRequest();
         request.setRefreshToken("old-refresh-token");
 
-        when(refreshTokenRepository.findByToken("old-refresh-token"))
+        when(refreshTokenRepository.findByTokenForUpdate(
+                TokenHashUtil.sha256("old-refresh-token")
+        ))
                 .thenReturn(Optional.of(storedToken));
 
         assertThatThrownBy(() -> authService.refreshToken(request))
@@ -631,12 +636,14 @@ class AuthServiceImplTest {
     void revokeRefreshToken_revokesExistingToken() {
         RefreshToken token = RefreshToken.builder()
                 .user(user)
-                .token("refresh-token")
+                .token(TokenHashUtil.sha256("refresh-token"))
                 .expiresAt(LocalDateTime.now().plusDays(1))
                 .revoked(false)
                 .build();
 
-        when(refreshTokenRepository.findByToken("refresh-token"))
+        when(refreshTokenRepository.findByToken(
+                TokenHashUtil.sha256("refresh-token")
+        ))
                 .thenReturn(Optional.of(token));
 
         authService.revokeRefreshToken("refresh-token");
@@ -654,7 +661,9 @@ class AuthServiceImplTest {
 
     @Test
     void revokeRefreshToken_doesNothingWhenTokenDoesNotExist() {
-        when(refreshTokenRepository.findByToken("unknown-token"))
+        when(refreshTokenRepository.findByToken(
+                TokenHashUtil.sha256("unknown-token")
+        ))
                 .thenReturn(Optional.empty());
 
         authService.revokeRefreshToken("unknown-token");
@@ -675,12 +684,13 @@ class AuthServiceImplTest {
         when(jwtTokenProvider.getExpirationFromToken(token)).thenReturn(expiration);
         when(jwtTokenProvider.getUserIdFromToken(token)).thenReturn(1L);
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        when(jwtTokenProvider.getTokenId(token)).thenReturn("test-jti");
 
         authService.logout(token);
 
         verify(tokenBlacklistService).blacklist(
-                eq(token),
-                any(LocalDateTime.class)
+                eq("test-jti"),
+                any(Instant.class)
         );
 
         verify(refreshTokenRepository).revokeAllByUser(user);

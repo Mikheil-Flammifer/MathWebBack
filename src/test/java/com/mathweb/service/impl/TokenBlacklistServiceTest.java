@@ -1,66 +1,68 @@
 package com.mathweb.service.impl;
 
-import org.junit.jupiter.api.BeforeEach;
+import com.mathweb.entity.RevokedAccessToken;
+import com.mathweb.repository.RevokedAccessTokenRepository;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-/** Unit tests for {@link TokenBlacklistService}. */
+@ExtendWith(MockitoExtension.class)
 class TokenBlacklistServiceTest {
 
-    private TokenBlacklistService service;
-
-    @BeforeEach
-    void setUp() {
-        service = new TokenBlacklistService();
-    }
+    @Mock
+    private RevokedAccessTokenRepository repository;
 
     @Test
     void isBlacklisted_returnsFalse_forUnknownToken() {
+        TokenBlacklistService service = new TokenBlacklistService(repository);
+
         assertThat(service.isBlacklisted("unknown")).isFalse();
     }
 
     @Test
-    void isBlacklisted_returnsTrue_beforeExpiry() {
-        service.blacklist("token", LocalDateTime.now().plusMinutes(10));
+    void blacklist_persistsJtiAndExpiry() {
+        TokenBlacklistService service = new TokenBlacklistService(repository);
+        Instant expiry = Instant.now().plusSeconds(600);
 
-        assertThat(service.isBlacklisted("token")).isTrue();
+        service.blacklist("token-jti", expiry);
+
+        ArgumentCaptor<RevokedAccessToken> captor =
+                ArgumentCaptor.forClass(RevokedAccessToken.class);
+
+        verify(repository).save(captor.capture());
+
+        assertThat(captor.getValue().getJti()).isEqualTo("token-jti");
+        assertThat(captor.getValue().getExpiresAt()).isEqualTo(expiry);
     }
 
     @Test
-    void isBlacklisted_returnsFalse_afterExpiry() {
-        service.blacklist("token", LocalDateTime.now().minusSeconds(1));
+    void isBlacklisted_returnsTrue_forUnexpiredDatabaseRecord() {
+        TokenBlacklistService service = new TokenBlacklistService(repository);
 
-        assertThat(service.isBlacklisted("token")).isFalse();
-        // second call still false (entry was removed)
-        assertThat(service.isBlacklisted("token")).isFalse();
+        when(repository.existsByJtiAndExpiresAtAfter(
+                eq("token-jti"),
+                any(Instant.class)
+        )).thenReturn(true);
+
+        assertThat(service.isBlacklisted("token-jti")).isTrue();
     }
 
     @Test
-    void blacklist_doesNotAffectOtherTokens() {
-        service.blacklist("a", LocalDateTime.now().plusMinutes(10));
-
-        assertThat(service.isBlacklisted("b")).isFalse();
-    }
-
-    @Test
-    void blacklist_overwritesExpiry_forSameToken() {
-        service.blacklist("token", LocalDateTime.now().minusMinutes(1));
-        service.blacklist("token", LocalDateTime.now().plusMinutes(10));
-
-        assertThat(service.isBlacklisted("token")).isTrue();
-    }
-
-    @Test
-    void removeExpiredTokens_removesOnlyExpired() {
-        service.blacklist("expired", LocalDateTime.now().minusMinutes(1));
-        service.blacklist("valid", LocalDateTime.now().plusMinutes(10));
+    void removeExpiredTokens_deletesExpiredDatabaseRows() {
+        TokenBlacklistService service = new TokenBlacklistService(repository);
 
         service.removeExpiredTokens();
 
-        assertThat(service.isBlacklisted("expired")).isFalse();
-        assertThat(service.isBlacklisted("valid")).isTrue();
+        verify(repository).deleteByExpiresAtBefore(any(Instant.class));
     }
 }

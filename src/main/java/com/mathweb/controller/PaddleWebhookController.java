@@ -65,13 +65,8 @@ public class PaddleWebhookController {
 
         String rawPayload = new String(body, StandardCharsets.UTF_8);
 
-        /*
-         * Do not catch persistence exceptions here.
-         *
-         * Duplicate event IDs are handled by ON CONFLICT DO NOTHING.
-         * Other database failures propagate and become HTTP 5xx, causing
-         * Paddle to retry delivery.
-         */
+        // Let database failures return 5xx so Paddle retries delivery.
+        // Duplicate event IDs are harmless and handled by the inbox.
         inboxService.store(
                 envelope.eventId(),
                 envelope.notificationId(),

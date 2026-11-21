@@ -73,6 +73,10 @@ public class JwtTokenProvider {
         return parseClaims(token).getExpiration();
     }
 
+    public String getTokenId(String token) {
+        return parseClaims(token).getId();
+    }
+
     // ===== VALIDATE =====
 
     public boolean validateToken(String token) {

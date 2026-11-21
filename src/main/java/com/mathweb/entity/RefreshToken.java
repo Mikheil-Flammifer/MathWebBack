@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "refresh_tokens")
@@ -14,12 +15,22 @@ import java.time.LocalDateTime;
 @Builder
 public class RefreshToken extends BaseEntity {
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false, unique = true)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(name = "token", nullable = false, unique = true, length = 512)
+    // SHA-256 hash only — never store the real bearer refresh token.
+    @Column(name = "token", nullable = false, unique = true, length = 64)
     private String token;
+
+    @Column(name = "token_family_id")
+    private UUID tokenFamilyId;
+
+    @Column(name = "used_at")
+    private LocalDateTime usedAt;
+
+    @Column(name = "replaced_at")
+    private LocalDateTime replacedAt;
 
     @Column(name = "expires_at", nullable = false)
     private LocalDateTime expiresAt;
@@ -27,8 +38,6 @@ public class RefreshToken extends BaseEntity {
     @Column(name = "revoked", nullable = false)
     @Builder.Default
     private Boolean revoked = false;
-
-    // ===== HELPERS =====
 
     public boolean isExpired() {
         return LocalDateTime.now().isAfter(expiresAt);

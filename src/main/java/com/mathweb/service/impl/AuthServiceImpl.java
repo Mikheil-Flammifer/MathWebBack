@@ -30,9 +30,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
+import com.mathweb.util.TokenHashUtil;
+import java.time.Instant;
+import java.util.UUID;
+
 
 @Service
 public class AuthServiceImpl implements AuthService {
@@ -121,6 +126,7 @@ public class AuthServiceImpl implements AuthService {
     @Transactional(noRollbackFor = OtpException.class)
     public void verifyOtp(VerifyOtpRequest request) {
         String email = request.getEmail().trim().toLowerCase();
+        rateLimitService.checkOtpVerificationRate(email);
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new OtpException("Invalid or expired code"));
 
@@ -196,16 +202,29 @@ public class AuthServiceImpl implements AuthService {
     @Override
     @Transactional
     public AuthResponse refreshToken(RefreshTokenRequest request) {
+        String tokenHash = TokenHashUtil.sha256(request.getRefreshToken());
+
         RefreshToken storedToken = refreshTokenRepository
-                .findByToken(request.getRefreshToken())
+                .findByTokenForUpdate(tokenHash)
                 .orElseThrow(() -> new BadRequestException("Invalid refresh token"));
 
         if (!storedToken.isValid()) {
+            // A revoked token being used again means refresh-token replay.
+            // Invalidate every session for that user.
+            if (!storedToken.isExpired()
+                    && Boolean.TRUE.equals(storedToken.getRevoked())) {
+                refreshTokenRepository.revokeAllByUser(storedToken.getUser());
+                log.warn("Refresh-token reuse detected for user {}",
+                        storedToken.getUser().getId());
+            }
+
             throw new BadRequestException("Refresh token has expired or been revoked");
         }
 
         User user = storedToken.getUser();
-        if (!Boolean.TRUE.equals(user.getActive()) || !Boolean.TRUE.equals(user.getEmailVerified())) {
+
+        if (!Boolean.TRUE.equals(user.getActive())
+                || !Boolean.TRUE.equals(user.getEmailVerified())) {
             throw new BadRequestException("Account is not active");
         }
 
@@ -214,10 +233,12 @@ public class AuthServiceImpl implements AuthService {
         String newAccessToken = jwtTokenProvider.generateAccessToken(userPrincipal);
         String newRefreshToken = jwtTokenProvider.generateRefreshToken(userPrincipal);
 
-        // Replace old refresh token
         storedToken.setRevoked(true);
+        storedToken.setUsedAt(LocalDateTime.now());
+        storedToken.setReplacedAt(LocalDateTime.now());
         refreshTokenRepository.save(storedToken);
-        saveRefreshToken(userPrincipal, newRefreshToken);
+
+        saveRefreshToken(userPrincipal, newRefreshToken, false);
 
         return AuthResponse.builder()
                 .accessToken(newAccessToken)
@@ -246,6 +267,7 @@ public class AuthServiceImpl implements AuthService {
     @Transactional(noRollbackFor = OtpException.class)
     public void resetPassword(ResetPasswordRequest request) {
         String email = request.getEmail().trim().toLowerCase();
+        rateLimitService.checkPasswordResetRate(email);
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new OtpException("Invalid or expired code"));
 
@@ -264,39 +286,52 @@ public class AuthServiceImpl implements AuthService {
     @Override
     @Transactional
     public void revokeRefreshToken(String token) {
-        if (token == null || token.isBlank()) return;
-        refreshTokenRepository.findByToken(token).ifPresent(rt -> {
-            rt.setRevoked(true);
-            refreshTokenRepository.save(rt);
-        });
+        if (token == null || token.isBlank()) {
+            return;
+        }
+
+        refreshTokenRepository
+                .findByToken(TokenHashUtil.sha256(token))
+                .ifPresent(refreshToken -> {
+                    refreshToken.setRevoked(true);
+                    refreshTokenRepository.save(refreshToken);
+                });
     }
 
     @Override
     @Transactional
     public void logout(String token) {
-        if (token == null || token.isBlank()) return;
+        if (token == null || token.isBlank()) {
+            return;
+        }
 
         try {
-            if (jwtTokenProvider.validateToken(token)) {
-                // Blacklist the access token
-                LocalDateTime expiresAt = jwtTokenProvider
-                        .getExpirationFromToken(token)
-                        .toInstant()
-                        .atZone(java.time.ZoneId.systemDefault())
-                        .toLocalDateTime();
-
-                tokenBlacklistService.blacklist(token, expiresAt);
-
-                // Revoke refresh token
-                Long userId = jwtTokenProvider.getUserIdFromToken(token);
-                User user = userRepository.findById(userId).orElse(null);
-                if (user != null) {
-                    refreshTokenRepository.revokeAllByUser(user);
-                    log.info("User {} logged out", user.getEmail());
-                }
+            if (!jwtTokenProvider.validateToken(token)) {
+                return;
             }
-        } catch (Exception e) {
-            log.warn("Logout called with invalid token: {}", e.getMessage());
+
+            java.util.Date expiration =
+                    jwtTokenProvider.getExpirationFromToken(token);
+
+            String tokenId = jwtTokenProvider.getTokenId(token);
+
+            if (expiration != null && tokenId != null && !tokenId.isBlank()) {
+                tokenBlacklistService.blacklist(
+                        tokenId,
+                        expiration.toInstant()
+                );
+            }
+
+            Long userId = jwtTokenProvider.getUserIdFromToken(token);
+            User user = userRepository.findById(userId).orElse(null);
+
+            if (user != null) {
+                refreshTokenRepository.revokeAllByUser(user);
+                log.info("User {} logged out", user.getEmail());
+            }
+        } catch (Exception exception) {
+            log.warn("Logout called with invalid token: {}",
+                    exception.getMessage());
         }
     }
 
@@ -314,21 +349,24 @@ public class AuthServiceImpl implements AuthService {
     }
 
     private void saveRefreshToken(UserPrincipal userPrincipal, String token) {
+        saveRefreshToken(userPrincipal, token, true);
+    }
+
+    private void saveRefreshToken(UserPrincipal userPrincipal,
+                                  String token,
+                                  boolean revokeExisting) {
         User user = userRepository.findById(userPrincipal.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
-        // Remove existing refresh token if any
-        refreshTokenRepository.findByUser(user)
-                .ifPresent(existing -> {
-                    existing.setRevoked(true);
-                    refreshTokenRepository.save(existing);
-                    refreshTokenRepository.delete(existing);
-                    refreshTokenRepository.flush();
-                });
+        if (revokeExisting) {
+            // New login invalidates old sessions.
+            refreshTokenRepository.revokeAllByUser(user);
+        }
 
         RefreshToken refreshToken = RefreshToken.builder()
                 .user(user)
-                .token(token)
+                .token(TokenHashUtil.sha256(token))
+                .tokenFamilyId(UUID.randomUUID())
                 .expiresAt(LocalDateTime.now()
                         .plusSeconds(refreshTokenExpiration / 1000))
                 .revoked(false)

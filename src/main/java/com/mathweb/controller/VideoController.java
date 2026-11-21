@@ -10,6 +10,7 @@ import com.mathweb.enums.VideoStatus;
 import com.mathweb.security.UserPrincipal;
 import com.mathweb.service.VideoService;
 import com.mathweb.service.VideoStream;
+import com.mathweb.service.impl.RateLimitService;
 import jakarta.validation.Valid;
 import org.springframework.core.io.Resource;
 import org.springframework.http.*;
@@ -23,9 +24,11 @@ import org.springframework.web.multipart.MultipartFile;
 public class VideoController {
 
     private final VideoService videoService;
+    private final RateLimitService rateLimitService;
 
-    public VideoController(VideoService videoService) {
+    public VideoController(VideoService videoService, RateLimitService rateLimitService) {
         this.videoService = videoService;
+        this.rateLimitService = rateLimitService;
     }
 
     @GetMapping
@@ -70,7 +73,15 @@ public class VideoController {
     @GetMapping("/{id}/stream")
     public ResponseEntity<Resource> streamVideo(
             @PathVariable Long id,
-            @AuthenticationPrincipal UserPrincipal principal) {
+            @AuthenticationPrincipal UserPrincipal principal
+    ) {
+        rateLimitService.checkAccountRate(
+                "stream",
+                principal.getId(),
+                60,
+                "Too many streaming requests. Please wait."
+        );
+
         VideoStream stream = videoService.openStream(id, principal.getId());
 
         MediaType type = MediaType.APPLICATION_OCTET_STREAM;

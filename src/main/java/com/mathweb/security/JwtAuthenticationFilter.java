@@ -72,7 +72,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (!StringUtils.hasText(token)) return false;
         try {
             return jwtTokenProvider.validateToken(token)
-                    && !tokenBlacklistService.isBlacklisted(token);
+                    && !tokenBlacklistService.isBlacklisted(
+                    jwtTokenProvider.getTokenId(token)
+            );
         } catch (Exception e) {
             return false;
         }

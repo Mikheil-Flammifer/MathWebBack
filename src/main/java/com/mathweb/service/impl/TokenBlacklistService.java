@@ -1,38 +1,47 @@
 package com.mathweb.service.impl;
 
+import com.mathweb.entity.RevokedAccessToken;
+import com.mathweb.repository.RevokedAccessTokenRepository;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.concurrent.ConcurrentHashMap;
-import java.time.LocalDateTime;
-import java.util.Map;
+import java.time.Instant;
 
 @Service
 public class TokenBlacklistService {
 
-    // token -> expiry time
-    private final Map<String, LocalDateTime> blacklistedTokens =
-            new ConcurrentHashMap<>();
+    private final RevokedAccessTokenRepository repository;
 
-    public void blacklist(String token, LocalDateTime expiresAt) {
-        blacklistedTokens.put(token, expiresAt);
+    public TokenBlacklistService(RevokedAccessTokenRepository repository) {
+        this.repository = repository;
     }
 
-    public boolean isBlacklisted(String token) {
-        if (!blacklistedTokens.containsKey(token)) return false;
-
-        // Auto-remove expired tokens
-        LocalDateTime expiry = blacklistedTokens.get(token);
-        if (LocalDateTime.now().isAfter(expiry)) {
-            blacklistedTokens.remove(token);
-            return false;
+    @Transactional
+    public void blacklist(String jti, Instant expiresAt) {
+        if (jti == null || jti.isBlank()
+                || expiresAt == null || !expiresAt.isAfter(Instant.now())) {
+            return;
         }
-        return true;
+
+        try {
+            repository.save(RevokedAccessToken.builder()
+                    .jti(jti)
+                    .expiresAt(expiresAt)
+                    .build());
+        } catch (DataIntegrityViolationException ignored) {
+            // Logout is idempotent: this token was already revoked.
+        }
     }
 
-    // Called by scheduler to clean up
+    @Transactional(readOnly = true)
+    public boolean isBlacklisted(String jti) {
+        return jti != null
+                && repository.existsByJtiAndExpiresAtAfter(jti, Instant.now());
+    }
+
+    @Transactional
     public void removeExpiredTokens() {
-        blacklistedTokens.entrySet()
-                .removeIf(entry ->
-                        LocalDateTime.now().isAfter(entry.getValue()));
+        repository.deleteByExpiresAtBefore(Instant.now());
     }
 }
