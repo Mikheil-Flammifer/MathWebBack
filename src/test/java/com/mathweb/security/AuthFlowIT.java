@@ -348,7 +348,7 @@ class AuthFlowIT extends AbstractIntegrationTest {
         }
 
         @Test
-        void login_storesExactlyOneRefreshToken_andReplacesItOnTheNextLogin() throws Exception {
+        void login_createsIndependentRefreshTokenFamilyForEachDevice() throws Exception {
             String email = uniqueEmail();
             User user = createVerifiedUser(email, PASSWORD);
 
@@ -358,6 +358,7 @@ class AuthFlowIT extends AbstractIntegrationTest {
             String second = cookie(login(email, PASSWORD), AuthCookieService.REFRESH).getValue();
 
             assertThat(second).isNotEqualTo(first);
+
             RefreshToken firstStored = refreshTokenRepository.findByToken(
                     TokenHashUtil.sha256(first)
             ).orElseThrow();
@@ -366,8 +367,11 @@ class AuthFlowIT extends AbstractIntegrationTest {
                     TokenHashUtil.sha256(second)
             ).orElseThrow();
 
-            assertThat(firstStored.getRevoked()).isTrue();
+            // Separate logins are separate devices/sessions.
+            assertThat(firstStored.isValid()).isTrue();
             assertThat(secondStored.isValid()).isTrue();
+            assertThat(firstStored.getTokenFamilyId())
+                    .isNotEqualTo(secondStored.getTokenFamilyId());
         }
 
         @Test
