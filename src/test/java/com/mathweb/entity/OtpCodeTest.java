@@ -7,13 +7,14 @@ import java.time.LocalDateTime;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Pure unit test of the OtpCode and User helper methods. No Spring, no database.
+ * Pure unit tests for OtpCode and User helper methods.
+ * No Spring context or database required.
  */
 class OtpCodeTest {
 
     private static OtpCode otp(LocalDateTime expiresAt, boolean used) {
         return OtpCode.builder()
-                .code("123456")
+                .codeHash("a".repeat(64))
                 .expiresAt(expiresAt)
                 .used(used)
                 .build();
@@ -22,7 +23,7 @@ class OtpCodeTest {
     @Test
     void defaults_areUnusedWithZeroAttemptsAndEmailVerificationPurpose() {
         OtpCode code = OtpCode.builder()
-                .code("123456")
+                .codeHash("a".repeat(64))
                 .expiresAt(LocalDateTime.now().plusMinutes(5))
                 .build();
 
@@ -57,7 +58,10 @@ class OtpCodeTest {
 
     @Test
     void user_fullName_joinsFirstAndLastName() {
-        User user = User.builder().firstName("Nino").lastName("Beridze").build();
+        User user = User.builder()
+                .firstName("Nino")
+                .lastName("Beridze")
+                .build();
 
         assertThat(user.getFullName()).isEqualTo("Nino Beridze");
     }

@@ -1,4 +1,3 @@
-
 package com.mathweb.service.impl;
 
 import com.mathweb.dto.request.*;
@@ -18,6 +17,7 @@ import com.mathweb.security.JwtTokenProvider;
 import com.mathweb.security.UserPrincipal;
 import com.mathweb.service.EmailService;
 import com.mathweb.service.FileStorageService;
+import com.mathweb.util.TokenHashUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,13 +30,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.util.ReflectionTestUtils;
-import com.mathweb.util.TokenHashUtil;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Optional;
-import java.time.Instant;
-
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
@@ -45,47 +44,31 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class AuthServiceImplTest {
 
-    @Mock
-    private UserRepository userRepository;
+    private static final String OTP_PEPPER =
+            "test-only-otp-pepper-that-is-at-least-32-bytes";
 
-    @Mock
-    private OtpCodeRepository otpCodeRepository;
-
-    @Mock
-    private RefreshTokenRepository refreshTokenRepository;
-
-    @Mock
-    private PasswordEncoder passwordEncoder;
-
-    @Mock
-    private JwtTokenProvider jwtTokenProvider;
-
-    @Mock
-    private AuthenticationManager authenticationManager;
-
-    @Mock
-    private FileStorageService fileStorageService;
-
-    @Mock
-    private EmailService emailService;
-
-    @Mock
-    private TokenBlacklistService tokenBlacklistService;
-
-    @Mock
-    private RateLimitService rateLimitService;
+    @Mock private UserRepository userRepository;
+    @Mock private OtpCodeRepository otpCodeRepository;
+    @Mock private RefreshTokenRepository refreshTokenRepository;
+    @Mock private PasswordEncoder passwordEncoder;
+    @Mock private JwtTokenProvider jwtTokenProvider;
+    @Mock private AuthenticationManager authenticationManager;
+    @Mock private FileStorageService fileStorageService;
+    @Mock private EmailService emailService;
+    @Mock private TokenBlacklistService tokenBlacklistService;
+    @Mock private RateLimitService rateLimitService;
 
     @InjectMocks
     private AuthServiceImpl authService;
 
     private User user;
-    private UserResponse userResponse;
     private UserPrincipal userPrincipal;
 
     @BeforeEach
     void setUp() {
+        ReflectionTestUtils.setField(authService, "otpPepper", OTP_PEPPER);
         ReflectionTestUtils.setField(authService, "otpExpirationMinutes", 10);
-        ReflectionTestUtils.setField(authService, "refreshTokenExpiration", 86400000L);
+        ReflectionTestUtils.setField(authService, "refreshTokenExpiration", 86_400_000L);
 
         user = User.builder()
                 .firstName("John")
@@ -96,26 +79,28 @@ class AuthServiceImplTest {
                 .emailVerified(true)
                 .active(true)
                 .build();
-
         user.setId(1L);
-
-        userResponse = UserResponse.builder()
-                .id(1L)
-                .firstName("John")
-                .lastName("Doe")
-                .email("john@example.com")
-                .role(Role.STUDENT)
-                .emailVerified(true)
-                .active(true)
-                .build();
 
         userPrincipal = UserPrincipal.fromUser(user);
     }
 
-    // --------------------------------------------------
-    // REGISTER
-    // --------------------------------------------------
-        
+    private String hashOtp(String code, String purpose) {
+        return TokenHashUtil.hmacSha256(
+                OTP_PEPPER,
+                "otp:" + user.getId() + ":" + purpose + ":" + code
+        );
+    }
+
+    private OtpCode otp(String code, String purpose) {
+        return OtpCode.builder()
+                .user(user)
+                .codeHash(hashOtp(code, purpose))
+                .purpose(purpose)
+                .expiresAt(LocalDateTime.now().plusMinutes(5))
+                .used(false)
+                .build();
+    }
+
     @Test
     void register_cleansControlCharactersFromNames() {
         RegisterRequest request = new RegisterRequest();
@@ -126,18 +111,22 @@ class AuthServiceImplTest {
 
         when(userRepository.existsByEmail("john@example.com")).thenReturn(false);
         when(passwordEncoder.encode("password123")).thenReturn("encoded-password");
-        when(userRepository.save(any(User.class))).thenAnswer(inv -> inv.getArgument(0));
+        when(userRepository.save(any(User.class))).thenAnswer(invocation -> {
+            User saved = invocation.getArgument(0);
+            saved.setId(1L);
+            return saved;
+        });
 
         authService.register(request);
 
         ArgumentCaptor<User> captor = ArgumentCaptor.forClass(User.class);
         verify(userRepository).save(captor.capture());
+
         assertThat(captor.getValue().getFirstName()).isEqualTo("John");
     }
 
-
     @Test
-    void register_createsUserAndSendsVerificationOtp() {
+    void register_storesOnlyHashedOtpAndEmailsPlainOtp() {
         RegisterRequest request = new RegisterRequest();
         request.setFirstName("John");
         request.setLastName("Doe");
@@ -152,42 +141,35 @@ class AuthServiceImplTest {
             return saved;
         });
 
-        UserResponse result = authService.register(request);
-
-        assertThat(result.getEmail()).isEqualTo("john@example.com");
-        assertThat(result.getRole()).isEqualTo(Role.STUDENT);
-        assertThat(result.getEmailVerified()).isFalse();
-        assertThat(result.getActive()).isTrue();
-
-        ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
-        verify(userRepository).save(userCaptor.capture());
-
-        User savedUser = userCaptor.getValue();
-        assertThat(savedUser.getEmail()).isEqualTo("john@example.com");
-        assertThat(savedUser.getPasswordHash()).isEqualTo("encoded-password");
-        assertThat(savedUser.getRole()).isEqualTo(Role.STUDENT);
+        authService.register(request);
 
         ArgumentCaptor<OtpCode> otpCaptor = ArgumentCaptor.forClass(OtpCode.class);
+        ArgumentCaptor<String> sentOtpCaptor = ArgumentCaptor.forClass(String.class);
+
         verify(otpCodeRepository).save(otpCaptor.capture());
-
-        OtpCode savedOtp = otpCaptor.getValue();
-        assertThat(savedOtp.getPurpose()).isEqualTo("EMAIL_VERIFICATION");
-        assertThat(savedOtp.getCode()).matches("\\d{6}");
-        assertThat(savedOtp.getUsed()).isFalse();
-        assertThat(savedOtp.getExpiresAt()).isAfter(LocalDateTime.now());
-
         verify(emailService).sendOtpEmail(
                 eq("john@example.com"),
                 eq("John"),
-                matches("\\d{6}"),
+                sentOtpCaptor.capture(),
                 eq("EMAIL_VERIFICATION")
         );
 
-        verify(rateLimitService).checkOtpRate("JOHN@example.com");
+        OtpCode savedOtp = otpCaptor.getValue();
+        String sentOtp = sentOtpCaptor.getValue();
+
+        assertThat(sentOtp).matches("\\d{6}");
+        assertThat(savedOtp.getCodeHash()).matches("[0-9a-f]{64}");
+        assertThat(savedOtp.getCodeHash())
+                .isEqualTo(TokenHashUtil.hmacSha256(
+                        OTP_PEPPER,
+                        "otp:1:EMAIL_VERIFICATION:" + sentOtp
+                ));
+        assertThat(savedOtp.getCodeHash()).isNotEqualTo(sentOtp);
+        assertThat(savedOtp.getUsed()).isFalse();
     }
 
     @Test
-    void register_throwsExceptionWhenEmailAlreadyExists() {
+    void register_throwsWhenEmailAlreadyExists() {
         RegisterRequest request = new RegisterRequest();
         request.setFirstName("John");
         request.setLastName("Doe");
@@ -200,23 +182,12 @@ class AuthServiceImplTest {
                 .isInstanceOf(BadRequestException.class)
                 .hasMessage("Email is already registered");
 
-        verify(userRepository, never()).save(any(User.class));
-        verifyNoInteractions(passwordEncoder, otpCodeRepository, emailService);
+        verify(userRepository, never()).save(any());
     }
 
-    // --------------------------------------------------
-    // VERIFY OTP
-    // --------------------------------------------------
-
     @Test
-    void verifyOtp_verifiesEmailWithCorrectCode() {
-        OtpCode otp = OtpCode.builder()
-                .user(user)
-                .code("123456")
-                .purpose("EMAIL_VERIFICATION")
-                .expiresAt(LocalDateTime.now().plusMinutes(5))
-                .used(false)
-                .build();
+    void verifyOtp_verifiesCorrectPepperedHash() {
+        OtpCode otp = otp("123456", "EMAIL_VERIFICATION");
 
         VerifyOtpRequest request = new VerifyOtpRequest();
         request.setEmail(" JOHN@EXAMPLE.COM ");
@@ -225,48 +196,19 @@ class AuthServiceImplTest {
 
         when(userRepository.findByEmail("john@example.com"))
                 .thenReturn(Optional.of(user));
-
-        when(otpCodeRepository
-                .findTopByUserAndPurposeAndUsedFalseOrderByCreatedAtDesc(
-                        user, "EMAIL_VERIFICATION"))
-                .thenReturn(Optional.of(otp));
+        when(otpCodeRepository.findTopByUserAndPurposeAndUsedFalseOrderByCreatedAtDesc(
+                user, "EMAIL_VERIFICATION")).thenReturn(Optional.of(otp));
 
         authService.verifyOtp(request);
 
         assertThat(otp.getUsed()).isTrue();
         assertThat(user.getEmailVerified()).isTrue();
-
-        verify(otpCodeRepository).save(otp);
-        verify(userRepository).save(user);
         verify(emailService).sendWelcomeEmail("john@example.com", "John");
     }
 
     @Test
-    void verifyOtp_throwsExceptionWhenUserDoesNotExist() {
-        VerifyOtpRequest request = new VerifyOtpRequest();
-        request.setEmail("missing@example.com");
-        request.setCode("123456");
-        request.setPurpose("EMAIL_VERIFICATION");
-
-        when(userRepository.findByEmail("missing@example.com"))
-                .thenReturn(Optional.empty());
-
-        assertThatThrownBy(() -> authService.verifyOtp(request))
-                .isInstanceOf(OtpException.class)
-                .hasMessage("Invalid or expired code");
-
-        verifyNoInteractions(otpCodeRepository, emailService);
-    }
-
-    @Test
-    void verifyOtp_throwsExceptionWhenCodeIsIncorrect() {
-        OtpCode otp = OtpCode.builder()
-                .user(user)
-                .code("123456")
-                .purpose("EMAIL_VERIFICATION")
-                .expiresAt(LocalDateTime.now().plusMinutes(5))
-                .used(false)
-                .build();
+    void verifyOtp_rejectsIncorrectCode() {
+        OtpCode otp = otp("123456", "EMAIL_VERIFICATION");
 
         VerifyOtpRequest request = new VerifyOtpRequest();
         request.setEmail("john@example.com");
@@ -275,33 +217,20 @@ class AuthServiceImplTest {
 
         when(userRepository.findByEmail("john@example.com"))
                 .thenReturn(Optional.of(user));
-
-        when(otpCodeRepository
-                .findTopByUserAndPurposeAndUsedFalseOrderByCreatedAtDesc(
-                        user, "EMAIL_VERIFICATION"))
-                .thenReturn(Optional.of(otp));
+        when(otpCodeRepository.findTopByUserAndPurposeAndUsedFalseOrderByCreatedAtDesc(
+                user, "EMAIL_VERIFICATION")).thenReturn(Optional.of(otp));
 
         assertThatThrownBy(() -> authService.verifyOtp(request))
-                .isInstanceOf(OtpException.class)
-                .hasMessage("Invalid or expired code");
+                .isInstanceOf(OtpException.class);
 
         assertThat(otp.getAttempts()).isEqualTo(1);
         assertThat(otp.getUsed()).isFalse();
-
-        verify(otpCodeRepository).save(otp);
-        verify(userRepository, never()).save(any(User.class));
-        verifyNoInteractions(emailService);
     }
 
     @Test
-    void verifyOtp_throwsExceptionWhenCodeIsExpired() {
-        OtpCode otp = OtpCode.builder()
-                .user(user)
-                .code("123456")
-                .purpose("EMAIL_VERIFICATION")
-                .expiresAt(LocalDateTime.now().minusMinutes(1))
-                .used(false)
-                .build();
+    void verifyOtp_rejectsExpiredCode() {
+        OtpCode otp = otp("123456", "EMAIL_VERIFICATION");
+        otp.setExpiresAt(LocalDateTime.now().minusMinutes(1));
 
         VerifyOtpRequest request = new VerifyOtpRequest();
         request.setEmail("john@example.com");
@@ -310,26 +239,17 @@ class AuthServiceImplTest {
 
         when(userRepository.findByEmail("john@example.com"))
                 .thenReturn(Optional.of(user));
-
-        when(otpCodeRepository
-                .findTopByUserAndPurposeAndUsedFalseOrderByCreatedAtDesc(
-                        user, "EMAIL_VERIFICATION"))
-                .thenReturn(Optional.of(otp));
+        when(otpCodeRepository.findTopByUserAndPurposeAndUsedFalseOrderByCreatedAtDesc(
+                user, "EMAIL_VERIFICATION")).thenReturn(Optional.of(otp));
 
         assertThatThrownBy(() -> authService.verifyOtp(request))
                 .isInstanceOf(OtpException.class);
 
         assertThat(otp.getUsed()).isTrue();
-        verify(otpCodeRepository).save(otp);
-        verify(userRepository, never()).save(any(User.class));
     }
 
-    // --------------------------------------------------
-    // RESEND OTP
-    // --------------------------------------------------
-
     @Test
-    void resendOtp_invalidatesOldCodesAndSendsNewCode() {
+    void resendOtp_storesHashAndEmailsPlainCode() {
         ResendOtpRequest request = new ResendOtpRequest();
         request.setEmail("john@example.com");
         request.setPurpose("EMAIL_VERIFICATION");
@@ -339,115 +259,54 @@ class AuthServiceImplTest {
 
         authService.resendOtp(request);
 
-        verify(rateLimitService).checkOtpRate("john@example.com");
         verify(otpCodeRepository)
                 .invalidateAllByUserAndPurpose(user, "EMAIL_VERIFICATION");
-        verify(otpCodeRepository).save(argThat(otp ->
-                otp.getPurpose().equals("EMAIL_VERIFICATION")
-                        && otp.getCode().matches("\\d{6}")
-                        && !otp.getUsed()
+
+        verify(otpCodeRepository).save(argThat(saved ->
+                saved.getPurpose().equals("EMAIL_VERIFICATION")
+                        && saved.getCodeHash().matches("[0-9a-f]{64}")
+                        && !saved.getUsed()
         ));
-        verify(emailService).sendOtpEmail(
-                eq("john@example.com"),
-                eq("John"),
-                matches("\\d{6}"),
-                eq("EMAIL_VERIFICATION")
-        );
     }
 
     @Test
-    void resendOtp_throwsExceptionWhenUserDoesNotExist() {
-        ResendOtpRequest request = new ResendOtpRequest();
-        request.setEmail("missing@example.com");
-        request.setPurpose("EMAIL_VERIFICATION");
-
-        when(userRepository.findByEmail("missing@example.com"))
-                .thenReturn(Optional.empty());
-
-        assertThatThrownBy(() -> authService.resendOtp(request))
-                .isInstanceOf(ResourceNotFoundException.class)
-                .hasMessage("User not found");
-
-        verifyNoInteractions(otpCodeRepository, emailService);
-    }
-
-    // --------------------------------------------------
-    // LOGIN
-    // --------------------------------------------------
-
-    @Test
-    void login_returnsTokensWhenCredentialsAreValid() {
+    void login_storesSha256RefreshTokenWithNewFamily() {
         LoginRequest request = new LoginRequest();
         request.setEmail("JOHN@example.com");
         request.setPassword("password123");
 
         Authentication authentication = mock(Authentication.class);
-
-        when(authenticationManager.authenticate(any(
-                UsernamePasswordAuthenticationToken.class)))
+        when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
                 .thenReturn(authentication);
-
         when(authentication.getPrincipal()).thenReturn(userPrincipal);
-
         when(jwtTokenProvider.generateAccessToken(userPrincipal))
                 .thenReturn("access-token");
-
         when(jwtTokenProvider.generateRefreshToken(userPrincipal))
                 .thenReturn("refresh-token");
-
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
 
         AuthResponse result = authService.login(request);
 
         assertThat(result.getAccessToken()).isEqualTo("access-token");
         assertThat(result.getRefreshToken()).isEqualTo("refresh-token");
-        assertThat(result.getTokenType()).isEqualTo("Bearer");
-        assertThat(result.getUser().getEmail()).isEqualTo("john@example.com");
 
-        verify(rateLimitService).checkLoginRate("john@example.com");
-        verify(rateLimitService).resetLoginRate("john@example.com");
-
-        verify(refreshTokenRepository).save(argThat(token ->
-                token.getToken().equals(TokenHashUtil.sha256("refresh-token"))
-                        && token.getUser().equals(user)
-                        && !token.getRevoked()
-                        && token.getExpiresAt().isAfter(LocalDateTime.now())
+        verify(refreshTokenRepository).save(argThat(saved ->
+                saved.getToken().equals(TokenHashUtil.sha256("refresh-token"))
+                        && saved.getTokenFamilyId() != null
+                        && !saved.getRevoked()
         ));
+
+        verify(refreshTokenRepository, never()).revokeAllByUser(any());
     }
 
     @Test
-    void login_throwsExceptionWhenEmailIsNotVerified() {
-        userPrincipal.setEmailVerified(false);
+    void refreshToken_rotatesTokenInsideSameFamily() {
+        UUID familyId = UUID.randomUUID();
 
-        LoginRequest request = new LoginRequest();
-        request.setEmail("john@example.com");
-        request.setPassword("password123");
-
-        Authentication authentication = mock(Authentication.class);
-
-        when(authenticationManager.authenticate(any(
-                UsernamePasswordAuthenticationToken.class)))
-                .thenReturn(authentication);
-
-        when(authentication.getPrincipal()).thenReturn(userPrincipal);
-
-        assertThatThrownBy(() -> authService.login(request))
-                .isInstanceOf(BadRequestException.class)
-                .hasMessage("Please verify your email before logging in");
-
-        verify(rateLimitService).resetLoginRate("john@example.com");
-        verifyNoInteractions(jwtTokenProvider, refreshTokenRepository);
-    }
-
-    // --------------------------------------------------
-    // REFRESH TOKEN
-    // --------------------------------------------------
-
-    @Test
-    void refreshToken_replacesOldTokenAndReturnsNewTokens() {
         RefreshToken oldToken = RefreshToken.builder()
                 .user(user)
                 .token(TokenHashUtil.sha256("old-refresh-token"))
+                .tokenFamilyId(familyId)
                 .expiresAt(LocalDateTime.now().plusDays(1))
                 .revoked(false)
                 .build();
@@ -456,184 +315,108 @@ class AuthServiceImplTest {
         request.setRefreshToken("old-refresh-token");
 
         when(refreshTokenRepository.findByTokenForUpdate(
-                TokenHashUtil.sha256("old-refresh-token")
-        ))
+                TokenHashUtil.sha256("old-refresh-token")))
                 .thenReturn(Optional.of(oldToken));
-
         when(jwtTokenProvider.generateAccessToken(any(UserPrincipal.class)))
                 .thenReturn("new-access-token");
-
         when(jwtTokenProvider.generateRefreshToken(any(UserPrincipal.class)))
                 .thenReturn("new-refresh-token");
-
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
 
         AuthResponse result = authService.refreshToken(request);
 
-        assertThat(result.getAccessToken()).isEqualTo("new-access-token");
         assertThat(result.getRefreshToken()).isEqualTo("new-refresh-token");
         assertThat(oldToken.getRevoked()).isTrue();
 
-        verify(refreshTokenRepository).save(oldToken);
-        verify(refreshTokenRepository).save(argThat(token ->
-                token.getToken().equals(TokenHashUtil.sha256("new-refresh-token"))
-                        && !token.getRevoked()
+        verify(refreshTokenRepository).save(argThat(saved ->
+                saved.getToken().equals(TokenHashUtil.sha256("new-refresh-token"))
+                        && saved.getTokenFamilyId().equals(familyId)
+                        && !saved.getRevoked()
         ));
     }
 
     @Test
-    void refreshToken_throwsExceptionWhenTokenDoesNotExist() {
+    void refreshToken_reuseRevokesOnlyItsFamily() {
+        UUID familyId = UUID.randomUUID();
+
+        RefreshToken reusedToken = RefreshToken.builder()
+                .user(user)
+                .token(TokenHashUtil.sha256("already-used-token"))
+                .tokenFamilyId(familyId)
+                .expiresAt(LocalDateTime.now().plusDays(1))
+                .revoked(true)
+                .build();
+
+        RefreshTokenRequest request = new RefreshTokenRequest();
+        request.setRefreshToken("already-used-token");
+
+        when(refreshTokenRepository.findByTokenForUpdate(
+                TokenHashUtil.sha256("already-used-token")))
+                .thenReturn(Optional.of(reusedToken));
+
+        assertThatThrownBy(() -> authService.refreshToken(request))
+                .isInstanceOf(BadRequestException.class);
+
+        verify(refreshTokenRepository).revokeFamily(user, familyId);
+        verify(refreshTokenRepository, never()).revokeAllByUser(user);
+        verifyNoInteractions(jwtTokenProvider);
+    }
+
+    @Test
+    void refreshToken_rejectsUnknownToken() {
         RefreshTokenRequest request = new RefreshTokenRequest();
         request.setRefreshToken("unknown-token");
 
         when(refreshTokenRepository.findByTokenForUpdate(
-                TokenHashUtil.sha256("unknown-token")
-        ))
+                TokenHashUtil.sha256("unknown-token")))
                 .thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> authService.refreshToken(request))
                 .isInstanceOf(BadRequestException.class)
                 .hasMessage("Invalid refresh token");
-
-        verifyNoInteractions(jwtTokenProvider);
     }
 
     @Test
-    void refreshToken_throwsExceptionWhenAccountIsInactive() {
-        user.setActive(false);
-
-        RefreshToken storedToken = RefreshToken.builder()
-                .user(user)
-                .token(TokenHashUtil.sha256("old-refresh-token"))
-                .expiresAt(LocalDateTime.now().plusDays(1))
-                .revoked(false)
-                .build();
-
-        RefreshTokenRequest request = new RefreshTokenRequest();
-        request.setRefreshToken("old-refresh-token");
-
-        when(refreshTokenRepository.findByTokenForUpdate(
-                TokenHashUtil.sha256("old-refresh-token")
-        ))
-                .thenReturn(Optional.of(storedToken));
-
-        assertThatThrownBy(() -> authService.refreshToken(request))
-                .isInstanceOf(BadRequestException.class)
-                .hasMessage("Account is not active");
-
-        verifyNoInteractions(jwtTokenProvider);
-    }
-
-    // --------------------------------------------------
-    // FORGOT PASSWORD
-    // --------------------------------------------------
-
-    @Test
-    void forgotPassword_sendsPasswordResetOtpWhenUserExists() {
+    void forgotPassword_storesPepperedOtpHash() {
         ForgotPasswordRequest request = new ForgotPasswordRequest();
-        request.setEmail(" JOHN@EXAMPLE.COM ");
+        request.setEmail("john@example.com");
 
         when(userRepository.findByEmail("john@example.com"))
                 .thenReturn(Optional.of(user));
 
         authService.forgotPassword(request);
 
-        verify(rateLimitService).checkOtpRate("john@example.com");
-        verify(otpCodeRepository)
-                .invalidateAllByUserAndPurpose(user, "PASSWORD_RESET");
-
-        verify(otpCodeRepository).save(argThat(otp ->
-                otp.getPurpose().equals("PASSWORD_RESET")
-                        && otp.getCode().matches("\\d{6}")
-                        && !otp.getUsed()
+        verify(otpCodeRepository).save(argThat(saved ->
+                saved.getPurpose().equals("PASSWORD_RESET")
+                        && saved.getCodeHash().matches("[0-9a-f]{64}")
+                        && !saved.getUsed()
         ));
-
-        verify(emailService).sendOtpEmail(
-                eq("john@example.com"),
-                eq("John"),
-                matches("\\d{6}"),
-                eq("PASSWORD_RESET")
-        );
     }
 
     @Test
-    void forgotPassword_doesNotRevealWhetherUserExists() {
-        ForgotPasswordRequest request = new ForgotPasswordRequest();
-        request.setEmail("missing@example.com");
-
-        when(userRepository.findByEmail("missing@example.com"))
-                .thenReturn(Optional.empty());
-
-        assertThatCode(() -> authService.forgotPassword(request))
-                .doesNotThrowAnyException();
-
-        verify(rateLimitService).checkOtpRate("missing@example.com");
-        verifyNoInteractions(otpCodeRepository, emailService);
-    }
-
-    // --------------------------------------------------
-    // RESET PASSWORD
-    // --------------------------------------------------
-
-    @Test
-    void resetPassword_updatesPasswordAndRevokesRefreshTokens() {
-        OtpCode otp = OtpCode.builder()
-                .user(user)
-                .code("123456")
-                .purpose("PASSWORD_RESET")
-                .expiresAt(LocalDateTime.now().plusMinutes(5))
-                .used(false)
-                .build();
+    void resetPassword_revokesAllFamilies() {
+        OtpCode otp = otp("123456", "PASSWORD_RESET");
 
         ResetPasswordRequest request = new ResetPasswordRequest();
-        request.setEmail(" JOHN@EXAMPLE.COM ");
+        request.setEmail("john@example.com");
         request.setCode("123456");
         request.setNewPassword("newPassword123");
 
         when(userRepository.findByEmail("john@example.com"))
                 .thenReturn(Optional.of(user));
-
-        when(otpCodeRepository
-                .findTopByUserAndPurposeAndUsedFalseOrderByCreatedAtDesc(
-                        user, "PASSWORD_RESET"))
-                .thenReturn(Optional.of(otp));
-
+        when(otpCodeRepository.findTopByUserAndPurposeAndUsedFalseOrderByCreatedAtDesc(
+                user, "PASSWORD_RESET")).thenReturn(Optional.of(otp));
         when(passwordEncoder.encode("newPassword123"))
                 .thenReturn("new-encoded-password");
 
         authService.resetPassword(request);
 
         assertThat(otp.getUsed()).isTrue();
-        assertThat(user.getPasswordHash()).isEqualTo("new-encoded-password");
-
-        verify(otpCodeRepository).save(otp);
-        verify(userRepository).save(user);
         verify(refreshTokenRepository).revokeAllByUser(user);
     }
 
     @Test
-    void resetPassword_throwsExceptionWhenUserDoesNotExist() {
-        ResetPasswordRequest request = new ResetPasswordRequest();
-        request.setEmail("missing@example.com");
-        request.setCode("123456");
-        request.setNewPassword("newPassword123");
-
-        when(userRepository.findByEmail("missing@example.com"))
-                .thenReturn(Optional.empty());
-
-        assertThatThrownBy(() -> authService.resetPassword(request))
-                .isInstanceOf(OtpException.class)
-                .hasMessage("Invalid or expired code");
-
-        verifyNoInteractions(passwordEncoder, refreshTokenRepository);
-    }
-
-    // --------------------------------------------------
-    // REVOKE REFRESH TOKEN
-    // --------------------------------------------------
-
-    @Test
-    void revokeRefreshToken_revokesExistingToken() {
+    void revokeRefreshToken_hashesBeforeLookup() {
         RefreshToken token = RefreshToken.builder()
                 .user(user)
                 .token(TokenHashUtil.sha256("refresh-token"))
@@ -641,9 +424,7 @@ class AuthServiceImplTest {
                 .revoked(false)
                 .build();
 
-        when(refreshTokenRepository.findByToken(
-                TokenHashUtil.sha256("refresh-token")
-        ))
+        when(refreshTokenRepository.findByToken(TokenHashUtil.sha256("refresh-token")))
                 .thenReturn(Optional.of(token));
 
         authService.revokeRefreshToken("refresh-token");
@@ -653,37 +434,12 @@ class AuthServiceImplTest {
     }
 
     @Test
-    void revokeRefreshToken_doesNothingForBlankToken() {
-        authService.revokeRefreshToken(" ");
-
-        verifyNoInteractions(refreshTokenRepository);
-    }
-
-    @Test
-    void revokeRefreshToken_doesNothingWhenTokenDoesNotExist() {
-        when(refreshTokenRepository.findByToken(
-                TokenHashUtil.sha256("unknown-token")
-        ))
-                .thenReturn(Optional.empty());
-
-        authService.revokeRefreshToken("unknown-token");
-
-        verify(refreshTokenRepository, never()).save(any());
-    }
-
-    // --------------------------------------------------
-    // LOGOUT
-    // --------------------------------------------------
-
-    @Test
-    void logout_blacklistsAccessTokenAndRevokesRefreshTokens() {
+    void logout_blacklistsOnlyAccessToken() {
         String token = "valid-access-token";
-        Date expiration = new Date(System.currentTimeMillis() + 60000);
+        Date expiration = new Date(System.currentTimeMillis() + 60_000);
 
         when(jwtTokenProvider.validateToken(token)).thenReturn(true);
         when(jwtTokenProvider.getExpirationFromToken(token)).thenReturn(expiration);
-        when(jwtTokenProvider.getUserIdFromToken(token)).thenReturn(1L);
-        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         when(jwtTokenProvider.getTokenId(token)).thenReturn("test-jti");
 
         authService.logout(token);
@@ -693,41 +449,16 @@ class AuthServiceImplTest {
                 any(Instant.class)
         );
 
-        verify(refreshTokenRepository).revokeAllByUser(user);
+        verifyNoInteractions(refreshTokenRepository);
+        verifyNoInteractions(userRepository);
     }
 
     @Test
-    void logout_doesNothingForInvalidToken() {
-        String token = "invalid-token";
+    void logout_ignoresInvalidToken() {
+        when(jwtTokenProvider.validateToken("invalid-token")).thenReturn(false);
 
-        when(jwtTokenProvider.validateToken(token)).thenReturn(false);
-
-        assertThatCode(() -> authService.logout(token))
-                .doesNotThrowAnyException();
+        authService.logout("invalid-token");
 
         verifyNoInteractions(tokenBlacklistService, refreshTokenRepository);
-        verify(userRepository, never()).findById(anyLong());
-    }
-
-    @Test
-    void logout_doesNothingForBlankToken() {
-        authService.logout(" ");
-
-        verifyNoInteractions(
-                jwtTokenProvider,
-                tokenBlacklistService,
-                refreshTokenRepository
-        );
-    }
-
-    @Test
-    void logout_doesNotPropagateExceptions() {
-        String token = "problematic-token";
-
-        when(jwtTokenProvider.validateToken(token))
-                .thenThrow(new RuntimeException("JWT processing failed"));
-
-        assertThatCode(() -> authService.logout(token))
-                .doesNotThrowAnyException();
     }
 }

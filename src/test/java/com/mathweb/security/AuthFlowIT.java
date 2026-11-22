@@ -48,6 +48,9 @@ class AuthFlowIT extends AbstractIntegrationTest {
     private static final String PASSWORD = "Str0ngPass!234";
     private static final String XHR = "XMLHttpRequest";
     private static final String PROBE = "/api/probe/unmapped";
+    private static final String OTP_PEPPER =
+            "test-only-otp-pepper-that-is-at-least-32-bytes";
+    private static final String TEST_OTP = "123456";
 
     @Autowired UserRepository userRepository;
     @Autowired OtpCodeRepository otpCodeRepository;
@@ -123,8 +126,18 @@ class AuthFlowIT extends AbstractIntegrationTest {
 
     private String latestOtp(String email, String purpose) {
         User user = userRepository.findByEmail(email).orElseThrow();
-        return otpCodeRepository.findTopByUserAndPurposeOrderByCreatedAtDesc(user, purpose)
-                .orElseThrow().getCode();
+
+        OtpCode otp = otpCodeRepository
+                .findTopByUserAndPurposeOrderByCreatedAtDesc(user, purpose)
+                .orElseThrow();
+
+        otp.setCodeHash(TokenHashUtil.hmacSha256(
+                OTP_PEPPER,
+                "otp:" + user.getId() + ":" + purpose + ":" + TEST_OTP
+        ));
+        otpCodeRepository.save(otp);
+
+        return TEST_OTP;
     }
 
     private OtpCode latestOtpEntity(String email, String purpose) {
@@ -273,7 +286,9 @@ class AuthFlowIT extends AbstractIntegrationTest {
             otp.setExpiresAt(LocalDateTime.now().minusMinutes(1));
             otpCodeRepository.save(otp);
 
-            assertThat(verify(email, otp.getCode()).andReturn().getResponse().getStatus())
+            String knownOtp = latestOtp(email, "EMAIL_VERIFICATION");
+
+            assertThat(verify(email, knownOtp).andReturn().getResponse().getStatus())
                     .isBetween(400, 499);
             assertThat(userRepository.findByEmail(email).orElseThrow().getEmailVerified()).isFalse();
         }

@@ -18,6 +18,7 @@ import com.mathweb.security.UserPrincipal;
 import com.mathweb.service.AuthService;
 import com.mathweb.service.EmailService;
 import com.mathweb.service.FileStorageService;
+import com.mathweb.util.TokenHashUtil;
 import com.mathweb.util.OtpUtil;
 import com.mathweb.util.SanitizationUtil;
 import org.slf4j.Logger;
@@ -30,12 +31,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
-import com.mathweb.util.TokenHashUtil;
-import java.time.Instant;
 import java.util.UUID;
 
 
@@ -62,6 +60,9 @@ public class AuthServiceImpl implements AuthService {
 
     @Value("${jwt.refresh-token-expiration}")
     private long refreshTokenExpiration;
+
+    @Value("${otp.pepper}")
+    private String otpPepper;
 
     public AuthServiceImpl(UserRepository userRepository,
                            OtpCodeRepository otpCodeRepository,
@@ -209,15 +210,11 @@ public class AuthServiceImpl implements AuthService {
                 .orElseThrow(() -> new BadRequestException("Invalid refresh token"));
 
         if (!storedToken.isValid()) {
-            // A revoked token being used again means refresh-token replay.
-            // Invalidate every session for that user.
-            if (!storedToken.isExpired()
-                    && Boolean.TRUE.equals(storedToken.getRevoked())) {
-                refreshTokenRepository.revokeAllByUser(storedToken.getUser());
-                log.warn("Refresh-token reuse detected for user {}",
-                        storedToken.getUser().getId());
+            if (!storedToken.isExpired() && Boolean.TRUE.equals(storedToken.getRevoked())) {
+                revokeFamily(storedToken);
+                log.warn("Refresh-token reuse detected for user {} in family {}",
+                        storedToken.getUser().getId(), storedToken.getTokenFamilyId());
             }
-
             throw new BadRequestException("Refresh token has expired or been revoked");
         }
 
@@ -238,7 +235,7 @@ public class AuthServiceImpl implements AuthService {
         storedToken.setReplacedAt(LocalDateTime.now());
         refreshTokenRepository.save(storedToken);
 
-        saveRefreshToken(userPrincipal, newRefreshToken, false);
+        saveRefreshToken(userPrincipal, newRefreshToken, storedToken.getTokenFamilyId());
 
         return AuthResponse.builder()
                 .accessToken(newAccessToken)
@@ -310,37 +307,28 @@ public class AuthServiceImpl implements AuthService {
                 return;
             }
 
-            java.util.Date expiration =
-                    jwtTokenProvider.getExpirationFromToken(token);
-
+            java.util.Date expiration = jwtTokenProvider.getExpirationFromToken(token);
             String tokenId = jwtTokenProvider.getTokenId(token);
 
             if (expiration != null && tokenId != null && !tokenId.isBlank()) {
-                tokenBlacklistService.blacklist(
-                        tokenId,
-                        expiration.toInstant()
-                );
+                tokenBlacklistService.blacklist(tokenId, expiration.toInstant());
             }
 
-            Long userId = jwtTokenProvider.getUserIdFromToken(token);
-            User user = userRepository.findById(userId).orElse(null);
-
-            if (user != null) {
-                refreshTokenRepository.revokeAllByUser(user);
-                log.info("User {} logged out", user.getEmail());
-            }
+            // The controller separately calls revokeRefreshToken(refreshCookie).
+            // Do not revoke all token families: other devices remain signed in.
+            log.info("Access token logged out");
         } catch (Exception exception) {
-            log.warn("Logout called with invalid token: {}",
-                    exception.getMessage());
+            log.warn("Logout called with invalid token: {}", exception.getMessage());
         }
     }
 
     // ===== PRIVATE HELPERS =====
 
+    // AuthServiceImpl.java — save OTP hash, not the OTP itself
     private void saveOtp(User user, String code, String purpose) {
         OtpCode otpCode = OtpCode.builder()
                 .user(user)
-                .code(code)
+                .codeHash(hashOtp(user, purpose, code))
                 .purpose(purpose)
                 .expiresAt(LocalDateTime.now().plusMinutes(otpExpirationMinutes))
                 .used(false)
@@ -348,27 +336,30 @@ public class AuthServiceImpl implements AuthService {
         otpCodeRepository.save(otpCode);
     }
 
+    private String hashOtp(User user, String purpose, String code) {
+        return TokenHashUtil.hmacSha256(
+                otpPepper,
+                "otp:" + user.getId() + ":" + purpose + ":" + code
+        );
+    }
+
+// AuthServiceImpl.java — per-device token families
+
     private void saveRefreshToken(UserPrincipal userPrincipal, String token) {
-        saveRefreshToken(userPrincipal, token, true);
+        saveRefreshToken(userPrincipal, token, UUID.randomUUID());
     }
 
     private void saveRefreshToken(UserPrincipal userPrincipal,
                                   String token,
-                                  boolean revokeExisting) {
+                                  UUID tokenFamilyId) {
         User user = userRepository.findById(userPrincipal.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
-        if (revokeExisting) {
-            // New login invalidates old sessions.
-            refreshTokenRepository.revokeAllByUser(user);
-        }
-
         RefreshToken refreshToken = RefreshToken.builder()
                 .user(user)
-                .token(TokenHashUtil.sha256(token))
-                .tokenFamilyId(UUID.randomUUID())
-                .expiresAt(LocalDateTime.now()
-                        .plusSeconds(refreshTokenExpiration / 1000))
+                .token(TokenHashUtil.sha256(token)) // never plaintext
+                .tokenFamilyId(tokenFamilyId == null ? UUID.randomUUID() : tokenFamilyId)
+                .expiresAt(LocalDateTime.now().plusSeconds(refreshTokenExpiration / 1000))
                 .revoked(false)
                 .build();
 
@@ -387,9 +378,12 @@ public class AuthServiceImpl implements AuthService {
             throw new OtpException("Invalid or expired code");
         }
 
-        boolean match = submitted != null && MessageDigest.isEqual(
-                otp.getCode().getBytes(StandardCharsets.UTF_8),
-                submitted.getBytes(StandardCharsets.UTF_8));
+        String submittedHash = submitted == null ? null : hashOtp(user, purpose, submitted);
+
+        boolean match = submittedHash != null && MessageDigest.isEqual(
+                otp.getCodeHash().getBytes(StandardCharsets.UTF_8),
+                submittedHash.getBytes(StandardCharsets.UTF_8)
+        );
 
         if (!match) {
             otp.setAttempts(otp.getAttempts() + 1);
@@ -400,6 +394,16 @@ public class AuthServiceImpl implements AuthService {
             throw new OtpException("Invalid or expired code");
         }
         return otp;
+    }
+
+    private void revokeFamily(RefreshToken token) {
+        if (token.getTokenFamilyId() == null) {
+            // Defensive fallback for pre-family rows.
+            refreshTokenRepository.revokeAllByUser(token.getUser());
+            return;
+        }
+        refreshTokenRepository.revokeFamily(
+                token.getUser(), token.getTokenFamilyId());
     }
 
     private UserResponse mapToUserResponse(User user) {

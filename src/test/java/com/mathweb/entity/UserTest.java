@@ -170,12 +170,12 @@ class UserTest {
                     .build();
 
             OtpCode otp1 = OtpCode.builder()
-                    .code("123456")
+                    .codeHash("a".repeat(64))
                     .user(user)
                     .build();
 
             OtpCode otp2 = OtpCode.builder()
-                    .code("654321")
+                    .codeHash("b".repeat(64))
                     .user(user)
                     .build();
 

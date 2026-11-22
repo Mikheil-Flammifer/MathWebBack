@@ -14,8 +14,6 @@ import java.util.Optional;
 @Repository
 public interface OtpCodeRepository extends JpaRepository<OtpCode, Long> {
 
-    Optional<OtpCode> findByUserAndCodeAndUsedFalse(User user, String code);
-
     Optional<OtpCode> findTopByUserAndPurposeOrderByCreatedAtDesc(
             User user, String purpose);
 

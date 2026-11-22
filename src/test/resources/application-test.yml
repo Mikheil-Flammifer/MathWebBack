@@ -30,6 +30,9 @@ file:
     videos-path: ./target/test-uploads/videos
     images-path: ./target/test-uploads/images
 
+otp:
+  pepper: test-only-otp-pepper-that-is-at-least-32-bytes
+
 
 paddle:
   webhook-secret: test-webhook-secret

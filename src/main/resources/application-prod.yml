@@ -42,6 +42,10 @@ file:
     videos-path: ${FILE_UPLOAD_PATH}/videos
     images-path: ${FILE_UPLOAD_PATH}/images
 
+
+otp:
+  pepper: ${OTP_PEPPER}
+
 paddle:
   webhook-secret: ${PADDLE_WEBHOOK_SECRET}
   api-key: ${PADDLE_API_KEY}
