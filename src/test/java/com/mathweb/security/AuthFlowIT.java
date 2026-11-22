@@ -182,11 +182,9 @@ class AuthFlowIT extends AbstractIntegrationTest {
             String email = uniqueEmail();
 
             register(email)
-                    .andExpect(status().isCreated())
+                    .andExpect(status().isAccepted())
                     .andExpect(jsonPath("$.success").value(true))
-                    .andExpect(jsonPath("$.data.email").value(email))
-                    .andExpect(jsonPath("$.data.role").value("STUDENT"))
-                    .andExpect(jsonPath("$.data.emailVerified").value(false));
+                    .andExpect(jsonPath("$.data").doesNotExist());
 
             User saved = userRepository.findByEmail(email).orElseThrow();
             assertThat(saved.getEmailVerified()).isFalse();
@@ -198,17 +196,19 @@ class AuthFlowIT extends AbstractIntegrationTest {
         }
 
         @Test
-        void register_duplicateEmail_isRejected() throws Exception {
+        void register_duplicateEmail_hasTheSameGenericResponse() throws Exception {
             String email = uniqueEmail();
             createVerifiedUser(email, PASSWORD);
 
-            register(email).andExpect(status().isBadRequest());
+            register(email)
+                    .andExpect(status().isAccepted())
+                    .andExpect(jsonPath("$.data").doesNotExist());
         }
 
         @Test
         void register_storesEmailLowercased() throws Exception {
             String email = uniqueEmail();
-            register(email.toUpperCase()).andExpect(status().isCreated());
+            register(email.toUpperCase()).andExpect(status().isAccepted());
 
             assertThat(userRepository.findByEmail(email)).isPresent();
         }
@@ -216,7 +216,7 @@ class AuthFlowIT extends AbstractIntegrationTest {
         @Test
         void login_beforeVerification_isRejected_andSetsNoCookies() throws Exception {
             String email = uniqueEmail();
-            register(email).andExpect(status().isCreated());
+            register(email).andExpect(status().isAccepted());
 
             MvcResult result = login(email, PASSWORD);
 
@@ -230,7 +230,7 @@ class AuthFlowIT extends AbstractIntegrationTest {
         @Test
         void verifyOtp_withCorrectCode_marksUserVerified_andBurnsTheCode() throws Exception {
             String email = uniqueEmail();
-            register(email).andExpect(status().isCreated());
+            register(email).andExpect(status().isAccepted());
             String code = latestOtp(email, "EMAIL_VERIFICATION");
 
             verifyOk(email, code);
@@ -245,7 +245,7 @@ class AuthFlowIT extends AbstractIntegrationTest {
         @Test
         void verifyOtp_withWrongCode_countsTheAttempt_andKeepsUserUnverified() throws Exception {
             String email = uniqueEmail();
-            register(email).andExpect(status().isCreated());
+            register(email).andExpect(status().isAccepted());
             String real = latestOtp(email, "EMAIL_VERIFICATION");
 
             assertThat(verify(email, wrongCode(real)).andReturn().getResponse().getStatus())
@@ -260,7 +260,7 @@ class AuthFlowIT extends AbstractIntegrationTest {
         @Test
         void verifyOtp_fiveWrongAttempts_burnsTheCode_evenForTheCorrectOneAfterwards() throws Exception {
             String email = uniqueEmail();
-            register(email).andExpect(status().isCreated());
+            register(email).andExpect(status().isAccepted());
             String real = latestOtp(email, "EMAIL_VERIFICATION");
 
             for (int i = 0; i < 5; i++) {
@@ -281,7 +281,7 @@ class AuthFlowIT extends AbstractIntegrationTest {
         @Test
         void verifyOtp_expiredCode_isRejected() throws Exception {
             String email = uniqueEmail();
-            register(email).andExpect(status().isCreated());
+            register(email).andExpect(status().isAccepted());
             OtpCode otp = latestOtpEntity(email, "EMAIL_VERIFICATION");
             otp.setExpiresAt(LocalDateTime.now().minusMinutes(1));
             otpCodeRepository.save(otp);
@@ -298,7 +298,7 @@ class AuthFlowIT extends AbstractIntegrationTest {
             MvcResult unknown = verify(uniqueEmail(), "123456").andReturn();
 
             String email = uniqueEmail();
-            register(email).andExpect(status().isCreated());
+            register(email).andExpect(status().isAccepted());
             MvcResult wrong = verify(email, wrongCode(latestOtp(email, "EMAIL_VERIFICATION"))).andReturn();
 
             // Same status and same message: no user enumeration through the verify endpoint
@@ -319,7 +319,7 @@ class AuthFlowIT extends AbstractIntegrationTest {
         void fullFlow_register_verify_login() throws Exception {
             String email = uniqueEmail();
 
-            register(email).andExpect(status().isCreated());
+            register(email).andExpect(status().isAccepted());
             verifyOk(email, latestOtp(email, "EMAIL_VERIFICATION"));
 
             MvcResult result = login(email, PASSWORD);
@@ -660,7 +660,7 @@ class AuthFlowIT extends AbstractIntegrationTest {
         @Test
         void emailVerificationCode_cannotBeUsedToResetAPassword() throws Exception {
             String email = uniqueEmail();
-            register(email).andExpect(status().isCreated());
+            register(email).andExpect(status().isAccepted());
             String verificationCode = latestOtp(email, "EMAIL_VERIFICATION");
 
             assertThat(postJson("/api/auth/reset-password", Map.of(

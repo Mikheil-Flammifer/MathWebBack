@@ -88,23 +88,30 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     @Transactional
-    public UserResponse register(RegisterRequest request) {
-        rateLimitService.checkOtpRate(request.getEmail());
+    public void register(RegisterRequest request) {
+        String email = request.getEmail().trim().toLowerCase();
 
-        if (userRepository.existsByEmail(request.getEmail())) {
-            throw new BadRequestException("Email is already registered");
+        rateLimitService.checkOtpRate(email);
+
+        // Generic response: do not reveal whether the email already exists.
+        if (userRepository.existsByEmail(email)) {
+            log.info("Registration requested for an existing account");
+            return;
         }
 
         String firstName = SanitizationUtil.sanitizeText(request.getFirstName());
         String lastName = SanitizationUtil.sanitizeText(request.getLastName());
+
         if (firstName.length() < 2 || lastName.length() < 2) {
-            throw new BadRequestException("First and last name must be at least 2 characters");
+            throw new BadRequestException(
+                    "First and last name must be at least 2 characters"
+            );
         }
 
         User user = User.builder()
                 .firstName(firstName)
                 .lastName(lastName)
-                .email(request.getEmail().toLowerCase())
+                .email(email)
                 .passwordHash(passwordEncoder.encode(request.getPassword()))
                 .role(Role.STUDENT)
                 .emailVerified(false)
@@ -113,16 +120,18 @@ public class AuthServiceImpl implements AuthService {
 
         userRepository.save(user);
 
-        // Generate and send OTP
         String otp = OtpUtil.generateOtp();
         saveOtp(user, otp, "EMAIL_VERIFICATION");
-        emailService.sendOtpEmail(user.getEmail(), user.getFirstName(), otp, "EMAIL_VERIFICATION");
+
+        emailService.sendOtpEmail(
+                user.getEmail(),
+                user.getFirstName(),
+                otp,
+                "EMAIL_VERIFICATION"
+        );
 
         log.info("User registered: {}", user.getEmail());
-
-        return mapToUserResponse(user);
     }
-
     @Override
     @Transactional(noRollbackFor = OtpException.class)
     public void verifyOtp(VerifyOtpRequest request) {
@@ -146,20 +155,37 @@ public class AuthServiceImpl implements AuthService {
     @Override
     @Transactional
     public void resendOtp(ResendOtpRequest request) {
-        rateLimitService.checkOtpRate(request.getEmail());
+        String email = request.getEmail().trim().toLowerCase();
 
-        User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        rateLimitService.checkOtpRate(email);
 
-        // Invalidate all existing OTPs for this purpose
-        otpCodeRepository.invalidateAllByUserAndPurpose(user, request.getPurpose());
+        User user = userRepository.findByEmail(email).orElse(null);
 
-        // Generate and send new OTP
+        // Do not reveal whether an account exists.
+        // A verified user does not need another email-verification OTP.
+        if (user == null
+                || ("EMAIL_VERIFICATION".equals(request.getPurpose())
+                && Boolean.TRUE.equals(user.getEmailVerified()))) {
+            return;
+        }
+
+        otpCodeRepository.invalidateAllByUserAndPurpose(
+                user,
+                request.getPurpose()
+        );
+
         String otp = OtpUtil.generateOtp();
-        saveOtp(user, otp, request.getPurpose());
-        emailService.sendOtpEmail(user.getEmail(), user.getFirstName(), otp, request.getPurpose());
 
-        log.info("OTP resent for user: {}", user.getEmail());
+        saveOtp(user, otp, request.getPurpose());
+
+        emailService.sendOtpEmail(
+                user.getEmail(),
+                user.getFirstName(),
+                otp,
+                request.getPurpose()
+        );
+
+        log.info("OTP resend was queued for user {}", user.getId());
     }
 
     @Override

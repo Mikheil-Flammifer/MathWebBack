@@ -10,6 +10,7 @@ import com.mathweb.service.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,13 +28,21 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<ApiResponse<UserResponse>> register(
-            @Valid @RequestBody RegisterRequest request) {
-        UserResponse user = authService.register(request);
-        return ResponseEntity.status(HttpStatus.CREATED)
+    public ResponseEntity<ApiResponse<Void>> register(
+            @Valid @RequestBody RegisterRequest request
+    ) {
+        try {
+            authService.register(request);
+        } catch (DataIntegrityViolationException ignored) {
+            // A concurrent request may have created the same email first.
+            // Return the same generic response to avoid email enumeration.
+        }
+
+        return ResponseEntity.status(HttpStatus.ACCEPTED)
                 .body(ApiResponse.success(
-                        "Registration successful. Please check your email for OTP verification.",
-                        user));
+                        "If the address can be registered, "
+                                + "an e-mail with next steps will be sent."
+                ));
     }
 
     @PostMapping("/verify-otp")
@@ -45,9 +54,15 @@ public class AuthController {
 
     @PostMapping("/resend-otp")
     public ResponseEntity<ApiResponse<Void>> resendOtp(
-            @Valid @RequestBody ResendOtpRequest request) {
+            @Valid @RequestBody ResendOtpRequest request
+    ) {
         authService.resendOtp(request);
-        return ResponseEntity.ok(ApiResponse.success("OTP sent successfully"));
+
+        return ResponseEntity.accepted()
+                .body(ApiResponse.success(
+                        "If an eligible account exists, "
+                                + "an e-mail with next steps will be sent."
+                ));
     }
 
     @PostMapping("/login")

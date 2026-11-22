@@ -133,7 +133,7 @@ class AuthServiceImplTest {
         request.setEmail("JOHN@example.com");
         request.setPassword("password123");
 
-        when(userRepository.existsByEmail("JOHN@example.com")).thenReturn(false);
+        when(userRepository.existsByEmail("john@example.com")).thenReturn(false);
         when(passwordEncoder.encode("password123")).thenReturn("encoded-password");
         when(userRepository.save(any(User.class))).thenAnswer(invocation -> {
             User saved = invocation.getArgument(0);
@@ -169,18 +169,17 @@ class AuthServiceImplTest {
     }
 
     @Test
-    void register_throwsWhenEmailAlreadyExists() {
+    void register_doesNotRevealWhenEmailAlreadyExists() {
         RegisterRequest request = new RegisterRequest();
         request.setFirstName("John");
         request.setLastName("Doe");
         request.setEmail("john@example.com");
         request.setPassword("password123");
 
-        when(userRepository.existsByEmail("john@example.com")).thenReturn(true);
+        when(userRepository.existsByEmail("john@example.com"))
+                .thenReturn(true);
 
-        assertThatThrownBy(() -> authService.register(request))
-                .isInstanceOf(BadRequestException.class)
-                .hasMessage("Email is already registered");
+        authService.register(request);
 
         verify(userRepository, never()).save(any());
     }
@@ -253,6 +252,8 @@ class AuthServiceImplTest {
         ResendOtpRequest request = new ResendOtpRequest();
         request.setEmail("john@example.com");
         request.setPurpose("EMAIL_VERIFICATION");
+
+        user.setEmailVerified(false);
 
         when(userRepository.findByEmail("john@example.com"))
                 .thenReturn(Optional.of(user));

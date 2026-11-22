@@ -38,6 +38,20 @@ otp:
 
 app:
   name: MathWeb
+
+  mail:
+    outbox-encryption-key: ${MAIL_OUTBOX_ENCRYPTION_KEY}
+    outbox:
+      enabled: ${MAIL_OUTBOX_ENABLED:true}
+      poll-ms: ${MAIL_OUTBOX_POLL_MS:5000}
+      batch-size: ${MAIL_OUTBOX_BATCH_SIZE:20}
+      max-attempts: ${MAIL_OUTBOX_MAX_ATTEMPTS:5}
+      lease-seconds: ${MAIL_OUTBOX_LEASE_SECONDS:120}
+      executor:
+        core-pool-size: ${MAIL_OUTBOX_CORE_POOL_SIZE:2}
+        max-pool-size: ${MAIL_OUTBOX_MAX_POOL_SIZE:4}
+        queue-capacity: ${MAIL_OUTBOX_QUEUE_CAPACITY:200}
+
   max-comment-depth: 10
   max-problem-attempts: 3
   cookies:

@@ -5,7 +5,7 @@ import com.mathweb.dto.response.AuthResponse;
 import com.mathweb.dto.response.UserResponse;
 
 public interface AuthService {
-    UserResponse register(RegisterRequest request);
+    void register(RegisterRequest request);
     void verifyOtp(VerifyOtpRequest request);
     void resendOtp(ResendOtpRequest request);
     AuthResponse login(LoginRequest request);
