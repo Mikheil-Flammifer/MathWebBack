@@ -1,0 +1,18 @@
+{
+  "Rules": [
+    {
+      "ID": "expire-database-backups-after-five-days",
+      "Status": "Enabled",
+      "Filter": {},
+      "Expiration": {
+        "Days": 5
+      },
+      "NoncurrentVersionExpiration": {
+        "NoncurrentDays": 1
+      },
+      "AbortIncompleteMultipartUpload": {
+        "DaysAfterInitiation": 1
+      }
+    }
+  ]
+}

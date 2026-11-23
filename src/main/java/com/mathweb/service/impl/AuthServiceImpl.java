@@ -10,6 +10,7 @@ import com.mathweb.enums.Role;
 import com.mathweb.exception.BadRequestException;
 import com.mathweb.exception.OtpException;
 import com.mathweb.exception.ResourceNotFoundException;
+import com.mathweb.observability.OperationalMetrics;
 import com.mathweb.repository.OtpCodeRepository;
 import com.mathweb.repository.RefreshTokenRepository;
 import com.mathweb.repository.UserRepository;
@@ -18,30 +19,32 @@ import com.mathweb.security.UserPrincipal;
 import com.mathweb.service.AuthService;
 import com.mathweb.service.EmailService;
 import com.mathweb.service.FileStorageService;
-import com.mathweb.util.TokenHashUtil;
 import com.mathweb.util.OtpUtil;
 import com.mathweb.util.SanitizationUtil;
+import com.mathweb.util.TokenHashUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
+import java.time.LocalDateTime;
 import java.util.UUID;
-
 
 @Service
 public class AuthServiceImpl implements AuthService {
+
     private static final int MAX_OTP_ATTEMPTS = 5;
 
-    private static final Logger log = LoggerFactory.getLogger(AuthServiceImpl.class);
+    private static final Logger log =
+            LoggerFactory.getLogger(AuthServiceImpl.class);
 
     private final UserRepository userRepository;
     private final OtpCodeRepository otpCodeRepository;
@@ -53,7 +56,7 @@ public class AuthServiceImpl implements AuthService {
     private final TokenBlacklistService tokenBlacklistService;
     private final RateLimitService rateLimitService;
     private final FileStorageService fileStorageService;
-
+    private final OperationalMetrics operationalMetrics;
 
     @Value("${otp.expiration-minutes}")
     private int otpExpirationMinutes;
@@ -64,16 +67,19 @@ public class AuthServiceImpl implements AuthService {
     @Value("${otp.pepper}")
     private String otpPepper;
 
-    public AuthServiceImpl(UserRepository userRepository,
-                           OtpCodeRepository otpCodeRepository,
-                           RefreshTokenRepository refreshTokenRepository,
-                           PasswordEncoder passwordEncoder,
-                           JwtTokenProvider jwtTokenProvider,
-                           AuthenticationManager authenticationManager,
-                           EmailService emailService,
-                           TokenBlacklistService tokenBlacklistService,
-                           RateLimitService rateLimitService,
-                           FileStorageService fileStorageService) {
+    public AuthServiceImpl(
+            UserRepository userRepository,
+            OtpCodeRepository otpCodeRepository,
+            RefreshTokenRepository refreshTokenRepository,
+            PasswordEncoder passwordEncoder,
+            JwtTokenProvider jwtTokenProvider,
+            AuthenticationManager authenticationManager,
+            EmailService emailService,
+            TokenBlacklistService tokenBlacklistService,
+            RateLimitService rateLimitService,
+            FileStorageService fileStorageService,
+            OperationalMetrics operationalMetrics
+    ) {
         this.userRepository = userRepository;
         this.otpCodeRepository = otpCodeRepository;
         this.refreshTokenRepository = refreshTokenRepository;
@@ -84,6 +90,7 @@ public class AuthServiceImpl implements AuthService {
         this.tokenBlacklistService = tokenBlacklistService;
         this.rateLimitService = rateLimitService;
         this.fileStorageService = fileStorageService;
+        this.operationalMetrics = operationalMetrics;
     }
 
     @Override
@@ -93,14 +100,15 @@ public class AuthServiceImpl implements AuthService {
 
         rateLimitService.checkOtpRate(email);
 
-        // Generic response: do not reveal whether the email already exists.
         if (userRepository.existsByEmail(email)) {
             log.info("Registration requested for an existing account");
             return;
         }
 
-        String firstName = SanitizationUtil.sanitizeText(request.getFirstName());
-        String lastName = SanitizationUtil.sanitizeText(request.getLastName());
+        String firstName =
+                SanitizationUtil.sanitizeText(request.getFirstName());
+        String lastName =
+                SanitizationUtil.sanitizeText(request.getLastName());
 
         if (firstName.length() < 2 || lastName.length() < 2) {
             throw new BadRequestException(
@@ -130,24 +138,36 @@ public class AuthServiceImpl implements AuthService {
                 "EMAIL_VERIFICATION"
         );
 
-        log.info("User registered: {}", user.getEmail());
+        log.info("User registered: id={}", user.getId());
     }
+
     @Override
     @Transactional(noRollbackFor = OtpException.class)
     public void verifyOtp(VerifyOtpRequest request) {
         String email = request.getEmail().trim().toLowerCase();
-        rateLimitService.checkOtpVerificationRate(email);
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new OtpException("Invalid or expired code"));
 
-        OtpCode otpCode = checkCode(user, "EMAIL_VERIFICATION", request.getCode());
+        rateLimitService.checkOtpVerificationRate(email);
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() ->
+                        new OtpException("Invalid or expired code"));
+
+        OtpCode otpCode = checkCode(
+                user,
+                "EMAIL_VERIFICATION",
+                request.getCode()
+        );
 
         otpCode.setUsed(true);
         otpCodeRepository.save(otpCode);
 
         user.setEmailVerified(true);
         userRepository.save(user);
-        emailService.sendWelcomeEmail(user.getEmail(), user.getFirstName());
+
+        emailService.sendWelcomeEmail(
+                user.getEmail(),
+                user.getFirstName()
+        );
 
         log.info("Email verified for user {}", user.getId());
     }
@@ -161,8 +181,6 @@ public class AuthServiceImpl implements AuthService {
 
         User user = userRepository.findByEmail(email).orElse(null);
 
-        // Do not reveal whether an account exists.
-        // A verified user does not need another email-verification OTP.
         if (user == null
                 || ("EMAIL_VERIFICATION".equals(request.getPurpose())
                 && Boolean.TRUE.equals(user.getEmailVerified()))) {
@@ -191,32 +209,48 @@ public class AuthServiceImpl implements AuthService {
     @Override
     @Transactional
     public AuthResponse login(LoginRequest request) {
-        rateLimitService.checkLoginRate(request.getEmail().toLowerCase());
+        String email = request.getEmail().toLowerCase();
 
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getEmail().toLowerCase(),
-                        request.getPassword()
-                )
-        );
+        rateLimitService.checkLoginRate(email);
 
-        UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
-        rateLimitService.resetLoginRate(request.getEmail().toLowerCase());
+        Authentication authentication;
 
-        if (!userPrincipal.isEmailVerified()) {
-            throw new BadRequestException("Please verify your email before logging in");
+        try {
+            authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            email,
+                            request.getPassword()
+                    )
+            );
+        } catch (AuthenticationException exception) {
+            operationalMetrics.recordAuthenticationFailure();
+            throw exception;
         }
 
-        String accessToken = jwtTokenProvider.generateAccessToken(userPrincipal);
-        String refreshToken = jwtTokenProvider.generateRefreshToken(userPrincipal);
+        UserPrincipal userPrincipal =
+                (UserPrincipal) authentication.getPrincipal();
 
-        // Save refresh token
+        rateLimitService.resetLoginRate(email);
+
+        if (!userPrincipal.isEmailVerified()) {
+            throw new BadRequestException(
+                    "Please verify your email before logging in"
+            );
+        }
+
+        String accessToken =
+                jwtTokenProvider.generateAccessToken(userPrincipal);
+
+        String refreshToken =
+                jwtTokenProvider.generateRefreshToken(userPrincipal);
+
         saveRefreshToken(userPrincipal, refreshToken);
 
         User user = userRepository.findById(userPrincipal.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("User not found"));
 
-        log.info("User logged in: {}", user.getEmail());
+        log.info("User logged in: id={}", user.getId());
 
         return AuthResponse.builder()
                 .accessToken(accessToken)
@@ -229,19 +263,29 @@ public class AuthServiceImpl implements AuthService {
     @Override
     @Transactional
     public AuthResponse refreshToken(RefreshTokenRequest request) {
-        String tokenHash = TokenHashUtil.sha256(request.getRefreshToken());
+        String tokenHash =
+                TokenHashUtil.sha256(request.getRefreshToken());
 
         RefreshToken storedToken = refreshTokenRepository
                 .findByTokenForUpdate(tokenHash)
-                .orElseThrow(() -> new BadRequestException("Invalid refresh token"));
+                .orElseThrow(() ->
+                        new BadRequestException("Invalid refresh token"));
 
         if (!storedToken.isValid()) {
-            if (!storedToken.isExpired() && Boolean.TRUE.equals(storedToken.getRevoked())) {
+            if (!storedToken.isExpired()
+                    && Boolean.TRUE.equals(storedToken.getRevoked())) {
                 revokeFamily(storedToken);
-                log.warn("Refresh-token reuse detected for user {} in family {}",
-                        storedToken.getUser().getId(), storedToken.getTokenFamilyId());
+
+                log.warn(
+                        "Refresh-token reuse detected for user {} in family {}",
+                        storedToken.getUser().getId(),
+                        storedToken.getTokenFamilyId()
+                );
             }
-            throw new BadRequestException("Refresh token has expired or been revoked");
+
+            throw new BadRequestException(
+                    "Refresh token has expired or been revoked"
+            );
         }
 
         User user = storedToken.getUser();
@@ -253,15 +297,23 @@ public class AuthServiceImpl implements AuthService {
 
         UserPrincipal userPrincipal = UserPrincipal.fromUser(user);
 
-        String newAccessToken = jwtTokenProvider.generateAccessToken(userPrincipal);
-        String newRefreshToken = jwtTokenProvider.generateRefreshToken(userPrincipal);
+        String newAccessToken =
+                jwtTokenProvider.generateAccessToken(userPrincipal);
+
+        String newRefreshToken =
+                jwtTokenProvider.generateRefreshToken(userPrincipal);
 
         storedToken.setRevoked(true);
         storedToken.setUsedAt(LocalDateTime.now());
         storedToken.setReplacedAt(LocalDateTime.now());
+
         refreshTokenRepository.save(storedToken);
 
-        saveRefreshToken(userPrincipal, newRefreshToken, storedToken.getTokenFamilyId());
+        saveRefreshToken(
+                userPrincipal,
+                newRefreshToken,
+                storedToken.getTokenFamilyId()
+        );
 
         return AuthResponse.builder()
                 .accessToken(newAccessToken)
@@ -275,14 +327,30 @@ public class AuthServiceImpl implements AuthService {
     @Transactional
     public void forgotPassword(ForgotPasswordRequest request) {
         String email = request.getEmail().trim().toLowerCase();
+
         rateLimitService.checkOtpRate(email);
 
         userRepository.findByEmail(email).ifPresent(user -> {
-            otpCodeRepository.invalidateAllByUserAndPurpose(user, "PASSWORD_RESET");
+            otpCodeRepository.invalidateAllByUserAndPurpose(
+                    user,
+                    "PASSWORD_RESET"
+            );
+
             String otp = OtpUtil.generateOtp();
+
             saveOtp(user, otp, "PASSWORD_RESET");
-            emailService.sendOtpEmail(user.getEmail(), user.getFirstName(), otp, "PASSWORD_RESET");
-            log.info("Password reset OTP sent for user {}", user.getId());
+
+            emailService.sendOtpEmail(
+                    user.getEmail(),
+                    user.getFirstName(),
+                    otp,
+                    "PASSWORD_RESET"
+            );
+
+            log.info(
+                    "Password reset OTP sent for user {}",
+                    user.getId()
+            );
         });
     }
 
@@ -290,16 +358,26 @@ public class AuthServiceImpl implements AuthService {
     @Transactional(noRollbackFor = OtpException.class)
     public void resetPassword(ResetPasswordRequest request) {
         String email = request.getEmail().trim().toLowerCase();
-        rateLimitService.checkPasswordResetRate(email);
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new OtpException("Invalid or expired code"));
 
-        OtpCode otpCode = checkCode(user, "PASSWORD_RESET", request.getCode());
+        rateLimitService.checkPasswordResetRate(email);
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() ->
+                        new OtpException("Invalid or expired code"));
+
+        OtpCode otpCode = checkCode(
+                user,
+                "PASSWORD_RESET",
+                request.getCode()
+        );
 
         otpCode.setUsed(true);
         otpCodeRepository.save(otpCode);
 
-        user.setPasswordHash(passwordEncoder.encode(request.getNewPassword()));
+        user.setPasswordHash(
+                passwordEncoder.encode(request.getNewPassword())
+        );
+
         userRepository.save(user);
         refreshTokenRepository.revokeAllByUser(user);
 
@@ -333,32 +411,41 @@ public class AuthServiceImpl implements AuthService {
                 return;
             }
 
-            java.util.Date expiration = jwtTokenProvider.getExpirationFromToken(token);
+            java.util.Date expiration =
+                    jwtTokenProvider.getExpirationFromToken(token);
+
             String tokenId = jwtTokenProvider.getTokenId(token);
 
-            if (expiration != null && tokenId != null && !tokenId.isBlank()) {
-                tokenBlacklistService.blacklist(tokenId, expiration.toInstant());
+            if (expiration != null
+                    && tokenId != null
+                    && !tokenId.isBlank()) {
+                tokenBlacklistService.blacklist(
+                        tokenId,
+                        expiration.toInstant()
+                );
             }
 
-            // The controller separately calls revokeRefreshToken(refreshCookie).
-            // Do not revoke all token families: other devices remain signed in.
             log.info("Access token logged out");
         } catch (Exception exception) {
-            log.warn("Logout called with invalid token: {}", exception.getMessage());
+            log.warn(
+                    "Logout called with invalid token: {}",
+                    exception.getMessage()
+            );
         }
     }
 
-    // ===== PRIVATE HELPERS =====
-
-    // AuthServiceImpl.java — save OTP hash, not the OTP itself
     private void saveOtp(User user, String code, String purpose) {
         OtpCode otpCode = OtpCode.builder()
                 .user(user)
                 .codeHash(hashOtp(user, purpose, code))
                 .purpose(purpose)
-                .expiresAt(LocalDateTime.now().plusMinutes(otpExpirationMinutes))
+                .expiresAt(
+                        LocalDateTime.now()
+                                .plusMinutes(otpExpirationMinutes)
+                )
                 .used(false)
                 .build();
+
         otpCodeRepository.save(otpCode);
     }
 
@@ -369,34 +456,52 @@ public class AuthServiceImpl implements AuthService {
         );
     }
 
-// AuthServiceImpl.java — per-device token families
-
-    private void saveRefreshToken(UserPrincipal userPrincipal, String token) {
+    private void saveRefreshToken(
+            UserPrincipal userPrincipal,
+            String token
+    ) {
         saveRefreshToken(userPrincipal, token, UUID.randomUUID());
     }
 
-    private void saveRefreshToken(UserPrincipal userPrincipal,
-                                  String token,
-                                  UUID tokenFamilyId) {
+    private void saveRefreshToken(
+            UserPrincipal userPrincipal,
+            String token,
+            UUID tokenFamilyId
+    ) {
         User user = userRepository.findById(userPrincipal.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("User not found"));
 
         RefreshToken refreshToken = RefreshToken.builder()
                 .user(user)
-                .token(TokenHashUtil.sha256(token)) // never plaintext
-                .tokenFamilyId(tokenFamilyId == null ? UUID.randomUUID() : tokenFamilyId)
-                .expiresAt(LocalDateTime.now().plusSeconds(refreshTokenExpiration / 1000))
+                .token(TokenHashUtil.sha256(token))
+                .tokenFamilyId(
+                        tokenFamilyId == null
+                                ? UUID.randomUUID()
+                                : tokenFamilyId
+                )
+                .expiresAt(
+                        LocalDateTime.now()
+                                .plusSeconds(refreshTokenExpiration / 1000)
+                )
                 .revoked(false)
                 .build();
 
         refreshTokenRepository.save(refreshToken);
     }
 
-    /** Checks the newest unused code for this purpose; counts failures and burns the code after 5. */
-    private OtpCode checkCode(User user, String purpose, String submitted) {
+    private OtpCode checkCode(
+            User user,
+            String purpose,
+            String submitted
+    ) {
         OtpCode otp = otpCodeRepository
-                .findTopByUserAndPurposeAndUsedFalseOrderByCreatedAtDesc(user, purpose)
-                .orElseThrow(() -> new OtpException("Invalid or expired code"));
+                .findTopByUserAndPurposeAndUsedFalseOrderByCreatedAtDesc(
+                        user,
+                        purpose
+                )
+                .orElseThrow(() ->
+                        new OtpException("Invalid or expired code"));
 
         if (otp.isExpired() || otp.getAttempts() >= MAX_OTP_ATTEMPTS) {
             otp.setUsed(true);
@@ -404,32 +509,41 @@ public class AuthServiceImpl implements AuthService {
             throw new OtpException("Invalid or expired code");
         }
 
-        String submittedHash = submitted == null ? null : hashOtp(user, purpose, submitted);
+        String submittedHash = submitted == null
+                ? null
+                : hashOtp(user, purpose, submitted);
 
-        boolean match = submittedHash != null && MessageDigest.isEqual(
-                otp.getCodeHash().getBytes(StandardCharsets.UTF_8),
+        boolean match = submittedHash != null
+                && MessageDigest.isEqual(
+                otp.getCodeHash()
+                        .getBytes(StandardCharsets.UTF_8),
                 submittedHash.getBytes(StandardCharsets.UTF_8)
         );
 
         if (!match) {
             otp.setAttempts(otp.getAttempts() + 1);
+
             if (otp.getAttempts() >= MAX_OTP_ATTEMPTS) {
                 otp.setUsed(true);
             }
+
             otpCodeRepository.save(otp);
             throw new OtpException("Invalid or expired code");
         }
+
         return otp;
     }
 
     private void revokeFamily(RefreshToken token) {
         if (token.getTokenFamilyId() == null) {
-            // Defensive fallback for pre-family rows.
             refreshTokenRepository.revokeAllByUser(token.getUser());
             return;
         }
+
         refreshTokenRepository.revokeFamily(
-                token.getUser(), token.getTokenFamilyId());
+                token.getUser(),
+                token.getTokenFamilyId()
+        );
     }
 
     private UserResponse mapToUserResponse(User user) {
@@ -441,7 +555,9 @@ public class AuthServiceImpl implements AuthService {
                 .role(user.getRole())
                 .emailVerified(user.getEmailVerified())
                 .active(user.getActive())
-                .avatarUrl(fileStorageService.getFileUrl(user.getAvatarUrl()))
+                .avatarUrl(
+                        fileStorageService.getFileUrl(user.getAvatarUrl())
+                )
                 .hasActiveSubscription(user.hasActiveSubscription())
                 .createdAt(user.getCreatedAt())
                 .build();

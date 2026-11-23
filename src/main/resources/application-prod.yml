@@ -1,4 +1,3 @@
-
 spring:
   datasource:
     url: ${DB_URL}
@@ -8,6 +7,9 @@ spring:
       maximum-pool-size: ${DB_POOL_SIZE:10}
       minimum-idle: ${DB_MIN_IDLE:2}
       connection-timeout: 30000
+      data-source-properties:
+        sslmode: verify-full
+        sslrootcert: ${DB_SSL_ROOT_CERT:/run/secrets/postgres-ca.crt}
 
   jpa:
     hibernate:
@@ -46,7 +48,6 @@ file:
     videos-path: ${FILE_UPLOAD_PATH}/videos
     images-path: ${FILE_UPLOAD_PATH}/images
 
-
 otp:
   pepper: ${OTP_PEPPER}
 
@@ -58,6 +59,8 @@ paddle:
   checkout-order-ttl: ${PADDLE_CHECKOUT_ORDER_TTL:PT24H}
 
 app:
+  database:
+    require-tls: true
   base-url: ${APP_BASE_URL}
   mail-from: ${MAIL_FROM}
   cors:
@@ -67,7 +70,8 @@ app:
 
 server:
   tomcat:
-    max-swallow-size: 2GB
+    max-swallow-size: ${UPLOAD_MAX_REQUEST_SIZE:520MB}
+  forward-headers-strategy: framework
 
 logging:
   level:

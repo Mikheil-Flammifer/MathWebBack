@@ -84,7 +84,12 @@ public class EmailOutboxDispatcher {
     )
     public void poll() {
         List<Long> ids = tx.execute(status ->
-                outboxRepository.claimBatch(owner, leaseSeconds, batchSize));
+                outboxRepository.claimBatch(
+                        owner,
+                        leaseSeconds,
+                        batchSize
+                )
+        );
 
         if (ids == null) {
             return;
@@ -95,7 +100,10 @@ public class EmailOutboxDispatcher {
                 taskExecutor.execute(() -> process(id));
             } catch (RejectedExecutionException exception) {
                 release(id);
-                log.warn("Mail worker queue is full; row {} will be retried", id);
+                log.warn(
+                        "Mail worker queue is full; row {} will be retried",
+                        id
+                );
             }
         }
     }
@@ -124,7 +132,12 @@ public class EmailOutboxDispatcher {
             send(payload);
             markSent(id);
         } catch (RuntimeException exception) {
-            log.warn("Mail outbox row {} failed: {}", id, exception.getMessage());
+            log.warn(
+                    "Mail outbox row {} failed: type={}",
+                    id,
+                    exception.getClass().getSimpleName()
+            );
+
             recordFailure(id, exception);
         }
     }
@@ -132,6 +145,7 @@ public class EmailOutboxDispatcher {
     private void send(EmailOutboxPayloadCipher.EmailPayload payload) {
         try {
             MimeMessage message = mailSender.createMimeMessage();
+
             MimeMessageHelper helper =
                     new MimeMessageHelper(message, true, "UTF-8");
 
@@ -142,7 +156,10 @@ public class EmailOutboxDispatcher {
 
             mailSender.send(message);
         } catch (MessagingException | MailException exception) {
-            throw new IllegalStateException("SMTP submission failed", exception);
+            throw new IllegalStateException(
+                    "SMTP submission failed",
+                    exception
+            );
         }
     }
 
@@ -154,6 +171,7 @@ public class EmailOutboxDispatcher {
                             outbox.setStatus(EmailDeliveryStatus.SENT);
                             outbox.setSentAt(Instant.now());
                             outbox.setLastError(null);
+
                             clearLease(outbox);
                             outboxRepository.save(outbox);
                         })
@@ -169,6 +187,7 @@ public class EmailOutboxDispatcher {
                             outbox.setLastError(
                                     "Message expired before SMTP submission"
                             );
+
                             clearLease(outbox);
                             outboxRepository.save(outbox);
                         })
@@ -181,14 +200,20 @@ public class EmailOutboxDispatcher {
                     outboxRepository.findById(id)
                             .filter(this::ownsLease)
                             .ifPresent(outbox -> {
+                                // SMTP error text can contain recipient data.
                                 outbox.setLastError(
-                                        truncate(error.getMessage())
+                                        error.getClass().getSimpleName()
                                 );
 
-                                if (outbox.getAttemptCount() >= maxAttempts) {
-                                    outbox.setStatus(EmailDeliveryStatus.FAILED);
+                                if (outbox.getAttemptCount()
+                                        >= maxAttempts) {
+                                    outbox.setStatus(
+                                            EmailDeliveryStatus.FAILED
+                                    );
+
                                     log.error(
-                                            "Mail outbox row {} exhausted {} delivery attempts",
+                                            "Mail outbox row {} exhausted {} "
+                                                    + "delivery attempts",
                                             outbox.getId(),
                                             outbox.getAttemptCount()
                                     );
@@ -198,9 +223,13 @@ public class EmailOutboxDispatcher {
                                             BACKOFF.length - 1
                                     );
 
-                                    outbox.setStatus(EmailDeliveryStatus.RETRY);
+                                    outbox.setStatus(
+                                            EmailDeliveryStatus.RETRY
+                                    );
+
                                     outbox.setNextAttemptAt(
-                                            Instant.now().plus(BACKOFF[index])
+                                            Instant.now()
+                                                    .plus(BACKOFF[index])
                                     );
                                 }
 
@@ -224,6 +253,7 @@ public class EmailOutboxDispatcher {
                         .ifPresent(outbox -> {
                             outbox.setStatus(EmailDeliveryStatus.RETRY);
                             outbox.setNextAttemptAt(Instant.now());
+
                             clearLease(outbox);
                             outboxRepository.save(outbox);
                         })
@@ -240,15 +270,5 @@ public class EmailOutboxDispatcher {
         outbox.setProcessingStartedAt(null);
         outbox.setProcessingLeaseUntil(null);
         outbox.setUpdatedAt(Instant.now());
-    }
-
-    private static String truncate(String message) {
-        if (message == null) {
-            return "Unknown mail error";
-        }
-
-        return message.length() <= 1000
-                ? message
-                : message.substring(0, 1000);
     }
 }
