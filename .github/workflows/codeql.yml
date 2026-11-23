@@ -28,7 +28,7 @@ jobs:
           build-mode: autobuild
 
       - name: Autobuild
-        uses: github/codeql-action/autobuild@800a1d8701a65d150a672fef0923dbf2660a62ec # v4
+        uses: github/codeql-action/autobuild@1bd86f2fdb4b86187fa4059f16f31a3202acc9ea # v4
 
       - name: Analyze
         uses: github/codeql-action/analyze@800a1d8701a65d150a672fef0923dbf2660a62ec # v4
