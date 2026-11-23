@@ -19,7 +19,7 @@ RUN --mount=type=cache,target=/root/.m2 \
 
 # ---------- Stage 2: runtime ----------
 # Non-Alpine image: jave-all-deps needs glibc.
-FROM eclipse-temurin:21-jre@sha256:d77e090ae1f6970c047b443c6f0a6c1358b0426d44432bb5a7753408cd43de0d AS runtime
+FROM eclipse-temurin:24-jre@sha256:8cb2387a28af84cf0db0948d9c67d4480192f4e567027a3963f145d218e8b4f2 AS runtime
 
 RUN groupadd --system app \
     && useradd --system --gid app --create-home app
