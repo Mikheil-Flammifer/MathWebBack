@@ -1,0 +1,50 @@
+groups:
+  - name: mathweb
+    rules:
+      - alert: MathWebDown
+        expr: up{job="mathweb"} == 0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: MathWeb metrics endpoint is unreachable
+
+      - alert: MathWebDatabaseDown
+        expr: mathweb_database_up == 0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: MathWeb cannot query PostgreSQL
+
+      - alert: MathWebLocalStorageLow
+        expr: mathweb_storage_local_free_bytes < 5368709120
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: Less than 5 GiB remain on local upload storage
+
+      - alert: MathWebMailDeliveryFailed
+        expr: mathweb_mail_outbox_rows{status="failed"} > 0
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: MathWeb has failed email deliveries
+
+      - alert: MathWebWebhookDeadLetter
+        expr: mathweb_webhook_events{status="dead_letter"} > 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: A Paddle webhook requires manual investigation
+
+      - alert: MathWebAuthenticationFailures
+        expr: increase(mathweb_auth_failures_total[5m]) > 25
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: High number of failed authentication attempts

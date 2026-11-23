@@ -2,9 +2,9 @@ package com.mathweb.config;
 
 import com.mathweb.security.AccessDeniedHandlerImpl;
 import com.mathweb.security.AuthEntryPoint;
+import com.mathweb.security.CsrfHeaderFilter;
 import com.mathweb.security.JwtAuthenticationFilter;
 import com.mathweb.security.UserDetailsServiceImpl;
-import com.mathweb.security.CsrfHeaderFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -33,10 +33,12 @@ public class SecurityConfig {
     private final AuthEntryPoint authEntryPoint;
     private final AccessDeniedHandlerImpl accessDeniedHandler;
 
-    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter,
-                          UserDetailsServiceImpl userDetailsService,
-                          AuthEntryPoint authEntryPoint,
-                          AccessDeniedHandlerImpl accessDeniedHandler) {
+    public SecurityConfig(
+            JwtAuthenticationFilter jwtAuthenticationFilter,
+            UserDetailsServiceImpl userDetailsService,
+            AuthEntryPoint authEntryPoint,
+            AccessDeniedHandlerImpl accessDeniedHandler
+    ) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.userDetailsService = userDetailsService;
         this.authEntryPoint = authEntryPoint;
@@ -44,80 +46,119 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http,
-                                                   CorsConfigurationSource corsConfigurationSource) throws Exception {
+    public SecurityFilterChain securityFilterChain(
+            HttpSecurity http,
+            CorsConfigurationSource corsConfigurationSource
+    ) throws Exception {
         http
                 .cors(cors -> cors.configurationSource(corsConfigurationSource))
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session ->
-                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
                 .exceptionHandling(ex -> ex
                         .authenticationEntryPoint(authEntryPoint)
                         .accessDeniedHandler(accessDeniedHandler)
                 )
                 .authorizeHttpRequests(auth -> auth
 
-                        // ===== PUBLIC =====
                         .requestMatchers("/uploads/videos/**").denyAll()
+
+                        // Prometheus runs only on the private Docker network.
+                        // Nginx must never route /actuator publicly.
                         .requestMatchers(
+                                "/actuator/health/**",
+                                "/actuator/prometheus",
                                 "/api/auth/**",
                                 "/uploads/images/**",
                                 "/api/paddle/webhook",
                                 "/api/plans"
                         ).permitAll()
 
-                        // ===== STAFF / ADMIN =====
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.POST,
-                                "/api/videos/**").hasAnyRole("ADMIN", "TEACHER")
-                        .requestMatchers(HttpMethod.PUT,
-                                "/api/videos/**").hasAnyRole("ADMIN", "TEACHER")
-                        .requestMatchers(HttpMethod.DELETE,
-                                "/api/videos/**").hasAnyRole("ADMIN", "TEACHER")
-                        .requestMatchers(HttpMethod.POST,
-                                "/api/quests/**").hasAnyRole("ADMIN", "TEACHER")
-                        .requestMatchers(HttpMethod.PUT,
-                                "/api/quests/**").hasAnyRole("ADMIN", "TEACHER")
-                        .requestMatchers(HttpMethod.DELETE,
-                                "/api/quests/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.POST,
-                                "/api/problems/submit").authenticated()
-                        .requestMatchers(HttpMethod.POST,
-                                "/api/problems/*/hint").authenticated()
-                        .requestMatchers(HttpMethod.POST,
-                                "/api/problems/*/give-up").authenticated()
-                        .requestMatchers(HttpMethod.POST,
-                                "/api/problems/**").hasAnyRole("ADMIN", "TEACHER")
-                        .requestMatchers(HttpMethod.PUT,
-                                "/api/problems/**").hasAnyRole("ADMIN", "TEACHER")
-                        .requestMatchers(HttpMethod.DELETE,
-                                "/api/problems/*/image/*").hasAnyRole("ADMIN", "TEACHER")
-                        .requestMatchers(HttpMethod.DELETE,
-                                "/api/problems/**").hasRole("ADMIN")
 
-                        // ===== AUTHENTICATED =====
+                        .requestMatchers(HttpMethod.POST,
+                                "/api/videos/**")
+                        .hasAnyRole("ADMIN", "TEACHER")
+
+                        .requestMatchers(HttpMethod.PUT,
+                                "/api/videos/**")
+                        .hasAnyRole("ADMIN", "TEACHER")
+
+                        .requestMatchers(HttpMethod.DELETE,
+                                "/api/videos/**")
+                        .hasAnyRole("ADMIN", "TEACHER")
+
+                        .requestMatchers(HttpMethod.POST,
+                                "/api/quests/**")
+                        .hasAnyRole("ADMIN", "TEACHER")
+
+                        .requestMatchers(HttpMethod.PUT,
+                                "/api/quests/**")
+                        .hasAnyRole("ADMIN", "TEACHER")
+
+                        .requestMatchers(HttpMethod.DELETE,
+                                "/api/quests/**")
+                        .hasRole("ADMIN")
+
+                        .requestMatchers(HttpMethod.POST,
+                                "/api/problems/submit")
+                        .authenticated()
+
+                        .requestMatchers(HttpMethod.POST,
+                                "/api/problems/*/hint")
+                        .authenticated()
+
+                        .requestMatchers(HttpMethod.POST,
+                                "/api/problems/*/give-up")
+                        .authenticated()
+
+                        .requestMatchers(HttpMethod.POST,
+                                "/api/problems/**")
+                        .hasAnyRole("ADMIN", "TEACHER")
+
+                        .requestMatchers(HttpMethod.PUT,
+                                "/api/problems/**")
+                        .hasAnyRole("ADMIN", "TEACHER")
+
+                        .requestMatchers(HttpMethod.DELETE,
+                                "/api/problems/*/image/*")
+                        .hasAnyRole("ADMIN", "TEACHER")
+
+                        .requestMatchers(HttpMethod.DELETE,
+                                "/api/problems/**")
+                        .hasRole("ADMIN")
+
                         .anyRequest().authenticated()
                 )
                 .authenticationProvider(authenticationProvider())
-                .addFilterBefore(jwtAuthenticationFilter,
-                        UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(new CsrfHeaderFilter(),
-                        JwtAuthenticationFilter.class);
+                .addFilterBefore(
+                        jwtAuthenticationFilter,
+                        UsernamePasswordAuthenticationFilter.class
+                )
+                .addFilterBefore(
+                        new CsrfHeaderFilter(),
+                        JwtAuthenticationFilter.class
+                );
 
         return http.build();
     }
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        DaoAuthenticationProvider provider =
+                new DaoAuthenticationProvider();
+
         provider.setUserDetailsService(userDetailsService);
         provider.setPasswordEncoder(passwordEncoder());
+
         return provider;
     }
 
     @Bean
     public AuthenticationManager authenticationManager(
-            AuthenticationConfiguration config) throws Exception {
+            AuthenticationConfiguration config
+    ) throws Exception {
         return config.getAuthenticationManager();
     }
 

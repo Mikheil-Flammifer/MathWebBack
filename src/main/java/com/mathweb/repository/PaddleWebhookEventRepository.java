@@ -1,6 +1,7 @@
 package com.mathweb.repository;
 
 import com.mathweb.entity.PaddleWebhookEvent;
+import com.mathweb.enums.PaddleWebhookEventStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -13,6 +14,8 @@ import java.util.List;
 @Repository
 public interface PaddleWebhookEventRepository
         extends JpaRepository<PaddleWebhookEvent, Long> {
+
+    long countByStatus(PaddleWebhookEventStatus status);
 
     @Modifying
     @Query(value = """
@@ -68,22 +71,24 @@ public interface PaddleWebhookEventRepository
          )
         RETURNING id
         """, nativeQuery = true)
-    List<Long> claimBatch(@Param("owner") String owner,
-                          @Param("leaseSeconds") int leaseSeconds,
-                          @Param("batchSize") int batchSize);
+    List<Long> claimBatch(
+            @Param("owner") String owner,
+            @Param("leaseSeconds") int leaseSeconds,
+            @Param("batchSize") int batchSize
+    );
 
     @Modifying
     @Query(value = """
-        INSERT INTO paddle_webhook_events (
-            event_id, notification_id, event_type, occurred_at,
-            source, payload, status, attempt_count, next_attempt_at, created_at
-        )
-        VALUES (
-            :eventId, NULL, :eventType, :occurredAt,
-            'RECONCILIATION', CAST(:payload AS jsonb), 'RECEIVED', 0, NOW(), NOW()
-        )
-        ON CONFLICT (event_id) DO NOTHING
-        """, nativeQuery = true)
+            INSERT INTO paddle_webhook_events (
+                event_id, notification_id, event_type, occurred_at,
+                source, payload, status, attempt_count, next_attempt_at, created_at
+            )
+            VALUES (
+                :eventId, NULL, :eventType, :occurredAt,
+                'RECONCILIATION', CAST(:payload AS jsonb), 'RECEIVED', 0, NOW(), NOW()
+            )
+            ON CONFLICT (event_id) DO NOTHING
+            """, nativeQuery = true)
     int insertReconciledIfAbsent(
             @Param("eventId") String eventId,
             @Param("eventType") String eventType,

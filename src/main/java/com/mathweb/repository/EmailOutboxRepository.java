@@ -1,6 +1,7 @@
 package com.mathweb.repository;
 
 import com.mathweb.entity.EmailOutbox;
+import com.mathweb.enums.EmailDeliveryStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -11,6 +12,8 @@ import java.util.List;
 
 @Repository
 public interface EmailOutboxRepository extends JpaRepository<EmailOutbox, Long> {
+
+    long countByStatus(EmailDeliveryStatus status);
 
     @Modifying
     @Query(value = """
