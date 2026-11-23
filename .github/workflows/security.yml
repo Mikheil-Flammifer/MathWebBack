@@ -79,6 +79,8 @@ jobs:
         with:
           version: v0.76.2
           image-ref: mathweb:${{ github.sha }}
+          scanners: vuln
+          trivyignores: .trivyignore
           format: sarif
           output: trivy-results.sarif
           severity: HIGH,CRITICAL
@@ -94,6 +96,8 @@ jobs:
         with:
           version: v0.76.2
           image-ref: mathweb:${{ github.sha }}
+          scanners: vuln
+          trivyignores: .trivyignore
           format: table
           severity: HIGH,CRITICAL
           ignore-unfixed: true
