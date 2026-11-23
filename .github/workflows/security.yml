@@ -77,6 +77,7 @@ jobs:
       - name: Create Trivy SARIF report
         uses: aquasecurity/trivy-action@b6643a29fecd7f34b3597bc6acb0a98b03d33ff8 # v0.33.1
         with:
+          version: v0.76.2
           image-ref: mathweb:${{ github.sha }}
           format: sarif
           output: trivy-results.sarif
@@ -91,6 +92,7 @@ jobs:
       - name: Fail on high or critical vulnerabilities
         uses: aquasecurity/trivy-action@b6643a29fecd7f34b3597bc6acb0a98b03d33ff8 # v0.33.1
         with:
+          version: v0.76.2
           image-ref: mathweb:${{ github.sha }}
           format: table
           severity: HIGH,CRITICAL
